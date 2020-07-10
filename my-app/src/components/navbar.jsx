@@ -13,6 +13,7 @@ const NavBar = ({ totalCounters }) => {
   );
 };
 
+//You can change the below class into a single function like above
 /*class NavBar extends Component {
   render() {
     return (
