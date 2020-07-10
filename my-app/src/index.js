@@ -4,7 +4,6 @@ import "./index.css";
 import App from "./App";
 import serviceWorker from "./serviceWorker";
 import "bootstrap/dist/css/bootstrap.css";
-import Counters from "./components/counters";
 
 const element = <h1>Hello World</h1>;
-ReactDOM.render(<Counters />, document.getElementById("root"));
+ReactDOM.render(<App />, document.getElementById("root"));
