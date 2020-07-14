@@ -2,21 +2,27 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 let Person = new Schema({
-  name: {
-    first_name: {
-      type: String,
-    },
-    last_name: {
-      type: String,
-    },
-  },
+  name: String,
+  //Extra information
+  description: String,
+  birthdate: Date,
+  deathdate: Date,
+  //References to parents
+  //parentA_id: Number,
+  //parentB_id: Number,
 });
 
 let Family = new Schema({
-  parentA: { type: String },
-  parentB: { type: String },
+  name: String,
+  description: String,
 
-  //children: [Person],
+  //People within the family have two parents and x number of children
+  parentA: Person,
+  parentB: Person,
+  children: [Person],
 });
 
-module.exports = mongoose.model("Family", Family);
+module.exports = {
+  family: mongoose.model("Family", Family),
+  person: mongoose.model("Person", Person),
+};
