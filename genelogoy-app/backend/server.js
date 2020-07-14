@@ -66,56 +66,63 @@ routes.route("/update/:id").post(function (req, res) {
   });
 });
 
-routes.route("/add/family").post(function (req, res) {
-  console.log(req.body);
+routes.route("/add/family").post(async function (req, res) {
+  console.log("Body", req.body);
 
-  //Test info
-  /*const parentA = new Person({
-    name: "Test Name",
+  //Declare variables to find
+  var parentA = "";
+  var parentB = "";
+  var children = [];
+  try {
+    //Find the first parent
+    await Person.findOne({ name: req.body.parentA }, function (err, person) {
+      if (err) return handleError(err);
+      parentA = person;
+      console.log("ParentA found ", person);
+    });
 
-    description: "Some desc",
-    birthdate: new Date("December 17, 1995 03:24:00"),
-    deathdate: new Date("December 19, 2012 03:24:00"),
-  });
+    //Find the second parent
+    await Person.findOne({ name: req.body.parentB }, function (err, person) {
+      if (err) return handleError(err);
+      parentB = person;
+      console.log("ParentB found ", person);
+    });
 
-  const parentB = new Person({
-    name: "Test NameB",
+    let childrenToFind = req.body.children;
 
-    description: "Some other desc",
-    birthdate: new Date("December 17, 1985 03:24:00"),
-    deathdate: new Date("September 17, 1995 03:24:00"),
-  });
+    //Find the children parent
+    for (let i = 0; i < childrenToFind.length; i++) {
+      await Person.findOne({ name: childrenToFind[i] }, function (err, person) {
+        if (err) return handleError(err);
+        if (person == null) return "Failed to find " + req.body.children[i];
+        children.push(person);
+        console.log("Child found ", person);
+      });
+    }
+  } catch (e) {
+    console.log(e);
+  } finally {
+    console.log(children);
 
-  const children = [];
-  children.push(
-    new Person({
-      name: "Test Child",
-      //Extra information
-      description: "Dead from the coronavirus",
-      birthdate: new Date("December 17, 2000 03:24:00"),
-      deathdate: new Date("September 17, 2020 03:24:00"),
-    })
-  );
+    //Now save the family if everything was found
+    let family = new Family({
+      parentA: parentA,
+      parentB: parentB,
+      children: children,
+    });
 
-  let family = new Family({
-    parentA: parentA,
-    parentB: parentB,
-    children: children,
-  });*/
+    console.log("About to add ", family);
 
-  //let family = new Family(req.body);
-  res.status(200);
-  /*
-
-  
-  family
-    .save()
-    .then((family) => {
-      res.status(200).json({ family: "family added successfully" });
-    })
-    .catch((err) => {
-      res.status(400).send("adding new family failed");
-    });*/
+    family
+      .save()
+      .then((family) => {
+        console.log("Added", family);
+        res.status(200).json({ family: "family added successfully" });
+      })
+      .catch((err) => {
+        res.status(400).send("adding new family failed");
+      });
+  }
 });
 
 routes.route("/add/person").post(function (req, res) {

@@ -66,7 +66,7 @@ const Family = (props) => (
 );
 
 //Show a form to add families, but also
-class FamilyPost extends Component {
+class FamilyAdder extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -85,14 +85,18 @@ class FamilyPost extends Component {
       children: [],
     };
 
-    //this.onChangeTodoParentA = this.onChangeTodoParentA.bind(this);
-    //this.onChangeTodoParentB = this.onChangeTodoParentB.bind(this);
+    this.onChangeParentA = this.onChangeParentA.bind(this);
+    this.onChangeParentB = this.onChangeParentB.bind(this);
     this.onChangeName = this.onChangeName.bind(this);
     this.onChangeDescription = this.onChangeDescription.bind(this);
     this.onChangeBirthdate = this.onChangeBirthdate.bind(this);
     this.onChangeDeathdate = this.onChangeDeathdate.bind(this);
+    this.onChangeChild = this.onChangeChild.bind(this);
 
     this.onSubmitPerson = this.onSubmitPerson.bind(this);
+    this.onSubmitFamily = this.onSubmitFamily.bind(this);
+    this.childInputList = this.childInputList.bind(this);
+    this.addChildInput = this.addChildInput.bind(this);
   }
 
   componentDidMount() {
@@ -118,10 +122,18 @@ class FamilyPost extends Component {
       });
   }
 
+  //Show family
   familyList() {
     console.log("fam", this.state.families);
     return this.state.families.map(function (currentFamily, i) {
       return <Family family={currentFamily} key={i} />;
+    });
+  }
+
+  //Give a selection of people
+  personDropdown() {
+    return this.state.persons.map(function (currentPerson, i) {
+      return <option value={currentPerson.name}>{currentPerson.name}</option>;
     });
   }
 
@@ -149,19 +161,38 @@ class FamilyPost extends Component {
     });
   }
 
-  //onChange Events below
-  onChangeTodoParentA(e) {
+  onSubmitFamily(e) {
+    e.preventDefault();
+
+    //Json
+    const newFamily = {
+      parentA: this.state.parentA,
+      parentB: this.state.parentB,
+      children: this.state.children,
+    };
+
+    axios
+      .post("http://localhost:4000/add/family", newFamily)
+      .then((res) => console.log(res.data));
+
+    //Reset input values
     this.setState({
-      parentA: e.target.value,
+      name: "",
+      description: "",
+      birthdate: "",
+      deathdate: "",
     });
   }
 
-  onChangeTodoParentB(e) {
-    this.setState({
-      parentB: e.target.value,
-    });
+  onChangeParentA(e) {
+    this.setState({ parentA: e.target.value });
   }
 
+  onChangeParentB(e) {
+    this.setState({ parentB: e.target.value });
+  }
+
+  //onChange Events below (for adding a person)
   onChangeName(e) {
     this.setState({ name: e.target.value });
   }
@@ -176,6 +207,44 @@ class FamilyPost extends Component {
 
   onChangeDeathdate(e) {
     this.setState({ deathdate: e.target.value });
+  }
+
+  onChangeChild(e) {
+    let newChildren = [...this.state.children];
+
+    newChildren[e.target.list.id] = e.target.value;
+    this.setState({
+      children: newChildren,
+    });
+
+    console.log("Children", this.state.children);
+  }
+
+  //Dynamic "Add child" list
+  childInputList() {
+    var obj = this;
+    return this.state.children.map(function (currentChild, i) {
+      return (
+        <div className="form-group">
+          <label>Child: </label>
+          <input
+            type="text"
+            className="form-control"
+            value={currentChild}
+            onChange={obj.onChangeChild}
+            list={i}
+          />
+          <datalist id={i}>{obj.personDropdown()}</datalist>
+        </div>
+      );
+    });
+  }
+
+  addChildInput() {
+    console.log("Adding child", this);
+    this.setState((prevState) => ({
+      children: [...prevState.children, ""],
+    }));
   }
 
   render() {
@@ -195,23 +264,38 @@ class FamilyPost extends Component {
         <h3>Add a Family</h3>
         <form onSubmit={this.onSubmitFamily}>
           <div className="form-group">
-            <label>Parent A Name: </label>
+            <label>Parent A: </label>
             <input
               type="text"
               className="form-control"
-              value={this.state.parentA_name}
-              onChange={this.onChangeTodoParentA}
+              value={this.state.parentA}
+              onChange={this.onChangeParentA}
+              list="parentA"
             />
+            <datalist id="parentA">{this.personDropdown()}</datalist>
           </div>
+
           <div className="form-group">
-            <label>Parent B Name: </label>
+            <label>Parent B: </label>
             <input
               type="text"
               className="form-control"
-              value={this.state.parentB_name}
-              onChange={this.onChangeTodoParentB}
+              value={this.state.parentB}
+              onChange={this.onChangeParentB}
+              list="parentB"
             />
+            <datalist id="parentB">{this.personDropdown()}</datalist>
           </div>
+
+          {this.childInputList()}
+
+          <button
+            type="button"
+            onClick={this.addChildInput}
+            class="btn btn-primary"
+          >
+            + Child
+          </button>
 
           <div className="form-group">
             <input
@@ -221,8 +305,9 @@ class FamilyPost extends Component {
             />
           </div>
         </form>
+
         {/*WIP submit person*/}
-        <h3>Add a Person</h3>
+        <h3>Add Person</h3>
         <form onSubmit={this.onSubmitPerson}>
           <div className="form-group">
             <label>Name: </label>
@@ -281,4 +366,4 @@ class FamilyPost extends Component {
   }
 }
 
-export default FamilyPost;
+export default FamilyAdder;

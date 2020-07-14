@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import NavBar from "./components/navbar";
 import Counters from "./components/counters";
-import FamilyPost from "./components/familyPost";
+import FamilyAdder from "./components/familyAdder";
 import "./App.css";
 
 class App extends Component {
@@ -53,15 +53,7 @@ class App extends Component {
         <NavBar
           totalCounters={this.state.counters.filter((c) => c.value > 0).length}
         />
-        <FamilyPost />
-        <main className="container">
-          <Counters //Props go here:
-            counters={this.state.counters}
-            onReset={this.handleReset}
-            onIncrement={this.handleIncrement}
-            onDelete={this.handleDelete}
-          />
-        </main>
+        <FamilyAdder />
       </React.Fragment>
     );
   }
@@ -69,7 +61,14 @@ class App extends Component {
 
 // This site has 3 pages, all of which are rendered
 // dynamically in the browser (not server rendered).
-//
+/*        <main className="container">
+          <Counters //Props go here:
+            counters={this.state.counters}
+            onReset={this.handleReset}
+            onIncrement={this.handleIncrement}
+            onDelete={this.handleDelete}
+          />
+        </main>*/
 // Although the page does not ever refresh, notice how
 // React Router keeps the URL up to date as you navigate
 // through the site. This preserves the browser history,
