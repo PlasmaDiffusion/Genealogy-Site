@@ -80,6 +80,8 @@ class FamilyAdder extends Component {
       deathdate: "",
 
       //Input for a family
+      familyName: "",
+      familyDescription: "",
       parentA: "",
       parentB: "",
       children: [],
@@ -87,6 +89,9 @@ class FamilyAdder extends Component {
 
     this.onChangeParentA = this.onChangeParentA.bind(this);
     this.onChangeParentB = this.onChangeParentB.bind(this);
+    this.onChangeFamilyName = this.onChangeFamilyName.bind(this);
+    this.onChangeFamilyDescription = this.onChangeFamilyDescription.bind(this);
+
     this.onChangeName = this.onChangeName.bind(this);
     this.onChangeDescription = this.onChangeDescription.bind(this);
     this.onChangeBirthdate = this.onChangeBirthdate.bind(this);
@@ -166,6 +171,8 @@ class FamilyAdder extends Component {
 
     //Json
     const newFamily = {
+      name: this.state.familyName,
+      description: this.state.familyDescription,
       parentA: this.state.parentA,
       parentB: this.state.parentB,
       children: this.state.children,
@@ -182,6 +189,14 @@ class FamilyAdder extends Component {
       birthdate: "",
       deathdate: "",
     });
+  }
+
+  onChangeFamilyName(e) {
+    this.setState({ familyName: e.target.value });
+  }
+
+  onChangeFamilyDescription(e) {
+    this.setState({ familyDescription: e.target.value });
   }
 
   onChangeParentA(e) {
@@ -213,11 +228,10 @@ class FamilyAdder extends Component {
     let newChildren = [...this.state.children];
 
     newChildren[e.target.list.id] = e.target.value;
+
     this.setState({
       children: newChildren,
     });
-
-    console.log("Children", this.state.children);
   }
 
   //Dynamic "Add child" list
@@ -262,7 +276,28 @@ class FamilyAdder extends Component {
         </table>
         {/*WIP submit family*/}
         <h3>Add a Family</h3>
+
         <form onSubmit={this.onSubmitFamily}>
+          <div className="form-group">
+            <label>Family Name: </label>
+            <input
+              type="text"
+              className="form-control"
+              value={this.state.familyName}
+              onChange={this.onChangeFamilyName}
+            />
+          </div>
+
+          <div className="form-group">
+            <label>Family Description: </label>
+            <input
+              type="text"
+              className="form-control"
+              value={this.state.familyDescription}
+              onChange={this.onChangeFamilyDescription}
+            />
+          </div>
+
           <div className="form-group">
             <label>Parent A: </label>
             <input

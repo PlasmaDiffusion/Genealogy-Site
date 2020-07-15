@@ -102,16 +102,16 @@ routes.route("/add/family").post(async function (req, res) {
   } catch (e) {
     console.log(e);
   } finally {
-    console.log(children);
+    console.log("Family Name", req.body.name);
 
     //Now save the family if everything was found
     let family = new Family({
+      name: req.body.name,
+      description: req.body.description,
       parentA: parentA,
       parentB: parentB,
       children: children,
     });
-
-    console.log("About to add ", family);
 
     family
       .save()

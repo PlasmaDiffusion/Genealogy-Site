@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import NavBar from "./components/navbar";
 import Counters from "./components/counters";
 import FamilyAdder from "./components/familyAdder";
+import FamilyLink from "./components/familyLink";
 import "./App.css";
 
 class App extends Component {
@@ -50,9 +51,7 @@ class App extends Component {
   render() {
     return (
       <React.Fragment>
-        <NavBar
-          totalCounters={this.state.counters.filter((c) => c.value > 0).length}
-        />
+        <FamilyLink />
         <FamilyAdder />
       </React.Fragment>
     );
