@@ -2,46 +2,22 @@ import React, { Component } from "react";
 
 import axios from "axios";
 
-const Profile = ({ match, loading }) => {
-  if (loading) return <div>Loading...</div>;
-  return <div>You're on the Profile {match.params.profileId}</div>;
-};
-
-const Person = (props) => (
-  <div id={props._id}>
-    <tr>
-      <td>{props.name}</td>
-    </tr>
-    <tr>
-      <td>{props.description}</td>
-    </tr>
-    <tr>
-      <td>{props.birthdate}</td>
-    </tr>
-    <tr>
-      <td>{props.deathdate}</td>
-    </tr>
-  </div>
-);
-
 class PersonEditor extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      persons: [],
-
       //Input for a person
       name: "",
       description: "",
       birthdate: "",
       deathdate: "",
+      objectId: "",
     };
 
     this.onChangeName = this.onChangeName.bind(this);
     this.onChangeDescription = this.onChangeDescription.bind(this);
     this.onChangeBirthdate = this.onChangeBirthdate.bind(this);
     this.onChangeDeathdate = this.onChangeDeathdate.bind(this);
-    this.onChangeChild = this.onChangeChild.bind(this);
 
     this.onSubmitPerson = this.onSubmitPerson.bind(this);
   }
@@ -52,32 +28,29 @@ class PersonEditor extends Component {
 
     var url = new URLSearchParams(window.location.search);
     var id = url.get("id");
-    console.log(id);
+    this.setState({ objectId: id });
 
     axios
       .get("http://localhost:4000/edit/person/" + id)
       .then((response) => {
         console.log("Person Response: ", response.data);
-        this.setState({ persons: response.data });
+        this.setState({
+          name: response.data.name,
+          description: response.data.description,
+          birthdate: response.data.birthdate.split("T")[0],
+          deathdate: response.data.deathdate.split("T")[0],
+        });
       })
       .catch(function (error) {
         console.log(error);
       });
   }
 
-  //Show family
-  personList() {
-    console.log("fam", this.state.persons);
-    return this.state.persons.map(function (currentPerson, i) {
-      return <Person person={currentPerson} key={i} />;
-    });
-  }
-
   //Submit form data here
   onSubmitPerson(e) {
     e.preventDefault();
 
-    const newPerson = {
+    const updatedPerson = {
       name: this.state.name,
       description: this.state.description,
       birthdate: this.state.birthdate,
@@ -85,57 +58,11 @@ class PersonEditor extends Component {
     };
 
     axios
-      .post("http://localhost:4000/edit/person/" + this.props._id)
+      .post(
+        "http://localhost:4000/edit/person/" + this.state.objectId,
+        updatedPerson
+      )
       .then((res) => console.log(res.data));
-
-    //Reset input values
-    this.setState({
-      name: "",
-      description: "",
-      birthdate: "",
-      deathdate: "",
-    });
-  }
-
-  onSubmitFamily(e) {
-    e.preventDefault();
-
-    //Json
-    const newFamily = {
-      name: this.state.familyName,
-      description: this.state.familyDescription,
-      parentA: this.state.parentA,
-      parentB: this.state.parentB,
-      children: this.state.children,
-    };
-
-    axios
-      .post("http://localhost:4000/edit/person/", newFamily)
-      .then((res) => console.log(res.data));
-
-    //Reset input values
-    this.setState({
-      name: "",
-      description: "",
-      birthdate: "",
-      deathdate: "",
-    });
-  }
-
-  onChangeFamilyName(e) {
-    this.setState({ familyName: e.target.value });
-  }
-
-  onChangeFamilyDescription(e) {
-    this.setState({ familyDescription: e.target.value });
-  }
-
-  onChangeParentA(e) {
-    this.setState({ parentA: e.target.value });
-  }
-
-  onChangeParentB(e) {
-    this.setState({ parentB: e.target.value });
   }
 
   //onChange Events below (for adding a person)
@@ -153,43 +80,6 @@ class PersonEditor extends Component {
 
   onChangeDeathdate(e) {
     this.setState({ deathdate: e.target.value });
-  }
-
-  onChangeChild(e) {
-    let newChildren = [...this.state.children];
-
-    newChildren[e.target.list.id] = e.target.value;
-
-    this.setState({
-      children: newChildren,
-    });
-  }
-
-  //Dynamic "Add child" list
-  childInputList() {
-    var obj = this;
-    return this.state.children.map(function (currentChild, i) {
-      return (
-        <div className="form-group">
-          <label>Child: </label>
-          <input
-            type="text"
-            className="form-control"
-            value={currentChild}
-            onChange={obj.onChangeChild}
-            list={i}
-          />
-          <datalist id={i}>{obj.personDropdown()}</datalist>
-        </div>
-      );
-    });
-  }
-
-  addChildInput() {
-    console.log("Adding child", this);
-    this.setState((prevState) => ({
-      children: [...prevState.children, ""],
-    }));
   }
 
   render() {
@@ -250,12 +140,6 @@ class PersonEditor extends Component {
             />
           </div>
         </form>
-
-        <h3>Family List</h3>
-        <table className="table table-striped" style={{ marginTop: 20 }}>
-          <thead></thead>
-          <tbody>{this.personList()}</tbody>
-        </table>
       </div>
     );
   }

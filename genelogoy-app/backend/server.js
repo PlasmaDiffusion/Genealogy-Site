@@ -41,18 +41,10 @@ routes.route("/read/person").get(function (req, res) {
 });
 
 routes.route("/read/family").get(function (req, res) {
-  /*Family.find(function (err, families) {
-    if (err) {
-      console.log(err);
-    } else {
-      res.json(families);
-    }
-  });*/
-
   Family.find()
     .populate("parentA")
     .populate("parentB")
-    .populate("children") // only return the Persons name
+    .populate("children") // Populate the person object references
     .exec(function (err, families) {
       if (err) {
         console.log(err);
@@ -108,22 +100,26 @@ routes.route("/edit/person/:id").get(function (req, res) {
 });
 
 //Update a person
-routes.route("/edit/person:id").post(function (req, res) {
-  Family.findById(req.params.id, function (err, person) {
-    if (!person) res.status(404).send("data is not found");
-    else person.name = req.body.name;
-    person.description = req.body.description;
-    person.birthdate = req.body.deathdate;
-    person.deathdate = req.body.birthdate;
+routes.route("/edit/person/:id").post(function (req, res) {
+  console.log(req.params);
 
-    person
-      .save()
-      .then((person) => {
-        res.json("person updated!");
-      })
-      .catch((err) => {
-        res.status(400).send("Update not possible");
-      });
+  Person.findById(req.params.id, function (err, person) {
+    if (!person) res.status(404).send("data is not found");
+    else {
+      person.name = req.body.name;
+      person.description = req.body.description;
+      person.birthdate = req.body.deathdate;
+      person.deathdate = req.body.birthdate;
+
+      person
+        .save()
+        .then((person) => {
+          res.json("person updated!");
+        })
+        .catch((err) => {
+          res.status(400).send("Update not possible");
+        });
+    }
   });
 });
 

@@ -15,10 +15,10 @@ const Person = (props) => (
       <td>{props.description}</td>
     </tr>
     <tr>
-      <td>{props.birthdate}</td>
+      <td>{props.birthdate.split("T")[0]}</td>
     </tr>
     <tr>
-      <td>{props.deathdate}</td>
+      <td>{props.deathdate.split("T")[0]}</td>
     </tr>
   </div>
 );
@@ -28,29 +28,23 @@ const Family = (props) => (
   <React.Fragment>
     <tr>
       <td>
-        {props.family.parentA.name}
-        <a href={"/edit/person/ ?id=" + props.family.parentA._id}>
-          Edit Person
-        </a>
+        <Person //Iterate through child data here
+          name={props.family.parentA.name}
+          description={props.family.parentA.description}
+          birthdate={props.family.parentA.birthdate}
+          deathdate={props.family.parentA.deathdate}
+          _id={props.family.parentA._id}
+        />
       </td>
       <td>
-        {props.family.parentB.name}
-        <a href={"/edit/person/ ?id=" + props.family.parentB._id}>
-          Edit Person
-        </a>
+        <Person //Iterate through child data here
+          name={props.family.parentB.name}
+          description={props.family.parentB.description}
+          birthdate={props.family.parentB.birthdate}
+          deathdate={props.family.parentB.deathdate}
+          _id={props.family.parentB._id}
+        />
       </td>
-    </tr>
-    <tr>
-      <td>{props.family.parentA.description}</td>
-      <td>{props.family.parentB.description}</td>
-    </tr>
-    <tr>
-      <td>{props.family.parentA.birthdate}</td>
-      <td>{props.family.parentB.birthdate}</td>
-    </tr>
-    <tr>
-      <td>{props.family.parentA.deathdate}</td>
-      <td>{props.family.parentB.deathdate}</td>
     </tr>
     <tr>
       <button
@@ -207,9 +201,11 @@ class FamilyAdder extends Component {
       children: this.state.children,
     };
 
-    axios
-      .post("http://localhost:4000/add/family", newFamily)
-      .then((res) => console.log(res.data));
+    axios.post("http://localhost:4000/add/family", newFamily).then((res) => {
+      console.log(res.data);
+
+      alert("Family Submitted!");
+    });
 
     //Reset input values
     this.setState({
