@@ -12,6 +12,7 @@ import Counters from "./components/counters";
 import FamilyAdder from "./components/databaseComponents/familyAdder";
 import FamilyLink from "./components/databaseComponents/familyLink";
 import PersonEditor from "./components/databaseComponents/personEditor";
+import FamilyEditor from "./components/databaseComponents/familyEditor";
 import "./App.css";
 
 class App extends Component {
@@ -112,11 +113,10 @@ export default function BasicExample() {
             <App />
           </Route>
           <Route path="/edit/person/:id">
-            <PersonEditor>
-              {(props) => (
-                <div>{props.match ? props.match.id : "No match"}</div>
-              )}
-            </PersonEditor>
+            <PersonEditor />
+          </Route>
+          <Route path="/edit/family/:id">
+            <FamilyEditor />
           </Route>
           <Route path="/about">
             <About />

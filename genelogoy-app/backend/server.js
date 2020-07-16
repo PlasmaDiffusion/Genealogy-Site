@@ -30,6 +30,34 @@ app.listen(PORT, function () {
   console.log("Server is running on Port: " + PORT);
 });
 
+async function findPeople(req, parentA, parentB, children) {
+  await Person.findOne({ name: req.body.parentA }, function (err, person) {
+    if (err) return handleError(err);
+    parentA = person;
+    console.log("ParentA found ", person);
+  });
+
+  //Find the second parent
+  await Person.findOne({ name: req.body.parentB }, function (err, person) {
+    if (err) return handleError(err);
+    parentB = person;
+    console.log("ParentB found ", person);
+  });
+
+  let childrenToFind = req.body.children;
+
+  //Find the children parent
+  for (let i = 0; i < childrenToFind.length; i++) {
+    await Person.findOne({ name: childrenToFind[i] }, function (err, person) {
+      if (err) return handleError(err);
+      if (person == null) return "Failed to find " + req.body.children[i];
+      children.push(person);
+      console.log("Child found ", person);
+    });
+  }
+  return { parentA, parentB };
+}
+
 routes.route("/read/person").get(function (req, res) {
   Person.find(function (err, persons) {
     if (err) {
@@ -55,34 +83,59 @@ routes.route("/read/family").get(function (req, res) {
 });
 
 //Update a family (read in json data)
-routes.route("/update/family:id").get(function (req, res) {
-  Family.findById(req.params.id, function (err, family) {
-    if (err) {
-      console.log(err);
-    } else {
-      res.json(family);
-    }
-  });
+routes.route("/read/family/:id").get(function (req, res) {
+  Family.findById(req.params.id)
+    .populate("parentA")
+    .populate("parentB")
+    .populate("children")
+    .exec(function (err, family) {
+      if (err) {
+        console.log(err);
+      } else {
+        res.json(family);
+      }
+    });
 });
 
-//Update a family (not individual people)
-routes.route("/update/family:id").post(function (req, res) {
-  Family.findById(req.params.id, function (err, family) {
-    if (!family) res.status(404).send("data is not found");
-    else family.name = req.body.name;
-    family.description = req.body.description;
-    family.parentA = req.body.parentA;
-    family.parentB = req.body.parentB;
-    family.children = req.body.children;
-    family
-      .save()
-      .then((family) => {
-        res.json("family updated!");
-      })
-      .catch((err) => {
-        res.status(400).send("Update not possible");
-      });
-  });
+//Update a family
+routes.route("/edit/family/:id").post(async function (req, res) {
+  console.log("Editing", req.params.id);
+
+  console.log("Body", req.body);
+
+  //Declare variables to find
+  var parentA = "";
+  var parentB = "";
+  var children = [];
+  try {
+    //Find the first and second parent
+    ({ parentA, parentB } = await findPeople(req, parentA, parentB, children));
+  } catch (e) {
+    console.log(e);
+  } finally {
+    console.log("Family Name", req.body.name);
+
+    //Now update the family if everything was found
+    Family.findById(req.params.id, function (err, family) {
+      if (err) console.log(err);
+      else {
+        family.name = req.body.name;
+        family.description = req.body.description;
+        family.parentA = parentA._id;
+        family.parentB = parentB._id;
+        family.children = children;
+        family
+          .save()
+          .then((family) => {
+            console.log("Added", family);
+            res.status(200).json("Family updated successfully");
+          })
+          .catch((err) => {
+            res.status(400).send("Updating family failed");
+          });
+      }
+    });
+  }
 });
 
 //Update a family (read in json data)
@@ -114,7 +167,7 @@ routes.route("/edit/person/:id").post(function (req, res) {
       person
         .save()
         .then((person) => {
-          res.json("person updated!");
+          res.json("Person updated!");
         })
         .catch((err) => {
           res.status(400).send("Update not possible");
@@ -132,30 +185,7 @@ routes.route("/add/family").post(async function (req, res) {
   var children = [];
   try {
     //Find the first parent
-    await Person.findOne({ name: req.body.parentA }, function (err, person) {
-      if (err) return handleError(err);
-      parentA = person;
-      console.log("ParentA found ", person);
-    });
-
-    //Find the second parent
-    await Person.findOne({ name: req.body.parentB }, function (err, person) {
-      if (err) return handleError(err);
-      parentB = person;
-      console.log("ParentB found ", person);
-    });
-
-    let childrenToFind = req.body.children;
-
-    //Find the children parent
-    for (let i = 0; i < childrenToFind.length; i++) {
-      await Person.findOne({ name: childrenToFind[i] }, function (err, person) {
-        if (err) return handleError(err);
-        if (person == null) return "Failed to find " + req.body.children[i];
-        children.push(person);
-        console.log("Child found ", person);
-      });
-    }
+    ({ parentA, parentB } = await findPeople(req, parentA, parentB, children));
   } catch (e) {
     console.log(e);
   } finally {

@@ -31,7 +31,7 @@ class PersonEditor extends Component {
     this.setState({ objectId: id });
 
     axios
-      .get("http://localhost:4000/edit/person/" + id)
+      .get("http://localhost:4000/read/person/" + id)
       .then((response) => {
         console.log("Person Response: ", response.data);
         this.setState({
@@ -62,7 +62,10 @@ class PersonEditor extends Component {
         "http://localhost:4000/edit/person/" + this.state.objectId,
         updatedPerson
       )
-      .then((res) => console.log(res.data));
+      .then((res) => {
+        console.log(res.data);
+        alert(res.data);
+      });
   }
 
   //onChange Events below (for adding a person)

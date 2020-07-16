@@ -26,6 +26,8 @@ const Person = (props) => (
 //Iterate through family data here
 const Family = (props) => (
   <React.Fragment>
+    <th>{props.family.name}</th>
+    <th>{props.family.description}</th>
     <tr>
       <td>
         <Person //Iterate through child data here
@@ -70,7 +72,7 @@ const Family = (props) => (
       ))}
     </tr>
     <tr>
-      <a href={"/edit/family/" + props.family._id}>Edit Family</a>
+      <a href={"/edit/family/ ?id=" + props.family._id}>Edit Family</a>
     </tr>
   </React.Fragment>
 );
@@ -291,7 +293,9 @@ class FamilyAdder extends Component {
       <div>
         {/*WIP submit family*/}
         <h3>Add a Family</h3>
-
+        <p class="alert alert-warning">
+          Make sure all people exist before adding them to a family!
+        </p>
         <form onSubmit={this.onSubmitFamily}>
           <div className="form-group">
             <label>Family Name: </label>
@@ -342,7 +346,7 @@ class FamilyAdder extends Component {
           <button
             type="button"
             onClick={this.addChildInput}
-            class="btn btn-primary"
+            class="btn btn-secondary"
           >
             + Child
           </button>
