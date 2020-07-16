@@ -10,8 +10,9 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use("/", routes);
 
-let Family = require("./family.js").family;
-let Person = require("./family.js").person;
+var ObjectID = require("mongodb").ObjectID;
+var Family = require("./family.js").family;
+var Person = require("./family.js").person;
 
 const uri =
   "mongodb+srv://admin:" +
@@ -40,25 +41,85 @@ routes.route("/read/person").get(function (req, res) {
 });
 
 routes.route("/read/family").get(function (req, res) {
-  Family.find(function (err, families) {
+  /*Family.find(function (err, families) {
     if (err) {
       console.log(err);
     } else {
       res.json(families);
     }
+  });*/
+
+  Family.find()
+    .populate("parentA")
+    .populate("parentB")
+    .populate("children") // only return the Persons name
+    .exec(function (err, families) {
+      if (err) {
+        console.log(err);
+      } else {
+        res.json(families);
+      }
+    });
+});
+
+//Update a family (read in json data)
+routes.route("/update/family:id").get(function (req, res) {
+  Family.findById(req.params.id, function (err, family) {
+    if (err) {
+      console.log(err);
+    } else {
+      res.json(family);
+    }
   });
 });
 
-routes.route("/update/:id").post(function (req, res) {
+//Update a family (not individual people)
+routes.route("/update/family:id").post(function (req, res) {
   Family.findById(req.params.id, function (err, family) {
     if (!family) res.status(404).send("data is not found");
-    else family.parentA = req.body.parentA;
+    else family.name = req.body.name;
+    family.description = req.body.description;
+    family.parentA = req.body.parentA;
     family.parentB = req.body.parentB;
     family.children = req.body.children;
     family
       .save()
       .then((family) => {
         res.json("family updated!");
+      })
+      .catch((err) => {
+        res.status(400).send("Update not possible");
+      });
+  });
+});
+
+//Update a family (read in json data)
+routes.route("/edit/person/:id").get(function (req, res) {
+  console.log(new ObjectID(req.params.id));
+
+  Person.findById(new ObjectID(req.params.id), function (err, persons) {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log(persons);
+      res.json(persons);
+    }
+  });
+});
+
+//Update a person
+routes.route("/edit/person:id").post(function (req, res) {
+  Family.findById(req.params.id, function (err, person) {
+    if (!person) res.status(404).send("data is not found");
+    else person.name = req.body.name;
+    person.description = req.body.description;
+    person.birthdate = req.body.deathdate;
+    person.deathdate = req.body.birthdate;
+
+    person
+      .save()
+      .then((person) => {
+        res.json("person updated!");
       })
       .catch((err) => {
         res.status(400).send("Update not possible");
@@ -108,8 +169,8 @@ routes.route("/add/family").post(async function (req, res) {
     let family = new Family({
       name: req.body.name,
       description: req.body.description,
-      parentA: parentA,
-      parentB: parentB,
+      parentA: parentA._id,
+      parentB: parentB._id,
       children: children,
     });
 

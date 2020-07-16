@@ -1,10 +1,14 @@
-import React, { Component, Fragment } from "react";
-import { Link } from "react-router-dom";
+import React, { Component } from "react";
 
 import axios from "axios";
 
+const Profile = ({ match, loading }) => {
+  if (loading) return <div>Loading...</div>;
+  return <div>You're on the Profile {match.params.profileId}</div>;
+};
+
 const Person = (props) => (
-  <div id={props.id}>
+  <div id={props._id}>
     <tr>
       <td>{props.name}</td>
     </tr>
@@ -20,57 +24,10 @@ const Person = (props) => (
   </div>
 );
 
-//Iterate through family data here
-const Family = (props) => (
-  <React.Fragment>
-    <tr>
-      <td>{props.family.parentA.name}</td>
-      <td>{props.family.parentB.name}</td>
-    </tr>
-    <tr>
-      <td>{props.family.parentA.description}</td>
-      <td>{props.family.parentB.description}</td>
-    </tr>
-    <tr>
-      <td>{props.family.parentA.birthdate}</td>
-      <td>{props.family.parentB.birthdate}</td>
-    </tr>
-    <tr>
-      <td>{props.family.parentA.deathdate}</td>
-      <td>{props.family.parentB.deathdate}</td>
-    </tr>
-    <tr>
-      <button
-        class="btn btn-primary"
-        type="button"
-        data-toggle="collapse"
-        data-target={"#" + props.family._id}
-        aria-expanded="false"
-        aria-controls={"#" + props.family._id}
-      >
-        Show Children
-      </button>
-    </tr>
-    <tr id={props.family._id}>
-      {props.family.children.map((child) => (
-        <Person //Iterate through child data here
-          name={child.name}
-          description={child.description}
-          birthdate={child.birthdate}
-          deathdate={child.deathdate}
-          id={child.id}
-        />
-      ))}
-    </tr>
-  </React.Fragment>
-);
-
-//Show a form to add families, but also
-class FamilyAdder extends Component {
+class PersonEditor extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      families: [],
       persons: [],
 
       //Input for a person
@@ -78,19 +35,7 @@ class FamilyAdder extends Component {
       description: "",
       birthdate: "",
       deathdate: "",
-
-      //Input for a family
-      familyName: "",
-      familyDescription: "",
-      parentA: "",
-      parentB: "",
-      children: [],
     };
-
-    this.onChangeParentA = this.onChangeParentA.bind(this);
-    this.onChangeParentB = this.onChangeParentB.bind(this);
-    this.onChangeFamilyName = this.onChangeFamilyName.bind(this);
-    this.onChangeFamilyDescription = this.onChangeFamilyDescription.bind(this);
 
     this.onChangeName = this.onChangeName.bind(this);
     this.onChangeDescription = this.onChangeDescription.bind(this);
@@ -99,25 +44,18 @@ class FamilyAdder extends Component {
     this.onChangeChild = this.onChangeChild.bind(this);
 
     this.onSubmitPerson = this.onSubmitPerson.bind(this);
-    this.onSubmitFamily = this.onSubmitFamily.bind(this);
-    this.childInputList = this.childInputList.bind(this);
-    this.addChildInput = this.addChildInput.bind(this);
   }
 
+  //Connect to the databaes and get data here! <------------------------------
   componentDidMount() {
-    console.log("About to connect");
-    axios
-      .get("http://localhost:4000/read/family")
-      .then((response) => {
-        console.log("Family Response: ", response.data);
-        this.setState({ families: response.data });
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+    console.log("About to connect", window.location.search);
+
+    var url = new URLSearchParams(window.location.search);
+    var id = url.get("id");
+    console.log(id);
 
     axios
-      .get("http://localhost:4000/read/person")
+      .get("http://localhost:4000/edit/person/" + id)
       .then((response) => {
         console.log("Person Response: ", response.data);
         this.setState({ persons: response.data });
@@ -128,21 +66,14 @@ class FamilyAdder extends Component {
   }
 
   //Show family
-  familyList() {
-    console.log("fam", this.state.families);
-    return this.state.families.map(function (currentFamily, i) {
-      return <Family family={currentFamily} key={i} />;
-    });
-  }
-
-  //Give a selection of people
-  personDropdown() {
+  personList() {
+    console.log("fam", this.state.persons);
     return this.state.persons.map(function (currentPerson, i) {
-      return <option value={currentPerson.name}>{currentPerson.name}</option>;
+      return <Person person={currentPerson} key={i} />;
     });
   }
 
-  //Read in form data here
+  //Submit form data here
   onSubmitPerson(e) {
     e.preventDefault();
 
@@ -154,7 +85,7 @@ class FamilyAdder extends Component {
     };
 
     axios
-      .post("http://localhost:4000/add/person", newPerson)
+      .post("http://localhost:4000/edit/person/" + this.props._id)
       .then((res) => console.log(res.data));
 
     //Reset input values
@@ -179,7 +110,7 @@ class FamilyAdder extends Component {
     };
 
     axios
-      .post("http://localhost:4000/add/family", newFamily)
+      .post("http://localhost:4000/edit/person/", newFamily)
       .then((res) => console.log(res.data));
 
     //Reset input values
@@ -264,85 +195,8 @@ class FamilyAdder extends Component {
   render() {
     return (
       <div>
-        <h3>Family List</h3>
-        <table className="table table-striped" style={{ marginTop: 20 }}>
-          <thead>
-            <tr>
-              <th>Parent A</th>
-              <th>Parent B</th>
-            </tr>
-          </thead>
-          <tbody>{this.familyList()}</tbody>
-        </table>
-        {/*WIP submit family*/}
-        <h3>Add a Family</h3>
-
-        <form onSubmit={this.onSubmitFamily}>
-          <div className="form-group">
-            <label>Family Name: </label>
-            <input
-              type="text"
-              className="form-control"
-              value={this.state.familyName}
-              onChange={this.onChangeFamilyName}
-            />
-          </div>
-
-          <div className="form-group">
-            <label>Family Description: </label>
-            <input
-              type="text"
-              className="form-control"
-              value={this.state.familyDescription}
-              onChange={this.onChangeFamilyDescription}
-            />
-          </div>
-
-          <div className="form-group">
-            <label>Parent A: </label>
-            <input
-              type="text"
-              className="form-control"
-              value={this.state.parentA}
-              onChange={this.onChangeParentA}
-              list="parentA"
-            />
-            <datalist id="parentA">{this.personDropdown()}</datalist>
-          </div>
-
-          <div className="form-group">
-            <label>Parent B: </label>
-            <input
-              type="text"
-              className="form-control"
-              value={this.state.parentB}
-              onChange={this.onChangeParentB}
-              list="parentB"
-            />
-            <datalist id="parentB">{this.personDropdown()}</datalist>
-          </div>
-
-          {this.childInputList()}
-
-          <button
-            type="button"
-            onClick={this.addChildInput}
-            class="btn btn-primary"
-          >
-            + Child
-          </button>
-
-          <div className="form-group">
-            <input
-              type="submit"
-              value="Add Family"
-              className="btn btn-primary"
-            />
-          </div>
-        </form>
-
-        {/*WIP submit person*/}
-        <h3>Add Person</h3>
+        {/*WIP edit person form*/}
+        <h3>Edit Person</h3>
         <form onSubmit={this.onSubmitPerson}>
           <div className="form-group">
             <label>Name: </label>
@@ -396,9 +250,15 @@ class FamilyAdder extends Component {
             />
           </div>
         </form>
+
+        <h3>Family List</h3>
+        <table className="table table-striped" style={{ marginTop: 20 }}>
+          <thead></thead>
+          <tbody>{this.personList()}</tbody>
+        </table>
       </div>
     );
   }
 }
 
-export default FamilyAdder;
+export default PersonEditor;

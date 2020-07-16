@@ -17,9 +17,9 @@ let Family = new Schema({
   description: String,
 
   //People within the family have two parents and x number of children
-  parentA: Person,
-  parentB: Person,
-  children: [Person],
+  parentA: { type: mongoose.Schema.Types.ObjectId, ref: "Person" },
+  parentB: { type: mongoose.Schema.Types.ObjectId, ref: "Person" },
+  children: [{ type: mongoose.Schema.Types.ObjectId, ref: "Person" }],
 });
 
 module.exports = {

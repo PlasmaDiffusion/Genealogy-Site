@@ -1,9 +1,17 @@
 import React, { Component } from "react";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link,
+  Match,
+  useParams,
+} from "react-router-dom";
 import NavBar from "./components/navbar";
 import Counters from "./components/counters";
-import FamilyAdder from "./components/familyAdder";
-import FamilyLink from "./components/familyLink";
+import FamilyAdder from "./components/databaseComponents/familyAdder";
+import FamilyLink from "./components/databaseComponents/familyLink";
+import PersonEditor from "./components/databaseComponents/personEditor";
 import "./App.css";
 
 class App extends Component {
@@ -103,8 +111,12 @@ export default function BasicExample() {
           <Route exact path="/">
             <App />
           </Route>
-          <Route exact path="/">
-            <Home />
+          <Route path="/edit/person/:id">
+            <PersonEditor>
+              {(props) => (
+                <div>{props.match ? props.match.id : "No match"}</div>
+              )}
+            </PersonEditor>
           </Route>
           <Route path="/about">
             <About />
@@ -121,13 +133,14 @@ export default function BasicExample() {
 // You can think of these components as "pages"
 // in your app.
 
-function Home() {
+const Home = (props) => {
+  console.log(props);
   return (
     <div>
       <h2>Home</h2>
     </div>
   );
-}
+};
 
 function About() {
   return (
