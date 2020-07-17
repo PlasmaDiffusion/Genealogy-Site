@@ -189,9 +189,9 @@ routes.route("/delete/person").post(function (req, res) {
 
 //Remove a family
 routes.route("/delete/family").post(function (req, res) {
-  console.log("Removing person", req.params);
+  console.log("Removing family", req.body);
 
-  Family.deleteOne({ _id: req.params.id }, function (err) {
+  Family.deleteOne({ _id: req.body.id }, function (err) {
     if (err) return handleError(err);
     // deleted at most one tank document
     else res.status(200).json("The family was deleted.");

@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from "react";
 import { Link } from "react-router-dom";
+import NullChecker from "./classes/nullChecker.js";
 
 import axios from "axios";
 
@@ -49,7 +50,8 @@ class FamilyAdder extends Component {
       .get("http://localhost:4000/read/family")
       .then((response) => {
         console.log("Family Response: ", response.data);
-        response.data = this.familyNullCheck(response.data);
+        const nullChecker = new NullChecker();
+        nullChecker.familyNullCheck(response.data);
         this.setState({ families: response.data });
       })
       .catch(function (error) {
@@ -73,31 +75,6 @@ class FamilyAdder extends Component {
     return this.state.families.map(function (currentFamily, i) {
       return <Family family={currentFamily} key={i} />;
     });
-  }
-
-  //Check for missing family member entries, and give them blank placeholder values
-  familyNullCheck(responseData) {
-    responseData.map(function (currentFamily, i) {
-      console.log("Checking for null", currentFamily);
-      if (currentFamily.parentA == null) {
-        currentFamily.parentA = {
-          name: "(Deleted)",
-          description: "",
-          birthdate: "",
-          deathdate: "",
-        };
-      }
-      if (currentFamily.parentB == null) {
-        currentFamily.parentB = {
-          name: "(Deleted)",
-          description: "",
-          birthdate: "",
-          deathdate: "",
-        };
-      }
-    });
-
-    return responseData;
   }
 
   findPerson(idToFind) {

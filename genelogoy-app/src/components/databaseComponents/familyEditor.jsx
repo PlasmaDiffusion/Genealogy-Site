@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from "react";
 import { Link } from "react-router-dom";
+import NullChecker from "./classes/nullChecker.js";
 
 import axios from "axios";
 
@@ -25,12 +26,13 @@ class FamilyEditor extends Component {
     this.onChangeFamilyDescription = this.onChangeFamilyDescription.bind(this);
 
     this.onSubmitFamily = this.onSubmitFamily.bind(this);
+    this.onDeleteFamily = this.onDeleteFamily.bind(this);
     this.childInputList = this.childInputList.bind(this);
     this.onChangeChild = this.onChangeChild.bind(this);
     this.addChildInput = this.addChildInput.bind(this);
   }
 
-  //Connect to the databaes and get data here! <------------------------------
+  //Connect to the databaes and get family data here! <------------------------------
   componentDidMount() {
     console.log("About to connect");
 
@@ -43,6 +45,11 @@ class FamilyEditor extends Component {
       .get("http://localhost:4000/read/family/" + id)
       .then((response) => {
         console.log("Family Response: ", response.data);
+
+        //This component will break if it doesn't handle null data
+        const nullChecker = new NullChecker();
+        nullChecker.familyNullCheck([response.data]);
+        //Set family data to fill in on the form
         this.setState({
           name: response.data.name,
           description: response.data.description,
@@ -60,6 +67,7 @@ class FamilyEditor extends Component {
       .get("http://localhost:4000/read/person")
       .then((response) => {
         console.log("Person Response: ", response.data);
+        //Set people for dropdown menu
         this.setState({ persons: response.data });
       })
       .catch(function (error) {
@@ -96,6 +104,24 @@ class FamilyEditor extends Component {
 
         alert(res.data);
       });
+  }
+
+  //Submit form data FOR DELETING
+  onDeleteFamily(e) {
+    e.preventDefault();
+    //Confirm the delete
+    if (window.confirm("Really delete this family?")) {
+      const deleteData = {
+        id: this.state.objectId,
+      };
+
+      axios
+        .post("http://localhost:4000/delete/family", deleteData)
+        .then((res) => {
+          console.log(res.data);
+          alert(res.data);
+        });
+    }
   }
 
   onChangeFamilyName(e) {
@@ -217,6 +243,16 @@ class FamilyEditor extends Component {
               type="submit"
               value="Update Family"
               className="btn btn-primary"
+            />
+          </div>
+        </form>
+
+        <form onSubmit={this.onDeleteFamily}>
+          <div className="form-group">
+            <input
+              type="submit"
+              value="Delete Family"
+              className="btn btn-danger"
             />
           </div>
         </form>
