@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from "react";
 import { Link } from "react-router-dom";
 import NullChecker from "./classes/nullChecker.js";
+import Family from "./../family";
 
 import axios from "axios";
 
@@ -11,7 +12,7 @@ class FamilyAdder extends Component {
     this.state = {
       families: [],
       persons: [],
-
+      showChildren: [],
       //Input for a person
       name: "",
       description: "",
@@ -43,7 +44,7 @@ class FamilyAdder extends Component {
     this.addChildInput = this.addChildInput.bind(this);
   }
 
-  //Connect to the databaes and get data here! <------------------------------
+  //Connect to the database and get data here! <------------------------------
   componentDidMount() {
     console.log("About to connect");
     axios
@@ -71,11 +72,19 @@ class FamilyAdder extends Component {
 
   //Show family
   familyList() {
+    var obj = this;
     console.log("fam", this.state.families);
     return this.state.families.map(function (currentFamily, i) {
-      return <Family family={currentFamily} key={i} />;
+      return (
+        <Family
+          family={currentFamily}
+          showChildren={currentFamily.children.length > 0}
+          key={i}
+        />
+      );
     });
   }
+  //showChildren={obj.state.showChildren[i]}
 
   findPerson(idToFind) {
     let personFound = "";
@@ -96,7 +105,7 @@ class FamilyAdder extends Component {
     });
   }
 
-  //Submit form data here
+  //Submit form data here <------------------------------------------------
   onSubmitPerson(e) {
     e.preventDefault();
 
@@ -107,9 +116,10 @@ class FamilyAdder extends Component {
       deathdate: this.state.deathdate,
     };
 
-    axios
-      .post("http://localhost:4000/add/person", newPerson)
-      .then((res) => console.log(res.data));
+    axios.post("http://localhost:4000/add/person", newPerson).then((res) => {
+      alert(res.data);
+      window.location.replace("http://localhost:3000/admin");
+    });
 
     //Reset input values
     this.setState({
@@ -134,8 +144,8 @@ class FamilyAdder extends Component {
 
     axios.post("http://localhost:4000/add/family", newFamily).then((res) => {
       console.log(res.data);
-
-      alert("Family Submitted!");
+      alert(res.data);
+      window.location.replace("http://localhost:3000/admin");
     });
 
     //Reset input values
@@ -220,7 +230,7 @@ class FamilyAdder extends Component {
   render() {
     return (
       <div>
-        {/*WIP submit family*/}
+        {/*Submit family form*/}
         <h3>Add a Family</h3>
         <p class="alert alert-warning">
           Make sure all people exist before adding them to a family!
@@ -289,7 +299,7 @@ class FamilyAdder extends Component {
           </div>
         </form>
 
-        {/*WIP submit person*/}
+        {/*Submit person form*/}
         <h3>Add Person</h3>
         <form onSubmit={this.onSubmitPerson}>
           <div className="form-group">
@@ -359,86 +369,5 @@ class FamilyAdder extends Component {
     );
   }
 }
-
-const Person = (props) => (
-  <div id={props._id}>
-    <tr>
-      <td>
-        {props.name}
-
-        <a
-          href={
-            props.name != "(Deleted)" ? "/edit/person/ ?id=" + props._id : ""
-          }
-        >
-          {props.name != "(Deleted)" ? " Edit" : ""}
-        </a>
-      </td>
-    </tr>
-    <tr>
-      <td>{props.description}</td>
-    </tr>
-    <tr>
-      <td>{props.birthdate.split("T")[0]}</td>
-    </tr>
-    <tr>
-      <td>{props.deathdate.split("T")[0]}</td>
-    </tr>
-  </div>
-);
-
-//Iterate through family data here
-const Family = (props) => (
-  <React.Fragment>
-    <th>{props.family.name}</th>
-    <th>{props.family.description}</th>
-    <tr>
-      <td>
-        <Person //Iterate through child data here
-          name={props.family.parentA.name}
-          description={props.family.parentA.description}
-          birthdate={props.family.parentA.birthdate}
-          deathdate={props.family.parentA.deathdate}
-          _id={props.family.parentA._id}
-        />
-      </td>
-      <td>
-        <Person //Iterate through child data here
-          name={props.family.parentB.name}
-          description={props.family.parentB.description}
-          birthdate={props.family.parentB.birthdate}
-          deathdate={props.family.parentB.deathdate}
-          _id={props.family.parentB._id}
-        />
-      </td>
-    </tr>
-    <tr>
-      <button
-        class="btn btn-primary"
-        type="button"
-        data-toggle="collapse"
-        data-target={"#" + props.family._id}
-        aria-expanded="false"
-        aria-controls={"#" + props.family._id}
-      >
-        Show Children
-      </button>
-    </tr>
-    <tr id={props.family._id}>
-      {props.family.children.map((child) => (
-        <Person //Iterate through child data here
-          name={child.name}
-          description={child.description}
-          birthdate={child.birthdate}
-          deathdate={child.deathdate}
-          _id={child._id}
-        />
-      ))}
-    </tr>
-    <tr>
-      <a href={"/edit/family/ ?id=" + props.family._id}>Edit Family</a>
-    </tr>
-  </React.Fragment>
-);
 
 export default FamilyAdder;

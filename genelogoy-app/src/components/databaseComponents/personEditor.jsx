@@ -8,6 +8,7 @@ class PersonEditor extends Component {
     this.state = {
       //Input for a person
       name: "",
+      initialName: "",
       description: "",
       birthdate: "",
       deathdate: "",
@@ -38,6 +39,7 @@ class PersonEditor extends Component {
         console.log("Person Response: ", response.data);
         this.setState({
           name: response.data.name,
+          initialName: response.data.name,
           description: response.data.description,
           birthdate: response.data.birthdate.split("T")[0],
           deathdate: response.data.deathdate.split("T")[0],
@@ -65,8 +67,8 @@ class PersonEditor extends Component {
         updatedPerson
       )
       .then((res) => {
-        console.log(res.data);
         alert(res.data);
+        window.location.replace("http://localhost:3000/admin");
       });
   }
 
@@ -84,8 +86,8 @@ class PersonEditor extends Component {
       axios
         .post("http://localhost:4000/delete/person", deleteData)
         .then((res) => {
-          console.log(res.data);
           alert(res.data);
+          window.location.replace("http://localhost:3000/admin");
         });
     }
   }
@@ -110,8 +112,11 @@ class PersonEditor extends Component {
   render() {
     return (
       <div>
-        {/*WIP edit person form*/}
-        <h3>Edit Person</h3>
+        {/*Edit person form*/}
+        <h1>Edit Person</h1>
+        <h2>
+          <i>{this.state.initialName}</i>
+        </h2>
         <form onSubmit={this.onSubmitPerson}>
           <div className="form-group">
             <label>Name: </label>
@@ -160,12 +165,13 @@ class PersonEditor extends Component {
           <div className="form-group">
             <input
               type="submit"
-              value="Add Person"
+              value="Update Person"
               className="btn btn-primary"
             />
           </div>
         </form>
 
+        {/*Delete person form*/}
         <form onSubmit={this.onDeletePerson}>
           <div className="form-group">
             <input

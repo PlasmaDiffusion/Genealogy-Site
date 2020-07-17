@@ -125,30 +125,34 @@ routes.route("/edit/family/:id").post(async function (req, res) {
     //Find the first and second parent
     ({ parentA, parentB } = await findPeople(req, parentA, parentB, children));
   } catch (e) {
-    console.log(e);
+    res.status(400).json("Updating family failed " + err);
   } finally {
     console.log("Family Name", req.body.name);
 
-    //Now update the family if everything was found
-    Family.findById(req.params.id, function (err, family) {
-      if (err) console.log(err);
-      else {
-        family.name = req.body.name;
-        family.description = req.body.description;
-        family.parentA = parentA._id;
-        family.parentB = parentB._id;
-        family.children = children;
-        family
-          .save()
-          .then((family) => {
-            console.log("Added", family);
-            res.status(200).json("Family updated successfully");
-          })
-          .catch((err) => {
-            res.status(400).send("Updating family failed");
-          });
-      }
-    });
+    try {
+      //Now update the family if everything was found
+      Family.findById(req.params.id, function (err, family) {
+        if (err) console.log(err);
+        else {
+          family.name = req.body.name;
+          family.description = req.body.description;
+          family.parentA = parentA._id;
+          family.parentB = parentB._id;
+          family.children = children;
+          family
+            .save()
+            .then((family) => {
+              console.log("Added", family);
+              res.status(200).json("Family updated successfully");
+            })
+            .catch((err) => {
+              res.status(400).json("Updating family failed");
+            });
+        }
+      });
+    } catch {
+      res.status(400).json("Updating family failed " + err);
+    }
   }
 });
 

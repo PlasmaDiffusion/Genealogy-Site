@@ -25,38 +25,6 @@ class App extends Component {
     console.log("App - Mounted", this.props);
   }
 
-  state = {
-    counters: [
-      { id: 1, value: 4 }, //These values will be passed as props in render()
-      { id: 2, value: 1 },
-      { id: 3, value: 2 },
-      { id: 4, value: 3 },
-    ],
-  };
-
-  handleDelete = (counterId) => {
-    const counters = this.state.counters.filter((c) => c.id !== counterId);
-    this.setState({ counters: counters });
-  };
-
-  handleReset = () => {
-    const counters = this.state.counters.map((c) => {
-      c.value = 0;
-      return c;
-    });
-
-    this.setState({ counters });
-  };
-
-  handleIncrement = (counter) => {
-    const counters = [...this.state.counters]; //Clone current counters
-    const index = counters.indexOf(counter);
-    counters[index] = { ...counter };
-    counters[index].value++;
-    this.setState({ counters });
-    console.log(this.state.counters[0]);
-  };
-
   render() {
     return (
       <React.Fragment>
@@ -110,6 +78,9 @@ export default function BasicExample() {
         */}
         <Switch>
           <Route exact path="/">
+            <FamilyLink />
+          </Route>
+          <Route exact path="/admin">
             <App />
           </Route>
           <Route path="/edit/person/:id">

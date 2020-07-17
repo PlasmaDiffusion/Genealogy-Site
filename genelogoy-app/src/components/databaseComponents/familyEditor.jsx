@@ -14,6 +14,7 @@ class FamilyEditor extends Component {
 
       //Input for a family
       name: "",
+      initialName: "",
       description: "",
       parentA: "",
       parentB: "",
@@ -52,6 +53,7 @@ class FamilyEditor extends Component {
         //Set family data to fill in on the form
         this.setState({
           name: response.data.name,
+          initialName: response.data.name,
           description: response.data.description,
           parentA: response.data.parentA.name,
           parentB: response.data.parentB.name,
@@ -101,8 +103,8 @@ class FamilyEditor extends Component {
       )
       .then((res) => {
         console.log(res.data);
-
         alert(res.data);
+        window.location.replace("http://localhost:3000/admin");
       });
   }
 
@@ -118,8 +120,8 @@ class FamilyEditor extends Component {
       axios
         .post("http://localhost:4000/delete/family", deleteData)
         .then((res) => {
-          console.log(res.data);
           alert(res.data);
+          window.location.replace("http://localhost:3000/admin");
         });
     }
   }
@@ -180,8 +182,11 @@ class FamilyEditor extends Component {
   render() {
     return (
       <div>
-        {/*WIP submit family*/}
-        <h3>Edit a Family</h3>
+        {/*Edit family form*/}
+        <h1>Edit Family</h1>
+        <h2>
+          <i>{this.state.initialName}</i>
+        </h2>
 
         <form onSubmit={this.onSubmitFamily}>
           <div className="form-group">
@@ -247,6 +252,7 @@ class FamilyEditor extends Component {
           </div>
         </form>
 
+        {/*Delete family form*/}
         <form onSubmit={this.onDeleteFamily}>
           <div className="form-group">
             <input
