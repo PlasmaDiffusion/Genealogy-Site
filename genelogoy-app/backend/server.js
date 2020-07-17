@@ -82,7 +82,21 @@ routes.route("/read/family").get(function (req, res) {
     });
 });
 
-//Update a family (read in json data)
+//Get a family (read in json data)
+routes.route("/read/person/:id").get(function (req, res) {
+  console.log(new ObjectID(req.params.id));
+
+  Person.findById(new ObjectID(req.params.id), function (err, persons) {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log(persons);
+      res.json(persons);
+    }
+  });
+});
+
+//Get a family (read in json data)
 routes.route("/read/family/:id").get(function (req, res) {
   Family.findById(req.params.id)
     .populate("parentA")
@@ -138,20 +152,6 @@ routes.route("/edit/family/:id").post(async function (req, res) {
   }
 });
 
-//Update a family (read in json data)
-routes.route("/edit/person/:id").get(function (req, res) {
-  console.log(new ObjectID(req.params.id));
-
-  Person.findById(new ObjectID(req.params.id), function (err, persons) {
-    if (err) {
-      console.log(err);
-    } else {
-      console.log(persons);
-      res.json(persons);
-    }
-  });
-});
-
 //Update a person
 routes.route("/edit/person/:id").post(function (req, res) {
   console.log(req.params);
@@ -176,6 +176,45 @@ routes.route("/edit/person/:id").post(function (req, res) {
   });
 });
 
+//Remove a person
+routes.route("/delete/person").post(function (req, res) {
+  console.log("Removing person", req.body);
+
+  Person.deleteOne({ _id: req.body.id }, function (err) {
+    if (err) return handleError(err);
+    // deleted at most one tank document
+    else res.status(200).json("The person was deleted.");
+  });
+});
+
+//Remove a family
+routes.route("/delete/family").post(function (req, res) {
+  console.log("Removing person", req.params);
+
+  Family.deleteOne({ _id: req.params.id }, function (err) {
+    if (err) return handleError(err);
+    // deleted at most one tank document
+    else res.status(200).json("The family was deleted.");
+  });
+});
+
+//Add a person
+routes.route("/add/person").post(function (req, res) {
+  console.log(req.body);
+
+  let person = new Person(req.body);
+
+  person
+    .save()
+    .then((person) => {
+      res.status(200).json("Family added successfully.");
+    })
+    .catch((err) => {
+      res.status(400).send("adding new family failed");
+    });
+});
+
+//Add a family
 routes.route("/add/family").post(async function (req, res) {
   console.log("Body", req.body);
 
@@ -204,25 +243,10 @@ routes.route("/add/family").post(async function (req, res) {
       .save()
       .then((family) => {
         console.log("Added", family);
-        res.status(200).json({ family: "family added successfully" });
+        res.status(200).json("Family added successfully.");
       })
       .catch((err) => {
         res.status(400).send("adding new family failed");
       });
   }
-});
-
-routes.route("/add/person").post(function (req, res) {
-  console.log(req.body);
-
-  let person = new Person(req.body);
-
-  person
-    .save()
-    .then((person) => {
-      res.status(200).json({ person: "family added successfully" });
-    })
-    .catch((err) => {
-      res.status(400).send("adding new family failed");
-    });
 });

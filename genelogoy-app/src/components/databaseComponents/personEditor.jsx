@@ -12,6 +12,7 @@ class PersonEditor extends Component {
       birthdate: "",
       deathdate: "",
       objectId: "",
+      confirmedDelete: false,
     };
 
     this.onChangeName = this.onChangeName.bind(this);
@@ -20,6 +21,7 @@ class PersonEditor extends Component {
     this.onChangeDeathdate = this.onChangeDeathdate.bind(this);
 
     this.onSubmitPerson = this.onSubmitPerson.bind(this);
+    this.onDeletePerson = this.onDeletePerson.bind(this);
   }
 
   //Connect to the databaes and get data here! <------------------------------
@@ -66,6 +68,26 @@ class PersonEditor extends Component {
         console.log(res.data);
         alert(res.data);
       });
+  }
+
+  //Submit form data FOR DELETING
+  onDeletePerson(e) {
+    e.preventDefault();
+    //Confirm the delete
+    if (window.confirm("Reall delete this person?")) {
+      const deleteData = {
+        id: this.state.objectId,
+      };
+
+      console.log("About to delete this id:", deleteData);
+
+      axios
+        .post("http://localhost:4000/delete/person", deleteData)
+        .then((res) => {
+          console.log(res.data);
+          alert(res.data);
+        });
+    }
   }
 
   //onChange Events below (for adding a person)
@@ -140,6 +162,16 @@ class PersonEditor extends Component {
               type="submit"
               value="Add Person"
               className="btn btn-primary"
+            />
+          </div>
+        </form>
+
+        <form onSubmit={this.onDeletePerson}>
+          <div className="form-group">
+            <input
+              type="submit"
+              value="Delete Person"
+              className="btn btn-danger"
             />
           </div>
         </form>
