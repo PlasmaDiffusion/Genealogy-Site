@@ -84,9 +84,9 @@ routes.route("/read/family").get(function (req, res) {
 
 //Get a family (read in json data)
 routes.route("/read/person/:id").get(function (req, res) {
-  console.log(new ObjectID(req.params.id));
+  console.log(req.params.id);
 
-  Person.findById(new ObjectID(req.params.id), function (err, persons) {
+  Person.findById(req.params.id, function (err, persons) {
     if (err) {
       console.log(err);
     } else {

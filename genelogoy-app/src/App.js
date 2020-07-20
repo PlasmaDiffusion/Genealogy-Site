@@ -7,12 +7,13 @@ import {
   Match,
   useParams,
 } from "react-router-dom";
-import NavBar from "./components/navbar";
-import Counters from "./components/counters";
+import NavBar from "./components/unused/navbar";
+import Counters from "./components/unused/counters";
 import FamilyAdder from "./components/databaseComponents/familyAdder";
 import FamilyLink from "./components/databaseComponents/familyLink";
 import PersonEditor from "./components/databaseComponents/personEditor";
 import FamilyEditor from "./components/databaseComponents/familyEditor";
+import FamilyDetails from "./components/familyDetails";
 import "./App.css";
 
 class App extends Component {
@@ -79,6 +80,9 @@ export default function BasicExample() {
         <Switch>
           <Route exact path="/">
             <FamilyLink />
+          </Route>
+          <Route path="/family/:id">
+            <FamilyDetails />
           </Route>
           <Route exact path="/admin">
             <App />

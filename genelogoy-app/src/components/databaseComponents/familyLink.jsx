@@ -5,7 +5,10 @@ import axios from "axios";
 //Iterate through family data here
 const Family = (props) => (
   <React.Fragment>
-    <a href={"/family" + props.family._id} title={props.family.description}>
+    <a
+      href={"/family/ ?id=" + props.family._id}
+      title={props.family.description}
+    >
       {props.family.name}
     </a>
   </React.Fragment>

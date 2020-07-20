@@ -79,6 +79,7 @@ class FamilyAdder extends Component {
         <Family
           family={currentFamily}
           showChildren={currentFamily.children.length > 0}
+          editable={true}
           key={i}
         />
       );

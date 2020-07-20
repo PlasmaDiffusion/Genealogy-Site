@@ -21,10 +21,10 @@ const Person = (props) => {
         <td>{props.description}</td>
       </tr>
       <tr>
-        <td>{props.birthdate.split("T")[0]}</td>
+        <td>{props.birthdate != null ? props.birthdate.split("T")[0] : ""}</td>
       </tr>
       <tr>
-        <td>{props.deathdate.split("T")[0]}</td>
+        <td>{props.deathdate != null ? props.deathdate.split("T")[0] : ""}</td>
       </tr>
     </div>
   );

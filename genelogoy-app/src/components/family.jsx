@@ -43,7 +43,7 @@ const Family = (props) => {
         </button>
       </tr>*/}
 
-      <Collapse isOpened={props.showChildren}>
+      <Collapse isOpened={props.editable}>
         <tr id={props.family._id}>
           <i>Children</i>
           {props.family.children.map((child) => (
@@ -58,9 +58,11 @@ const Family = (props) => {
         </tr>
       </Collapse>
 
+      {/*<Collapse isOpened={props.showChildren}>*/}
       <tr>
         <a href={"/edit/family/ ?id=" + props.family._id}>Edit Family</a>
       </tr>
+      {/*</Collapse>*/}
     </React.Fragment>
   );
 };
