@@ -14,6 +14,7 @@ import FamilyLink from "./components/databaseComponents/familyLink";
 import PersonEditor from "./components/databaseComponents/personEditor";
 import FamilyEditor from "./components/databaseComponents/familyEditor";
 import FamilyDetails from "./components/familyDetails";
+import LoginPage from "./components/auth/loginPage";
 import "./App.css";
 
 class App extends Component {
@@ -66,6 +67,9 @@ export default function BasicExample() {
           <li>
             <Link to="/dashboard">Dashboard</Link>
           </li>
+          <li>
+            <Link to="login">Login</Link>
+          </li>
         </ul>
 
         <hr />
@@ -87,6 +91,7 @@ export default function BasicExample() {
           <Route exact path="/admin">
             <App />
           </Route>
+          <Route path="/login" component={LoginPage} />
           <Route path="/edit/person/:id">
             <PersonEditor />
           </Route>
