@@ -6,6 +6,7 @@ import {
   Link,
   Match,
   useParams,
+  useHistory,
 } from "react-router-dom";
 import NavBar from "./components/unused/navbar";
 import Counters from "./components/unused/counters";
@@ -15,7 +16,16 @@ import PersonEditor from "./components/databaseComponents/personEditor";
 import FamilyEditor from "./components/databaseComponents/familyEditor";
 import FamilyDetails from "./components/familyDetails";
 import LoginPage from "./components/auth/loginPage";
+import appWithRouterAccess from "./components/appWithRouterAccess";
 import "./App.css";
+
+import {
+  Security,
+  SecureRoute,
+  LoginCallback,
+  useOktaAuth,
+} from "@okta/okta-react";
+import AppWithRouterAccess from "./components/appWithRouterAccess";
 
 class App extends Component {
   constructor(props) {
@@ -85,24 +95,24 @@ export default function BasicExample() {
           <Route exact path="/">
             <FamilyLink />
           </Route>
-          <Route path="/family/:id">
+          <SecureRoute path="/family/:id">
             <FamilyDetails />
-          </Route>
-          <Route exact path="/admin">
-            <App />
-          </Route>
-          <Route path="/login" component={LoginPage} />
-          <Route path="/edit/person/:id">
+          </SecureRoute>
+          <AppWithRouterAccess />
+          <SecureRoute path="/edit/person/:id">
             <PersonEditor />
-          </Route>
-          <Route path="/edit/family/:id">
+          </SecureRoute>
+          <SecureRoute path="/edit/family/:id">
             <FamilyEditor />
-          </Route>
+          </SecureRoute>
           <Route path="/about">
             <About />
           </Route>
           <Route path="/dashboard">
             <Dashboard />
+          </Route>
+          <Route path="/logged_out">
+            <p>You have been logged out.</p>
           </Route>
         </Switch>
       </div>
@@ -112,7 +122,7 @@ export default function BasicExample() {
 
 // You can think of these components as "pages"
 // in your app.
-
+/*
 const Home = (props) => {
   console.log(props);
   return (
@@ -120,7 +130,7 @@ const Home = (props) => {
       <h2>Home</h2>
     </div>
   );
-};
+};*/
 
 function About() {
   return (
@@ -137,5 +147,41 @@ function Dashboard() {
     </div>
   );
 }
+
+const Home = () => {
+  const { authState, authService } = useOktaAuth();
+
+  if (authState.isPending) {
+    return <div>Loading...</div>;
+  }
+
+  const button = authState.isAuthenticated ? (
+    <button
+      onClick={() => {
+        authService.logout();
+      }}
+    >
+      Logout
+    </button>
+  ) : (
+    <button
+      onClick={() => {
+        authService.login();
+      }}
+    >
+      Login
+    </button>
+  );
+
+  return (
+    <div>
+      <Link to="/">Home</Link>
+      <br />
+      <Link to="/protected">Protected</Link>
+      <br />
+      {button}
+    </div>
+  );
+};
 
 //export default App;

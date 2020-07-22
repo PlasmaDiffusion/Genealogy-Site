@@ -38,6 +38,7 @@ class LoginPage extends Component {
     this.widget.renderEl(
       { el: this.loginContainer },
       (response) => {
+        console.log("res:", response);
         this.setState({ user: response.claims.email });
       },
       (err) => {
