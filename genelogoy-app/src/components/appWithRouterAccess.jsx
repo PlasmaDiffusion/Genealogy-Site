@@ -5,6 +5,8 @@ import Login from "./auth/Login";
 import Logout from "./auth/Logout";
 import FamilyAdder from "./databaseComponents/familyAdder";
 import FamilyLink from "./databaseComponents/familyLink";
+import FamilyEditor from "./databaseComponents/familyEditor";
+import PersonEditor from "./databaseComponents/personEditor";
 
 const AppWithRouterAccess = () => {
   const history = useHistory();
@@ -20,11 +22,13 @@ const AppWithRouterAccess = () => {
       onAuthRequired={onAuthRequired}
       pkce={true}
     >
-      <SecureRoute path="/admin">
+      <SecureRoute path="/admin" component={FamilyAdder}>
         <FamilyLink />
-        <FamilyAdder />
-        <Logout />
+        <Logout issuer="https://dev-286829.okta.com/oauth2/default" />
       </SecureRoute>
+      <SecureRoute path="/edit/person/:id" component={PersonEditor} />
+      <SecureRoute path="/edit/family/:id" component={FamilyEditor} />
+
       <Route
         path="/login"
         render={() => (

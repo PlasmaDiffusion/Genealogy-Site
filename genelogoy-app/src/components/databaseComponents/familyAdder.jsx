@@ -2,6 +2,7 @@ import React, { Component, Fragment } from "react";
 import { Link } from "react-router-dom";
 import NullChecker from "./classes/nullChecker.js";
 import Family from "./../family";
+import FamilyLink from "./familyLink";
 
 import axios from "axios";
 
@@ -231,6 +232,7 @@ class FamilyAdder extends Component {
   render() {
     return (
       <div>
+        <FamilyLink />
         {/*Submit family form*/}
         <h3>Add a Family</h3>
         <p class="alert alert-warning">

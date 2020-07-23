@@ -6,6 +6,7 @@ import { withOktaAuth } from "@okta/okta-react";
 export default withOktaAuth(
   class Login extends Component {
     render() {
+      console.log(this.props.authState);
       if (this.props.authState.isPending) {
         return <div>Loading...</div>;
       }

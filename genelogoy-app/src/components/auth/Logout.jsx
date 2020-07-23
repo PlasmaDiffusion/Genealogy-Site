@@ -7,6 +7,7 @@ export default withOktaAuth(
     constructor(props) {
       super(props);
       this.logout = this.logout.bind(this);
+      console.log("AuthState", this.props.authState);
     }
 
     async logout() {
