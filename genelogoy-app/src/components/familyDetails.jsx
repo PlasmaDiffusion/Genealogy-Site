@@ -77,6 +77,10 @@ class FamilyDetails extends Component {
       return (
         <React.Fragment>
           <div class="container">
+            <h1 class="d-flex justify-content-center">{this.state.name}</h1>
+            <p class="d-flex justify-content-center">
+              {this.state.description}
+            </p>
             {/*parent row*/}
             <div class="row">
               <Parent person={this.state.parentA} />
@@ -140,8 +144,16 @@ const Child = (props) => {
   return (
     <div class="col-lg">
       <p class="col-sm-4 p-1 mb-2 bg-info text-white">{props.person.name}</p>
+      <p>
+        <i>{props.person.description}</i>
+      </p>
       <p>Born: {props.person.birthdate.split("T")[0]}</p>
       <p>Died: {props.person.deathdate.split("T")[0]}</p>
+      <p>
+        {props.person.startedFamilies.map(
+          (currentFamily) => "Started family:" + currentFamily.name
+        )}
+      </p>
     </div>
   );
 };

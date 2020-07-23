@@ -14,6 +14,8 @@ class PersonEditor extends Component {
       deathdate: "",
       objectId: "",
       confirmedDelete: false,
+      startedFamilies: [],
+      families: [],
     };
 
     this.onChangeName = this.onChangeName.bind(this);
@@ -23,6 +25,8 @@ class PersonEditor extends Component {
 
     this.onSubmitPerson = this.onSubmitPerson.bind(this);
     this.onDeletePerson = this.onDeletePerson.bind(this);
+    this.addStartedFamilyInput = this.addStartedFamilyInput.bind(this);
+    this.onChangeStartedFamilies = this.onChangeStartedFamilies.bind(this);
   }
 
   //Connect to the databaes and get data here! <------------------------------
@@ -43,6 +47,19 @@ class PersonEditor extends Component {
           description: response.data.description,
           birthdate: response.data.birthdate.split("T")[0],
           deathdate: response.data.deathdate.split("T")[0],
+          startedFamilies: response.data.startedFamilies,
+        });
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+
+    axios
+      .get("http://localhost:4000/read/family/")
+      .then((response) => {
+        console.log("Family Response: ", response.data);
+        this.setState({
+          families: response.data,
         });
       })
       .catch(function (error) {
@@ -54,11 +71,14 @@ class PersonEditor extends Component {
   onSubmitPerson(e) {
     e.preventDefault();
 
+    console.log(this.state.startedFamilies);
+
     const updatedPerson = {
       name: this.state.name,
       description: this.state.description,
       birthdate: this.state.birthdate,
       deathdate: this.state.deathdate,
+      startedFamilies: this.state.startedFamilies,
     };
 
     axios
@@ -107,6 +127,50 @@ class PersonEditor extends Component {
 
   onChangeDeathdate(e) {
     this.setState({ deathdate: e.target.value });
+  }
+
+  onChangeStartedFamilies(e) {
+    let newFamilies = [...this.state.startedFamilies];
+
+    newFamilies[e.target.list.id] = e.target.value;
+
+    this.setState({
+      startedFamilies: newFamilies,
+    });
+  }
+
+  //Give a selection of existing families
+  familyDropDown() {
+    return this.state.families.map(function (currentFamily, i) {
+      return <option value={currentFamily.name}>{currentFamily.name}</option>;
+    });
+  }
+
+  //Dynamic "Add child" list
+  startedFamiliesInputList() {
+    var obj = this;
+    return this.state.startedFamilies.map(function (currentFamily, i) {
+      return (
+        <div className="form-group">
+          <label>Started Family: </label>
+          <input
+            type="text"
+            className="form-control"
+            value={currentFamily.name}
+            onChange={obj.onChangeStartedFamilies}
+            list={i}
+          />
+          <datalist id={i}>{obj.familyDropDown()}</datalist>
+        </div>
+      );
+    });
+  }
+
+  addStartedFamilyInput() {
+    console.log("Adding child", this);
+    this.setState((prevState) => ({
+      startedFamilies: [...prevState.startedFamilies, ""],
+    }));
   }
 
   render() {
@@ -161,6 +225,16 @@ class PersonEditor extends Component {
               max="2020-12-31"
             ></input>
           </div>
+
+          {this.startedFamiliesInputList()}
+
+          <button
+            type="button"
+            onClick={this.addStartedFamilyInput}
+            class="btn btn-secondary"
+          >
+            + Started Families
+          </button>
 
           <div className="form-group">
             <input

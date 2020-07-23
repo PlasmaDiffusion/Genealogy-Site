@@ -58,14 +58,33 @@ async function findPeople(req, parentA, parentB, children) {
   return { parentA, parentB };
 }
 
+async function findFamilies(req) {
+  let familiesToFind = req.body.startedFamilies;
+
+  let startedFamilies = [];
+
+  //Find some families
+  for (let i = 0; i < familiesToFind.length; i++) {
+    await Family.findOne({ name: familiesToFind[i] }, function (err, family) {
+      if (err) return handleError(err);
+      if (family == null) return "Failed to find " + familiesToFind[i].name;
+      startedFamilies.push(family);
+    });
+  }
+  console.log("Found these families", startedFamilies);
+  return startedFamilies;
+}
+
 routes.route("/read/person").get(function (req, res) {
-  Person.find(function (err, persons) {
-    if (err) {
-      console.log(err);
-    } else {
-      res.json(persons);
-    }
-  });
+  Person.find()
+    .populate("startedFamilies")
+    .exec(function (err, persons) {
+      if (err) {
+        console.log(err);
+      } else {
+        res.json(persons);
+      }
+    });
 });
 
 routes.route("/read/family").get(function (req, res) {
@@ -86,14 +105,16 @@ routes.route("/read/family").get(function (req, res) {
 routes.route("/read/person/:id").get(function (req, res) {
   console.log(req.params.id);
 
-  Person.findById(req.params.id, function (err, persons) {
-    if (err) {
-      console.log(err);
-    } else {
-      console.log(persons);
-      res.json(persons);
-    }
-  });
+  Person.findById(req.params.id)
+    .populate("startedFamilies")
+    .exec(function (err, persons) {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log(persons);
+        res.json(persons);
+      }
+    });
 });
 
 //Get a family (read in json data)
@@ -101,7 +122,13 @@ routes.route("/read/family/:id").get(function (req, res) {
   Family.findById(req.params.id)
     .populate("parentA")
     .populate("parentB")
-    .populate("children")
+    .populate({
+      path: "children",
+      populate: {
+        path: "startedFamilies",
+        model: "Family",
+      },
+    })
     .exec(function (err, family) {
       if (err) {
         console.log(err);
@@ -160,13 +187,14 @@ routes.route("/edit/family/:id").post(async function (req, res) {
 routes.route("/edit/person/:id").post(function (req, res) {
   console.log(req.params);
 
-  Person.findById(req.params.id, function (err, person) {
+  Person.findById(req.params.id, async function (err, person) {
     if (!person) res.status(404).send("data is not found");
     else {
       person.name = req.body.name;
       person.description = req.body.description;
-      person.birthdate = req.body.deathdate;
-      person.deathdate = req.body.birthdate;
+      person.birthdate = req.body.birthdate;
+      person.deathdate = req.body.deathdate;
+      person.startedFamilies = await findFamilies(req);
 
       person
         .save()
@@ -211,10 +239,10 @@ routes.route("/add/person").post(function (req, res) {
   person
     .save()
     .then((person) => {
-      res.status(200).json("Family added successfully.");
+      res.status(200).json("Person added successfully.");
     })
     .catch((err) => {
-      res.status(400).send("adding new family failed");
+      res.status(400).send("Adding new Person failed");
     });
 });
 
@@ -250,7 +278,7 @@ routes.route("/add/family").post(async function (req, res) {
         res.status(200).json("Family added successfully.");
       })
       .catch((err) => {
-        res.status(400).send("adding new family failed");
+        res.status(400).send("Adding new family failed");
       });
   }
 });

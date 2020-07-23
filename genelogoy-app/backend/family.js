@@ -7,9 +7,9 @@ let Person = new Schema({
   description: String,
   birthdate: Date,
   deathdate: Date,
-  //References to parents
-  //parentA_id: Number,
-  //parentB_id: Number,
+
+  //Every person can create a family
+  startedFamilies: [{ type: mongoose.Schema.Types.ObjectId, ref: "Family" }],
 });
 
 let Family = new Schema({

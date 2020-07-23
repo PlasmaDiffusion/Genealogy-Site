@@ -14,6 +14,7 @@ class FamilyAdder extends Component {
       families: [],
       persons: [],
       showChildren: [],
+      viewingTables: [],
       //Input for a person
       name: "",
       description: "",
@@ -28,6 +29,7 @@ class FamilyAdder extends Component {
       children: [],
     };
 
+    this.revealFamily = this.revealFamily.bind(this);
     this.onChangeParentA = this.onChangeParentA.bind(this);
     this.onChangeParentB = this.onChangeParentB.bind(this);
     this.onChangeFamilyName = this.onChangeFamilyName.bind(this);
@@ -54,7 +56,10 @@ class FamilyAdder extends Component {
         console.log("Family Response: ", response.data);
         const nullChecker = new NullChecker();
         nullChecker.familyNullCheck(response.data);
-        this.setState({ families: response.data });
+        this.setState({
+          families: response.data,
+          viewingTables: new Array(response.data.length),
+        });
       })
       .catch(function (error) {
         console.log(error);
@@ -71,18 +76,37 @@ class FamilyAdder extends Component {
       });
   }
 
-  //Show family
+  revealFamily(i) {
+    var newViewingTables = this.state.viewingTables;
+    newViewingTables[i] = !newViewingTables[i];
+
+    this.setState({ viewingTables: newViewingTables });
+  }
+
+  //Show family (and a button to reveal them)
   familyList() {
     var obj = this;
     console.log("fam", this.state.families);
     return this.state.families.map(function (currentFamily, i) {
       return (
-        <Family
-          family={currentFamily}
-          showChildren={currentFamily.children.length > 0}
-          editable={true}
-          key={i}
-        />
+        <div>
+          <button
+            class="btn btn-info"
+            onClick={() => {
+              obj.revealFamily(i);
+            }}
+          >
+            {currentFamily.name}
+          </button>
+          <Family
+            family={currentFamily}
+            showChildren={currentFamily.children.length > 0}
+            editable={true}
+            viewingTable={obj.state.viewingTables[i]}
+            key={i}
+          />
+          <br></br>
+        </div>
       );
     });
   }
@@ -234,140 +258,145 @@ class FamilyAdder extends Component {
       <div>
         <FamilyLink />
         {/*Submit family form*/}
-        <h3>Add a Family</h3>
-        <p class="alert alert-warning">
-          Make sure all people exist before adding them to a family!
-        </p>
-        <form onSubmit={this.onSubmitFamily}>
-          <div className="form-group">
-            <label>Family Name: </label>
-            <input
-              type="text"
-              className="form-control"
-              value={this.state.familyName}
-              onChange={this.onChangeFamilyName}
-            />
+        <div class="container">
+          <p class="alert alert-warning">
+            Add people on the right. Then on the left, enter peoples' names
+            under ParentA, ParentB or Child.
+            <br></br>
+            The family won't be created if the people entered don't exist.
+          </p>
+          <div class="row">
+            <div class="col-sm">
+              <h3>Add a Family</h3>
+              <form onSubmit={this.onSubmitFamily}>
+                <div className="form-group">
+                  <label>Family Name: </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    value={this.state.familyName}
+                    onChange={this.onChangeFamilyName}
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label>Family Description: </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    value={this.state.familyDescription}
+                    onChange={this.onChangeFamilyDescription}
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label>Parent A: </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    value={this.state.parentA}
+                    onChange={this.onChangeParentA}
+                    list="parentA"
+                  />
+                  <datalist id="parentA">{this.personDropdown()}</datalist>
+                </div>
+
+                <div className="form-group">
+                  <label>Parent B: </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    value={this.state.parentB}
+                    onChange={this.onChangeParentB}
+                    list="parentB"
+                  />
+                  <datalist id="parentB">{this.personDropdown()}</datalist>
+                </div>
+
+                {this.childInputList()}
+
+                <button
+                  type="button"
+                  onClick={this.addChildInput}
+                  class="btn btn-secondary"
+                >
+                  + Child
+                </button>
+
+                <div className="form-group">
+                  <input
+                    type="submit"
+                    value="Add Family"
+                    className="btn btn-primary"
+                  />
+                </div>
+              </form>
+            </div>
+
+            <div class="col-sm">
+              {/*Submit person form*/}
+              <h3>Add a Person</h3>
+              <form onSubmit={this.onSubmitPerson}>
+                <div className="form-group">
+                  <label>Name: </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    value={this.state.name}
+                    onChange={this.onChangeName}
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label>Description: </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    value={this.state.description}
+                    onChange={this.onChangeDescription}
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label>Birthdate: </label>
+                  <input
+                    type="date"
+                    value={this.state.birthdate}
+                    onChange={this.onChangeBirthdate}
+                    min="1800-01-01"
+                    max="2020-12-31"
+                  ></input>
+                </div>
+
+                <div className="form-group">
+                  <label>Deathdate: </label>
+                  <input
+                    type="date"
+                    value={this.state.deathdate}
+                    onChange={this.onChangeDeathdate}
+                    min="1800-01-01"
+                    max="2020-12-31"
+                  ></input>
+                </div>
+
+                <div className="form-group">
+                  <input
+                    type="submit"
+                    value="Add Person"
+                    className="btn btn-primary"
+                  />
+                </div>
+              </form>
+            </div>
+            <div class="col-sm-2"></div>
           </div>
-
-          <div className="form-group">
-            <label>Family Description: </label>
-            <input
-              type="text"
-              className="form-control"
-              value={this.state.familyDescription}
-              onChange={this.onChangeFamilyDescription}
-            />
+          <div class="row">
+            <h3>Family Editor</h3>
+            <table className="table table-striped" style={{ marginTop: 20 }}>
+              <tbody>{this.familyList()}</tbody>
+            </table>
           </div>
-
-          <div className="form-group">
-            <label>Parent A: </label>
-            <input
-              type="text"
-              className="form-control"
-              value={this.state.parentA}
-              onChange={this.onChangeParentA}
-              list="parentA"
-            />
-            <datalist id="parentA">{this.personDropdown()}</datalist>
-          </div>
-
-          <div className="form-group">
-            <label>Parent B: </label>
-            <input
-              type="text"
-              className="form-control"
-              value={this.state.parentB}
-              onChange={this.onChangeParentB}
-              list="parentB"
-            />
-            <datalist id="parentB">{this.personDropdown()}</datalist>
-          </div>
-
-          {this.childInputList()}
-
-          <button
-            type="button"
-            onClick={this.addChildInput}
-            class="btn btn-secondary"
-          >
-            + Child
-          </button>
-
-          <div className="form-group">
-            <input
-              type="submit"
-              value="Add Family"
-              className="btn btn-primary"
-            />
-          </div>
-        </form>
-
-        {/*Submit person form*/}
-        <h3>Add Person</h3>
-        <form onSubmit={this.onSubmitPerson}>
-          <div className="form-group">
-            <label>Name: </label>
-            <input
-              type="text"
-              className="form-control"
-              value={this.state.name}
-              onChange={this.onChangeName}
-            />
-          </div>
-
-          <div className="form-group">
-            <label>Description: </label>
-            <input
-              type="text"
-              className="form-control"
-              value={this.state.description}
-              onChange={this.onChangeDescription}
-            />
-          </div>
-
-          <div className="form-group">
-            <label>Birthdate: </label>
-            <input
-              type="date"
-              value={this.state.birthdate}
-              onChange={this.onChangeBirthdate}
-              name="trip-start"
-              min="1800-01-01"
-              max="2020-12-31"
-            ></input>
-          </div>
-
-          <div className="form-group">
-            <label>Deathdate: </label>
-            <input
-              type="date"
-              value={this.state.deathdate}
-              onChange={this.onChangeDeathdate}
-              name="trip-start"
-              min="1800-01-01"
-              max="2020-12-31"
-            ></input>
-          </div>
-
-          <div className="form-group">
-            <input
-              type="submit"
-              value="Add Person"
-              className="btn btn-primary"
-            />
-          </div>
-        </form>
-
-        <h3>Family List</h3>
-        <table className="table table-striped" style={{ marginTop: 20 }}>
-          <thead>
-            <tr>
-              <th>Parent A</th>
-              <th>Parent B</th>
-            </tr>
-          </thead>
-          <tbody>{this.familyList()}</tbody>
-        </table>
+        </div>
       </div>
     );
   }
