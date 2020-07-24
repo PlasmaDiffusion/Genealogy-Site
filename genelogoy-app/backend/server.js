@@ -127,6 +127,10 @@ routes.route("/read/family/:id").get(function (req, res) {
       populate: {
         path: "startedFamilies",
         model: "Family",
+        populate: {
+          path: "parentA",
+          model: "Person",
+        },
       },
     })
     .exec(function (err, family) {

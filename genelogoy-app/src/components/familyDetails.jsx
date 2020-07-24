@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import NullChecker from "./databaseComponents/classes/nullChecker.js";
 import axios from "axios";
-import Family from "./family";
+import Family from "./databaseComponents/family";
+import FamilyTree from "./familyTree";
 
 //Display parents and children, but not a complex tree
 class FamilyDetails extends Component {
@@ -72,14 +73,14 @@ class FamilyDetails extends Component {
   }
 
   getFamily() {
-    console.log("State", this.state.family);
     if (this.state.name != "") {
       return (
         <React.Fragment>
+          <FamilyTree tree={this.state} />
           <div class="container">
             <h1 class="d-flex justify-content-center">{this.state.name}</h1>
             <p class="d-flex justify-content-center">
-              {this.state.description}
+              <i>{this.state.description}</i>
             </p>
             {/*parent row*/}
             <div class="row">
@@ -130,16 +131,21 @@ class FamilyDetails extends Component {
   }
 }
 
+//Parent "card"
 const Parent = (props) => {
   return (
     <div class="col-lg">
       <h2 class="col-lg p-3 mb-2 bg-primary text-white">{props.person.name}</h2>
+      <p>
+        <i>{props.person.description}</i>
+      </p>
       <p>Born: {props.person.birthdate.split("T")[0]}</p>
       <p>Died: {props.person.deathdate.split("T")[0]}</p>
     </div>
   );
 };
 
+//Child "card". On top of the usual stuff, display links to families these children started
 const Child = (props) => {
   return (
     <div class="col-lg">
@@ -150,9 +156,18 @@ const Child = (props) => {
       <p>Born: {props.person.birthdate.split("T")[0]}</p>
       <p>Died: {props.person.deathdate.split("T")[0]}</p>
       <p>
-        {props.person.startedFamilies.map(
-          (currentFamily) => "Started family:" + currentFamily.name
-        )}
+        {props.person.startedFamilies.length > 0 ? <u>Started families</u> : ""}
+        {props.person.startedFamilies.map((currentFamily) => (
+          <React.Fragment>
+            <br></br>
+            <a
+              href={"/family/ ?id=" + currentFamily._id}
+              title={currentFamily.description}
+            >
+              {currentFamily.name}
+            </a>
+          </React.Fragment>
+        ))}
       </p>
     </div>
   );

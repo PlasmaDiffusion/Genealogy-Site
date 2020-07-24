@@ -30,21 +30,8 @@ const Family = (props) => {
             />
           </td>
         </tr>
-        {/*<tr>
-        <button
-          class="btn btn-primary"
-          type="button"
-          data-toggle="collapse"
-          data-target={"#" + props.family._id}
-          aria-expanded="false"
-          aria-controls={"#" + props.family._id}
-          onClick={() => {}}
-        >
-          Show Children
-        </button>
-      </tr>*/}
 
-        <Collapse isOpened={props.editable}>
+        <Collapse isOpened={props.family.children.length > 0}>
           <tr id={props.family._id}>
             <i>Children</i>
             {props.family.children.map((child) => (

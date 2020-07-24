@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from "react";
 import { Link } from "react-router-dom";
 import NullChecker from "./classes/nullChecker.js";
-import Family from "./../family";
+import Family from "./family";
 import FamilyLink from "./familyLink";
 
 import axios from "axios";
@@ -142,6 +142,9 @@ class FamilyAdder extends Component {
       deathdate: this.state.deathdate,
     };
 
+    //Make sure something is entered for at least the name
+    if (newPerson.name == "" || newPerson.name == null) return;
+
     axios.post("http://localhost:4000/add/person", newPerson).then((res) => {
       alert(res.data);
       window.location.replace("http://localhost:3000/admin");
@@ -167,6 +170,17 @@ class FamilyAdder extends Component {
       parentB: this.state.parentB,
       children: this.state.children,
     };
+
+    //Name and parents must be filled in at the very least.
+    if (
+      newFamily.name == "" ||
+      newFamily.name == null ||
+      newFamily.parentA == "" ||
+      newFamily.parentA == null ||
+      newFamily.parentB == "" ||
+      newFamily.parentB == null
+    )
+      return;
 
     axios.post("http://localhost:4000/add/family", newFamily).then((res) => {
       console.log(res.data);
