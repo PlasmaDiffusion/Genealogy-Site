@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from "react";
 import { Link } from "react-router-dom";
 import NullChecker from "./classes/nullChecker.js";
+import FamilyForm from "./familyForm";
 
 import axios from "axios";
 
@@ -207,76 +208,9 @@ class FamilyEditor extends Component {
 
   render() {
     return (
-      <div>
+      <div class="container">
         {/*Edit family form*/}
-        <h1>Edit Family</h1>
-        <h2>
-          <i>{this.state.initialName}</i>
-        </h2>
-
-        <form onSubmit={this.onSubmitFamily}>
-          <div className="form-group">
-            <label>Family Name: </label>
-            <input
-              type="text"
-              className="form-control"
-              value={this.state.name}
-              onChange={this.onChangeFamilyName}
-            />
-          </div>
-
-          <div className="form-group">
-            <label>Family Description: </label>
-            <input
-              type="text"
-              className="form-control"
-              value={this.state.description}
-              onChange={this.onChangeFamilyDescription}
-            />
-          </div>
-
-          <div className="form-group">
-            <label>Parent A: </label>
-            <input
-              type="text"
-              className="form-control"
-              value={this.state.parentA}
-              onChange={this.onChangeParentA}
-              list="parentA"
-            />
-            <datalist id="parentA">{this.personDropdown()}</datalist>
-          </div>
-
-          <div className="form-group">
-            <label>Parent B: </label>
-            <input
-              type="text"
-              className="form-control"
-              value={this.state.parentB}
-              onChange={this.onChangeParentB}
-              list="parentB"
-            />
-            <datalist id="parentB">{this.personDropdown()}</datalist>
-          </div>
-
-          {this.childInputList()}
-
-          <button
-            type="button"
-            onClick={this.addChildInput}
-            class="btn btn-secondary"
-          >
-            + Child
-          </button>
-
-          <div className="form-group">
-            <input
-              type="submit"
-              value="Update Family"
-              className="btn btn-primary"
-            />
-          </div>
-        </form>
+        <FamilyForm editing={true} />
 
         {/*Delete family form*/}
         <form onSubmit={this.onDeleteFamily}>

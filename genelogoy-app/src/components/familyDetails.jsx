@@ -76,7 +76,9 @@ class FamilyDetails extends Component {
     if (this.state.name != "") {
       return (
         <React.Fragment>
-          <FamilyTree tree={this.state} />
+          {
+            //<FamilyTree tree={this.state} />
+          }
           <div class="container">
             <h1 class="d-flex justify-content-center">{this.state.name}</h1>
             <p class="d-flex justify-content-center">

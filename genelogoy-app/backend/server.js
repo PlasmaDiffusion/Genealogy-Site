@@ -138,6 +138,7 @@ routes.route("/read/family/:id").get(function (req, res) {
         console.log(err);
       } else {
         res.json(family);
+        console.log("Reading...", family);
       }
     });
 });

@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 
 import axios from "axios";
-import PersonForm from "./personForm";
 
 class PersonEditor extends Component {
   constructor(props) {
@@ -25,36 +24,38 @@ class PersonEditor extends Component {
     this.onChangeDeathdate = this.onChangeDeathdate.bind(this);
 
     this.onSubmitPerson = this.onSubmitPerson.bind(this);
-    this.onDeletePerson = this.onDeletePerson.bind(this);
     this.addStartedFamilyInput = this.addStartedFamilyInput.bind(this);
     this.removeStartedFamilyInput = this.removeStartedFamilyInput.bind(this);
     this.onChangeStartedFamilies = this.onChangeStartedFamilies.bind(this);
   }
 
-  //Connect to the databaes and get data here! <------------------------------
+  //Connect to the databaes and get data here! ------------------------------
   componentDidMount() {
     console.log("About to connect", window.location.search);
 
-    var url = new URLSearchParams(window.location.search);
-    var id = url.get("id");
-    this.setState({ objectId: id });
+    if (this.props.editing) {
+      //Read in a specific person if editing
+      var url = new URLSearchParams(window.location.search);
+      var id = url.get("id");
+      this.setState({ objectId: id });
 
-    axios
-      .get("http://localhost:4000/read/person/" + id)
-      .then((response) => {
-        console.log("Person Response: ", response.data);
-        this.setState({
-          name: response.data.name,
-          initialName: response.data.name,
-          description: response.data.description,
-          birthdate: response.data.birthdate.split("T")[0],
-          deathdate: response.data.deathdate.split("T")[0],
-          startedFamilies: response.data.startedFamilies,
+      axios
+        .get("http://localhost:4000/read/person/" + id)
+        .then((response) => {
+          console.log("Person Response: ", response.data);
+          this.setState({
+            name: response.data.name,
+            initialName: response.data.name,
+            description: response.data.description,
+            birthdate: response.data.birthdate.split("T")[0],
+            deathdate: response.data.deathdate.split("T")[0],
+            startedFamilies: response.data.startedFamilies,
+          });
+        })
+        .catch(function (error) {
+          console.log(error);
         });
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+    }
 
     axios
       .get("http://localhost:4000/read/family/")
@@ -73,9 +74,7 @@ class PersonEditor extends Component {
   onSubmitPerson(e) {
     e.preventDefault();
 
-    console.log(this.state.startedFamilies);
-
-    const updatedPerson = {
+    const submittedPerson = {
       name: this.state.name,
       description: this.state.description,
       birthdate: this.state.birthdate,
@@ -83,34 +82,33 @@ class PersonEditor extends Component {
       startedFamilies: this.state.startedFamilies,
     };
 
-    axios
-      .post(
-        "http://localhost:4000/edit/person/" + this.state.objectId,
-        updatedPerson
-      )
-      .then((res) => {
-        alert(res.data);
-        window.location.replace("http://localhost:3000/admin");
-      });
-  }
-
-  //Submit form data FOR DELETING
-  onDeletePerson(e) {
-    e.preventDefault();
-    //Confirm the delete
-    if (window.confirm("Reall delete this person?")) {
-      const deleteData = {
-        id: this.state.objectId,
-      };
-
-      console.log("About to delete this id:", deleteData);
-
+    if (this.props.editing) {
+      //Edit the person or...
       axios
-        .post("http://localhost:4000/delete/person", deleteData)
+        .post(
+          "http://localhost:4000/edit/person/" + this.state.objectId,
+          submittedPerson
+        )
         .then((res) => {
           alert(res.data);
           window.location.replace("http://localhost:3000/admin");
         });
+    } //Add a new one
+    else {
+      axios
+        .post("http://localhost:4000/add/person", submittedPerson)
+        .then((res) => {
+          alert(res.data);
+          window.location.replace("http://localhost:3000/admin");
+        });
+
+      //Reset input values
+      this.setState({
+        name: "",
+        description: "",
+        birthdate: "",
+        deathdate: "",
+      });
     }
   }
 
@@ -202,15 +200,79 @@ class PersonEditor extends Component {
   render() {
     return (
       <div>
-        <PersonForm editing={true} />
+        {/*Edit person form*/}
+        <h1>{this.props.editing ? "Edit Person" : "Add a Person"}</h1>
+        <h2>
+          <i>{this.state.initialName}</i>
+        </h2>
+        <form onSubmit={this.onSubmitPerson}>
+          <div className="form-group">
+            <label>Name: </label>
+            <input
+              type="text"
+              className="form-control"
+              value={this.state.name}
+              onChange={this.onChangeName}
+              required
+            />
+          </div>
 
-        {/*Delete person form*/}
-        <form onSubmit={this.onDeletePerson}>
+          <div className="form-group">
+            <label>Description: </label>
+            <input
+              type="text"
+              className="form-control"
+              value={this.state.description}
+              onChange={this.onChangeDescription}
+            />
+          </div>
+
+          <div className="form-group">
+            <label>Birthdate: </label>
+            <input
+              type="date"
+              value={this.state.birthdate}
+              onChange={this.onChangeBirthdate}
+              name="trip-start"
+              min="1800-01-01"
+              max="2020-12-31"
+            ></input>
+          </div>
+
+          <div className="form-group">
+            <label>Deathdate: </label>
+            <input
+              type="date"
+              value={this.state.deathdate}
+              onChange={this.onChangeDeathdate}
+              name="trip-start"
+              min="1800-01-01"
+              max="2020-12-31"
+            ></input>
+          </div>
+
+          {this.startedFamiliesInputList()}
+
+          <button
+            type="button"
+            onClick={this.addStartedFamilyInput}
+            class="btn btn-secondary"
+            data-toggle="tooltip"
+            data-placement="top"
+            title="You can add already existing families this person created here."
+          >
+            + Started Families
+          </button>
+
           <div className="form-group">
             <input
               type="submit"
-              value="Delete Person"
-              className="btn btn-danger"
+              value={
+                this.props.editing
+                  ? "Update Person: " + this.state.initialName
+                  : "Add Person"
+              }
+              className="btn btn-primary"
             />
           </div>
         </form>

@@ -3,10 +3,12 @@ import { Link } from "react-router-dom";
 import NullChecker from "./classes/nullChecker.js";
 import Family from "./family";
 import FamilyLink from "./familyLink";
+import FamilyForm from "./familyForm";
+import PersonForm from "./personForm";
 
 import axios from "axios";
 
-//Show a form to add families, but also display them along with links to edit them.
+//The first admin database component shown. Show a form to add families, but also display them along with links to edit them.
 class FamilyAdder extends Component {
   constructor(props) {
     super(props);
@@ -20,35 +22,10 @@ class FamilyAdder extends Component {
       description: "",
       birthdate: "",
       deathdate: "",
-
-      //Input for a family
-      familyName: "",
-      familyDescription: "",
-      parentA: "",
-      parentB: "",
-      children: [],
     };
-
-    this.revealFamily = this.revealFamily.bind(this);
-    this.onChangeParentA = this.onChangeParentA.bind(this);
-    this.onChangeParentB = this.onChangeParentB.bind(this);
-    this.onChangeFamilyName = this.onChangeFamilyName.bind(this);
-    this.onChangeFamilyDescription = this.onChangeFamilyDescription.bind(this);
-
-    this.onChangeName = this.onChangeName.bind(this);
-    this.onChangeDescription = this.onChangeDescription.bind(this);
-    this.onChangeBirthdate = this.onChangeBirthdate.bind(this);
-    this.onChangeDeathdate = this.onChangeDeathdate.bind(this);
-    this.onChangeChild = this.onChangeChild.bind(this);
-
-    this.onSubmitPerson = this.onSubmitPerson.bind(this);
-    this.onSubmitFamily = this.onSubmitFamily.bind(this);
-    this.childInputList = this.childInputList.bind(this);
-    this.addChildInput = this.addChildInput.bind(this);
-    this.removeChildInput = this.removeChildInput.bind(this);
   }
 
-  //Connect to the database and get data here! <------------------------------
+  //Connect to the database and get data here! (Needed to list out the families in tables) ------------------------------
   componentDidMount() {
     console.log("About to connect");
     axios
@@ -111,193 +88,11 @@ class FamilyAdder extends Component {
       );
     });
   }
-  //showChildren={obj.state.showChildren[i]}
-
-  findPerson(idToFind) {
-    let personFound = "";
-
-    this.state.persons.map(function (currentPerson, i) {
-      if (currentPerson._id == idToFind) {
-        personFound = currentPerson;
-      }
-    });
-
-    return personFound;
-  }
-
-  //Give a selection of people
-  personDropdown() {
-    return this.state.persons.map(function (currentPerson, i) {
-      return <option value={currentPerson.name}>{currentPerson.name}</option>;
-    });
-  }
-
-  //Submit form data here <------------------------------------------------
-  onSubmitPerson(e) {
-    e.preventDefault();
-
-    const newPerson = {
-      name: this.state.name,
-      description: this.state.description,
-      birthdate: this.state.birthdate,
-      deathdate: this.state.deathdate,
-    };
-
-    //Make sure something is entered for at least the name
-    if (newPerson.name == "" || newPerson.name == null) return;
-
-    axios.post("http://localhost:4000/add/person", newPerson).then((res) => {
-      alert(res.data);
-      window.location.replace("http://localhost:3000/admin");
-    });
-
-    //Reset input values
-    this.setState({
-      name: "",
-      description: "",
-      birthdate: "",
-      deathdate: "",
-    });
-  }
-
-  onSubmitFamily(e) {
-    e.preventDefault();
-
-    //Json
-    const newFamily = {
-      name: this.state.familyName,
-      description: this.state.familyDescription,
-      parentA: this.state.parentA,
-      parentB: this.state.parentB,
-      children: this.state.children,
-    };
-
-    //Name and parents must be filled in at the very least.
-    if (
-      newFamily.name == "" ||
-      newFamily.name == null ||
-      newFamily.parentA == "" ||
-      newFamily.parentA == null ||
-      newFamily.parentB == "" ||
-      newFamily.parentB == null
-    )
-      return;
-
-    axios.post("http://localhost:4000/add/family", newFamily).then((res) => {
-      console.log(res.data);
-      alert(res.data);
-      window.location.replace("http://localhost:3000/admin");
-    });
-
-    //Reset input values
-    this.setState({
-      name: "",
-      description: "",
-      birthdate: "",
-      deathdate: "",
-    });
-  }
-
-  onChangeFamilyName(e) {
-    this.setState({ familyName: e.target.value });
-  }
-
-  onChangeFamilyDescription(e) {
-    this.setState({ familyDescription: e.target.value });
-  }
-
-  onChangeParentA(e) {
-    this.setState({ parentA: e.target.value });
-  }
-
-  onChangeParentB(e) {
-    this.setState({ parentB: e.target.value });
-  }
-
-  //onChange Events below (for adding a person)
-  onChangeName(e) {
-    this.setState({ name: e.target.value });
-  }
-
-  onChangeDescription(e) {
-    this.setState({ description: e.target.value });
-  }
-
-  onChangeBirthdate(e) {
-    this.setState({ birthdate: e.target.value });
-  }
-
-  onChangeDeathdate(e) {
-    this.setState({ deathdate: e.target.value });
-  }
-
-  onChangeChild(e) {
-    let newChildren = [...this.state.children];
-
-    newChildren[e.target.list.id] = e.target.value;
-
-    this.setState({
-      children: newChildren,
-    });
-  }
-
-  //Dynamic "Add child" list
-  childInputList() {
-    var obj = this;
-    return this.state.children.map(function (currentChild, i) {
-      return (
-        <div className="form-group">
-          <label>Child: </label>
-          <input
-            type="text"
-            className="form-control"
-            value={currentChild}
-            onChange={obj.onChangeChild}
-            list={i}
-          />
-          <button
-            type="button"
-            className="btn btn-danger"
-            onClick={() => obj.removeChildInput(i)}
-            value={i}
-          >
-            X
-          </button>
-          <datalist id={i}>{obj.personDropdown()}</datalist>
-        </div>
-      );
-    });
-  }
-
-  addChildInput() {
-    console.log("Adding child", this);
-    this.setState((prevState) => ({
-      children: [...prevState.children, ""],
-    }));
-  }
-
-  //Remove a specific child
-  removeChildInput(index) {
-    console.log("Removing child", index);
-    console.log("Children before removal", this.state.children);
-
-    let newChildrenArray = [];
-
-    if (index > -1 && index < this.state.children.length) {
-      newChildrenArray = [...this.state.children];
-      newChildrenArray.splice(index, 1);
-
-      this.setState({
-        children: newChildrenArray,
-      });
-    } else console.log("Invalid array index");
-  }
 
   render() {
     return (
       <div>
         <FamilyLink />
-        {/*Submit family form*/}
         <div class="container">
           <p class="alert alert-warning">
             Add people on the right. Then on the left, enter peoples' names
@@ -306,129 +101,14 @@ class FamilyAdder extends Component {
             The family won't be created if the people entered don't exist.
           </p>
           <div class="row">
-            <div class="col-sm">
-              <h3>Add a Family</h3>
-              <form onSubmit={this.onSubmitFamily}>
-                <div className="form-group">
-                  <label>Family Name: </label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    value={this.state.familyName}
-                    onChange={this.onChangeFamilyName}
-                  />
-                </div>
-
-                <div className="form-group">
-                  <label>Family Description: </label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    value={this.state.familyDescription}
-                    onChange={this.onChangeFamilyDescription}
-                  />
-                </div>
-
-                <div className="form-group">
-                  <label>Parent A: </label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    value={this.state.parentA}
-                    onChange={this.onChangeParentA}
-                    list="parentA"
-                  />
-                  <datalist id="parentA">{this.personDropdown()}</datalist>
-                </div>
-
-                <div className="form-group">
-                  <label>Parent B: </label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    value={this.state.parentB}
-                    onChange={this.onChangeParentB}
-                    list="parentB"
-                  />
-                  <datalist id="parentB">{this.personDropdown()}</datalist>
-                </div>
-
-                {this.childInputList()}
-
-                <button
-                  type="button"
-                  onClick={this.addChildInput}
-                  class="btn btn-secondary"
-                >
-                  + Child
-                </button>
-
-                <div className="form-group">
-                  <input
-                    type="submit"
-                    value="Add Family"
-                    className="btn btn-primary"
-                  />
-                </div>
-              </form>
+            <div class="col-sm-5">
+              <FamilyForm editing={false} />
             </div>
 
-            <div class="col-sm">
-              {/*Submit person form*/}
-              <h3>Add a Person</h3>
-              <form onSubmit={this.onSubmitPerson}>
-                <div className="form-group">
-                  <label>Name: </label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    value={this.state.name}
-                    onChange={this.onChangeName}
-                  />
-                </div>
-
-                <div className="form-group">
-                  <label>Description: </label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    value={this.state.description}
-                    onChange={this.onChangeDescription}
-                  />
-                </div>
-
-                <div className="form-group">
-                  <label>Birthdate: </label>
-                  <input
-                    type="date"
-                    value={this.state.birthdate}
-                    onChange={this.onChangeBirthdate}
-                    min="1800-01-01"
-                    max="2020-12-31"
-                  ></input>
-                </div>
-
-                <div className="form-group">
-                  <label>Deathdate: </label>
-                  <input
-                    type="date"
-                    value={this.state.deathdate}
-                    onChange={this.onChangeDeathdate}
-                    min="1800-01-01"
-                    max="2020-12-31"
-                  ></input>
-                </div>
-
-                <div className="form-group">
-                  <input
-                    type="submit"
-                    value="Add Person"
-                    className="btn btn-primary"
-                  />
-                </div>
-              </form>
+            <div class="col-sm-5">
+              <PersonForm editing={false} />
             </div>
-            <div class="col-sm-2"></div>
+            <div class="col-sm"></div>
           </div>
           <div class="row">
             <h3>Family Editor</h3>
