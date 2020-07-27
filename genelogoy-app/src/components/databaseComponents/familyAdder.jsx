@@ -45,6 +45,7 @@ class FamilyAdder extends Component {
     this.onSubmitFamily = this.onSubmitFamily.bind(this);
     this.childInputList = this.childInputList.bind(this);
     this.addChildInput = this.addChildInput.bind(this);
+    this.removeChildInput = this.removeChildInput.bind(this);
   }
 
   //Connect to the database and get data here! <------------------------------
@@ -254,6 +255,14 @@ class FamilyAdder extends Component {
             onChange={obj.onChangeChild}
             list={i}
           />
+          <button
+            type="button"
+            className="btn btn-danger"
+            onClick={() => obj.removeChildInput(i)}
+            value={i}
+          >
+            X
+          </button>
           <datalist id={i}>{obj.personDropdown()}</datalist>
         </div>
       );
@@ -265,6 +274,23 @@ class FamilyAdder extends Component {
     this.setState((prevState) => ({
       children: [...prevState.children, ""],
     }));
+  }
+
+  //Remove a specific child
+  removeChildInput(index) {
+    console.log("Removing child", index);
+    console.log("Children before removal", this.state.children);
+
+    let newChildrenArray = [];
+
+    if (index > -1 && index < this.state.children.length) {
+      newChildrenArray = [...this.state.children];
+      newChildrenArray.splice(index, 1);
+
+      this.setState({
+        children: newChildrenArray,
+      });
+    } else console.log("Invalid array index");
   }
 
   render() {

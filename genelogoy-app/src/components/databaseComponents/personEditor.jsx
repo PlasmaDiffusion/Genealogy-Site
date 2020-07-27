@@ -26,6 +26,7 @@ class PersonEditor extends Component {
     this.onSubmitPerson = this.onSubmitPerson.bind(this);
     this.onDeletePerson = this.onDeletePerson.bind(this);
     this.addStartedFamilyInput = this.addStartedFamilyInput.bind(this);
+    this.removeStartedFamilyInput = this.removeStartedFamilyInput.bind(this);
     this.onChangeStartedFamilies = this.onChangeStartedFamilies.bind(this);
   }
 
@@ -160,6 +161,14 @@ class PersonEditor extends Component {
             onChange={obj.onChangeStartedFamilies}
             list={i}
           />
+          <button
+            type="button"
+            className="btn btn-danger"
+            onClick={() => obj.removeStartedFamilyInput(i)}
+            value={i}
+          >
+            X
+          </button>
           <datalist id={i}>{obj.familyDropDown()}</datalist>
         </div>
       );
@@ -171,6 +180,22 @@ class PersonEditor extends Component {
     this.setState((prevState) => ({
       startedFamilies: [...prevState.startedFamilies, ""],
     }));
+  }
+
+  //Remove a specific child
+  removeStartedFamilyInput(index) {
+    console.log("Children before removal", this.state.startedFamilies);
+
+    let newFamilyArray = [];
+
+    if (index > -1 && index < this.state.startedFamilies.length) {
+      newFamilyArray = [...this.state.startedFamilies];
+      newFamilyArray.splice(index, 1);
+
+      this.setState({
+        startedFamilies: newFamilyArray,
+      });
+    } else console.log("Invalid array index");
   }
 
   render() {

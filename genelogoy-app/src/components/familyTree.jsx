@@ -99,6 +99,7 @@ class FamilyTree extends Component {
                   this.toggle(++id);
                 }}
               >
+                {id}
                 Children
               </span>
             </li>
@@ -119,6 +120,7 @@ class FamilyTree extends Component {
                         this.toggle(++id);
                       }}
                     >
+                      {id}
                       {currentChild.name}
                       {console.log("Child family", currentChild)}
                       {currentChild.startedFamilies.map((currentFamily) =>

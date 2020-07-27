@@ -31,6 +31,7 @@ class FamilyEditor extends Component {
     this.childInputList = this.childInputList.bind(this);
     this.onChangeChild = this.onChangeChild.bind(this);
     this.addChildInput = this.addChildInput.bind(this);
+    this.removeChildInput = this.removeChildInput.bind(this);
   }
 
   //Connect to the databaes and get family data here! <------------------------------
@@ -166,7 +167,15 @@ class FamilyEditor extends Component {
             onChange={obj.onChangeChild}
             list={i}
           />
-          <datalist id={i}>{obj.personDropdown()}</datalist>
+          <button
+            type="button"
+            className="btn btn-danger"
+            onClick={() => obj.removeChildInput(i)}
+            value={i}
+          >
+            X
+          </button>
+          <datalist id={i}>{obj.personDropdown()}</datalist>{" "}
         </div>
       );
     });
@@ -177,6 +186,23 @@ class FamilyEditor extends Component {
     this.setState((prevState) => ({
       children: [...prevState.children, ""],
     }));
+  }
+
+  //Remove a specific child
+  removeChildInput(index) {
+    console.log("Removing child", index);
+    console.log("Children before removal", this.state.children);
+
+    let newChildrenArray = [];
+
+    if (index > -1 && index < this.state.children.length) {
+      newChildrenArray = [...this.state.children];
+      newChildrenArray.splice(index, 1);
+
+      this.setState({
+        children: newChildrenArray,
+      });
+    } else console.log("Invalid array index");
   }
 
   render() {
