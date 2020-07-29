@@ -26,9 +26,17 @@ connection.once("open", function () {
   console.log("MongoDB database connection established successfully");
 });
 
-app.listen(PORT, function () {
-  console.log("Server is running on Port: " + PORT);
+// Choose the port and start the server
+app.listen(PORT, () => {
+  console.log(`Running on port ${PORT}`);
 });
+
+/* Serve static files from the React frontend app
+app.use(express.static(path.join(__dirname, "client/build")));
+// Anything that doesn't match the above, send back index.html
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname + "./index.html"));
+});*/
 
 async function findPeople(req, parentA, parentB, children) {
   await Person.findOne({ name: req.body.parentA }, function (err, person) {
