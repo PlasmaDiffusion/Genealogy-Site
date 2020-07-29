@@ -56,7 +56,7 @@ export default withOktaAuth(
       return (
         <Router>
           <div>
-            <Link to="">Home</Link>
+            <Link to=""> Home </Link>
             <br></br>
             <hr />
 
