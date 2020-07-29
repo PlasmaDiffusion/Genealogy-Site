@@ -83,13 +83,15 @@ export default withOktaAuth(
               <SecureRoute path="/edit/person/:id" component={PersonEditor} />
               <SecureRoute path="/edit/family/:id" component={FamilyEditor} />
 
+              <Route exact path="/login">
+                <Login issuer="https://dev-286829.okta.com/oauth2/default" />
+              </Route>
+
               <Route
-                path="/login"
-                render={() => (
-                  <Login issuer="https://dev-286829.okta.com/oauth2/default" />
-                )}
+                exact
+                path="/implicit/callback"
+                component={LoginCallback}
               />
-              <Route path="/implicit/callback" component={LoginCallback} />
             </Switch>
           </div>
         </Router>
