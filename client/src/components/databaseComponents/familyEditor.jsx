@@ -68,7 +68,7 @@ class FamilyEditor extends Component {
 
     //Read in people to be selected
     axios
-      .get("http://localhost:4000/read/person")
+      .get(window.location.origin + "/read/person")
       .then((response) => {
         console.log("Person Response: ", response.data);
         //Set people for dropdown menu
@@ -100,7 +100,7 @@ class FamilyEditor extends Component {
 
     axios
       .post(
-        "http://localhost:4000/edit/family/" + this.state.objectId,
+        window.location.origin + "/edit/family/" + this.state.objectId,
         updatedFamily
       )
       .then((res) => {
@@ -120,7 +120,7 @@ class FamilyEditor extends Component {
       };
 
       axios
-        .post("http://localhost:4000/delete/family", deleteData)
+        .post("window.location.origin +/delete/family", deleteData)
         .then((res) => {
           alert(res.data);
           window.location.replace("http://localhost:3000/admin");

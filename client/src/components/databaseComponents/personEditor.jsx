@@ -40,7 +40,7 @@ class PersonEditor extends Component {
     this.setState({ objectId: id });
 
     axios
-      .get("http://localhost:4000/read/person/" + id)
+      .get(window.location.origin + "/read/person/" + id)
       .then((response) => {
         console.log("Person Response: ", response.data);
         this.setState({

@@ -98,6 +98,8 @@ routes.route("/read/person").get(function (req, res) {
 });
 
 routes.route("/read/family").get(function (req, res) {
+  console.log("Reading in all families");
+
   Family.find()
     .populate("parentA")
     .populate("parentB")
