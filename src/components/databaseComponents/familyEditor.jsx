@@ -45,7 +45,7 @@ class FamilyEditor extends Component {
     this.setState({ objectId: id });
 
     axios
-      .get("http://localhost:4000/read/family/" + id)
+      .get(window.location.origin + "/read/family/" + id)
       .then((response) => {
         console.log("Family Response: ", response.data);
 

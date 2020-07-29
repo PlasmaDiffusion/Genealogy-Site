@@ -26,7 +26,7 @@ class FamilyLink extends Component {
   componentDidMount() {
     console.log("About to connect");
     axios
-      .get("http://localhost:4000/read/family")
+      .get(window.location.origin + "read/family")
       .then((response) => {
         console.log("Family Response: ", response.data);
         this.setState({ families: response.data });
