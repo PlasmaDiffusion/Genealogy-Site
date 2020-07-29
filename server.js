@@ -3,8 +3,9 @@ const app = express();
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const mongoose = require("mongoose");
-const PORT = 4000;
+const PORT = process.env.PORT || 4000;
 const routes = express.Router();
+const path = require("path");
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -31,12 +32,13 @@ app.listen(PORT, () => {
   console.log(`Running on port ${PORT}`);
 });
 
-/* Serve static files from the React frontend app
+// Serve static files from the React frontend app
 app.use(express.static(path.join(__dirname, "client/build")));
+
 // Anything that doesn't match the above, send back index.html
 app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname + "./index.html"));
-});*/
+  res.sendFile(path.join(__dirname + "/client/build/index.html"));
+});
 
 async function findPeople(req, parentA, parentB, children) {
   await Person.findOne({ name: req.body.parentA }, function (err, person) {
