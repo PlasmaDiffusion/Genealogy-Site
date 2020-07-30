@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import NullChecker from "./databaseComponents/classes/nullChecker.js";
 import axios from "axios";
+import { getClientUrl, getServerUrl } from "./getUrl.js";
 import Family from "./databaseComponents/family";
 import FamilyTree from "./familyTree";
 
@@ -30,7 +31,7 @@ class FamilyDetails extends Component {
     this.setState({ objectId: id });
 
     axios
-      .get(window.location.origin + "/read/family/" + id)
+      .get(getServerUrl() + "/read/family/" + id)
       .then((response) => {
         console.log("Family Response: ", response.data);
 

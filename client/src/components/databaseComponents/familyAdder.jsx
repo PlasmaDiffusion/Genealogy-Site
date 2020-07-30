@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from "react";
 import { Link } from "react-router-dom";
 import NullChecker from "./classes/nullChecker.js";
+import { getClientUrl, getServerUrl } from "../getUrl.js";
 import Family from "./family";
 import FamilyLink from "./familyLink";
 import FamilyForm from "./familyForm";
@@ -28,8 +29,9 @@ class FamilyAdder extends Component {
   //Connect to the database and get data here! (Needed to list out the families in tables) ------------------------------
   componentDidMount() {
     console.log("About to connect");
+
     axios
-      .get(process.env.SERVER_URL + "/read/family")
+      .get(getServerUrl() + "/read/family")
       .then((response) => {
         console.log("Family Response: ", response.data);
         const nullChecker = new NullChecker();
@@ -44,7 +46,7 @@ class FamilyAdder extends Component {
       });
 
     axios
-      .get(process.env.SERVER_URL + "/read/person")
+      .get(getServerUrl() + "/read/person")
       .then((response) => {
         console.log("Person Response: ", response.data);
         this.setState({ persons: response.data });

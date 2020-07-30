@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from "react";
 import { Link } from "react-router-dom";
 import NullChecker from "./classes/nullChecker.js";
+import { getClientUrl, getServerUrl } from "../getUrl.js";
 import FamilyForm from "./familyForm";
 
 import axios from "axios";
@@ -45,7 +46,7 @@ class FamilyEditor extends Component {
     this.setState({ objectId: id });
 
     axios
-      .get(process.env.SERVER_URL + "/read/family/" + id)
+      .get(getServerUrl() + "/read/family/" + id)
       .then((response) => {
         console.log("Family Response: ", response.data);
 
@@ -68,7 +69,7 @@ class FamilyEditor extends Component {
 
     //Read in people to be selected
     axios
-      .get(process.env.SERVER_URL + "/read/person")
+      .get(getServerUrl() + "/read/person")
       .then((response) => {
         console.log("Person Response: ", response.data);
         //Set people for dropdown menu
@@ -100,13 +101,13 @@ class FamilyEditor extends Component {
 
     axios
       .post(
-        process.env.SERVER_URL + "/edit/family/" + this.state.objectId,
+        getServerUrl() + "/edit/family/" + this.state.objectId,
         updatedFamily
       )
       .then((res) => {
         console.log(res.data);
         alert(res.data);
-        window.location.replace(process.env.BASE_URL + "/admin");
+        window.location.replace(getClientUrl() + "/admin");
       });
   }
 
@@ -119,12 +120,10 @@ class FamilyEditor extends Component {
         id: this.state.objectId,
       };
 
-      axios
-        .post(process.env.SERVER_URL + "/delete/family", deleteData)
-        .then((res) => {
-          alert(res.data);
-          window.location.replace(process.env.BASE_URL + "/admin");
-        });
+      axios.post(getServerUrl() + "/delete/family", deleteData).then((res) => {
+        alert(res.data);
+        window.location.replace(getClientUrl() + "/admin");
+      });
     }
   }
 

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 
 import axios from "axios";
+import { getClientUrl, getServerUrl } from "../getUrl.js";
 
 class PersonEditor extends Component {
   constructor(props) {
@@ -40,7 +41,7 @@ class PersonEditor extends Component {
       this.setState({ objectId: id });
 
       axios
-        .get(process.env.SERVER_URL + "/read/person/" + id)
+        .get(getServerUrl() + "/read/person/" + id)
         .then((response) => {
           console.log("Person Response: ", response.data);
           this.setState({
@@ -58,7 +59,7 @@ class PersonEditor extends Component {
     }
 
     axios
-      .get(process.env.SERVER_URL + "/read/family/")
+      .get(getServerUrl() + "/read/family/")
       .then((response) => {
         console.log("Family Response: ", response.data);
         this.setState({
@@ -91,20 +92,20 @@ class PersonEditor extends Component {
       //Edit the person or...
       axios
         .post(
-          process.env.SERVER_URL + "/edit/person/" + this.state.objectId,
+          getServerUrl() + "/edit/person/" + this.state.objectId,
           submittedPerson
         )
         .then((res) => {
           alert(res.data);
-          window.location.replace(process.env.BASE_URL + "/admin");
+          window.location.replace(getClientUrl() + "/admin");
         });
     } //Add a new one
     else {
       axios
-        .post(process.env.SERVER_URL + "/add/person", submittedPerson)
+        .post(getServerUrl() + "/add/person", submittedPerson)
         .then((res) => {
           alert(res.data);
-          window.location.replace(process.env.BASE_URL + "/admin");
+          window.location.replace(getClientUrl() + "/admin");
         });
 
       //Reset input values

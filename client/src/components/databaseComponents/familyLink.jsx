@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { getClientUrl, getServerUrl } from "../getUrl.js";
 
 import axios from "axios";
 
@@ -24,15 +25,10 @@ class FamilyLink extends Component {
 
   //Read in data
   componentDidMount() {
-    const url =
-      (process.env.NODE_ENV == "development"
-        ? "http://localhost:4000"
-        : "https://geneology-site.herokuapp.com") + "/read/family";
-
-    console.log("About to connect to " + url);
+    console.log("About to connect to " + getServerUrl() + "/read/family");
 
     axios
-      .get(url)
+      .get(getServerUrl() + "/read/family")
       .then((response) => {
         console.log("Family Response: ", response.data);
         this.setState({ families: response.data });

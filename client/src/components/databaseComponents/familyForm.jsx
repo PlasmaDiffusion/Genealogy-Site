@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from "react";
 import { Link } from "react-router-dom";
 import NullChecker from "./classes/nullChecker.js";
+import { getClientUrl, getServerUrl } from "../getUrl.js";
 import Family from "./family";
 import FamilyLink from "./familyLink";
 
@@ -49,7 +50,7 @@ class FamilyForm extends Component {
       this.setState({ objectId: id });
 
       axios
-        .get(process.env.BASE_URL + "/read/family/" + id)
+        .get(getClientUrl() + "/read/family/" + id)
         .then((response) => {
           console.log("Family Response: ", response.data);
 
@@ -75,7 +76,7 @@ class FamilyForm extends Component {
 
     //Read in people to enter in family form dropdowns
     axios
-      .get(process.env.BASE_URL + "/read/person")
+      .get(getClientUrl() + "/read/person")
       .then((response) => {
         console.log("Person Response: ", response.data);
         this.setState({ persons: response.data });
@@ -120,23 +121,21 @@ class FamilyForm extends Component {
       //Edit a family or...
       axios
         .post(
-          process.env.SERVER_URL + "/edit/family/" + this.state.objectId,
+          getServerUrl() + "/edit/family/" + this.state.objectId,
           familyToSubmit
         )
         .then((res) => {
           console.log(res.data);
           alert(res.data);
-          window.location.replace(process.env.BASE_URL + "/admin");
+          window.location.replace(getClientUrl() + "/admin");
         });
     } //Add a new family
     else {
-      axios
-        .post(process.env.SERVER_URL + "/add/family", familyToSubmit)
-        .then((res) => {
-          console.log(res.data);
-          alert(res.data);
-          window.location.replace(process.env.BASE_URL + "/admin");
-        });
+      axios.post(getServerUrl() + "/add/family", familyToSubmit).then((res) => {
+        console.log(res.data);
+        alert(res.data);
+        window.location.replace(getClientUrl() + "/admin");
+      });
     }
 
     //Reset input values

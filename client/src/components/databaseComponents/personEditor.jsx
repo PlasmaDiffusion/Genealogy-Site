@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 
 import axios from "axios";
+import { getClientUrl, getServerUrl } from "../getUrl.js";
 import PersonForm from "./personForm";
 
 class PersonEditor extends Component {
@@ -40,7 +41,7 @@ class PersonEditor extends Component {
     this.setState({ objectId: id });
 
     axios
-      .get(process.env.BASE_URL + "/read/person/" + id)
+      .get(getClientUrl() + "/read/person/" + id)
       .then((response) => {
         console.log("Person Response: ", response.data);
         this.setState({
@@ -57,7 +58,7 @@ class PersonEditor extends Component {
       });
 
     axios
-      .get(process.env.BASE_URL + "/read/family/")
+      .get(getClientUrl() + "/read/family/")
       .then((response) => {
         console.log("Family Response: ", response.data);
         this.setState({
@@ -91,7 +92,7 @@ class PersonEditor extends Component {
       .post(baseUrl + "/edit/person/" + this.state.objectId, updatedPerson)
       .then((res) => {
         alert(res.data);
-        window.location.replace(process.env.BASE_URL + "/admin");
+        window.location.replace(getClientUrl() + "/admin");
       });
   }
 
@@ -106,12 +107,10 @@ class PersonEditor extends Component {
 
       console.log("About to delete this id:", deleteData);
 
-      axios
-        .post(process.env.SERVER_URL + "/delete/person", deleteData)
-        .then((res) => {
-          alert(res.data);
-          window.location.replace(process.env.BASE_URL + "/admin");
-        });
+      axios.post(getServerUrl() + "/delete/person", deleteData).then((res) => {
+        alert(res.data);
+        window.location.replace(getClientUrl() + "/admin");
+      });
     }
   }
 
