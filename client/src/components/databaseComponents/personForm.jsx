@@ -40,7 +40,7 @@ class PersonEditor extends Component {
       this.setState({ objectId: id });
 
       axios
-        .get(window.location.origin + "/read/person/" + id)
+        .get(process.env.SERVER_URL + "/read/person/" + id)
         .then((response) => {
           console.log("Person Response: ", response.data);
           this.setState({
@@ -58,7 +58,7 @@ class PersonEditor extends Component {
     }
 
     axios
-      .get(window.location.origin + "/read/family/")
+      .get(process.env.SERVER_URL + "/read/family/")
       .then((response) => {
         console.log("Family Response: ", response.data);
         this.setState({
@@ -86,20 +86,20 @@ class PersonEditor extends Component {
       //Edit the person or...
       axios
         .post(
-          window.location.origin + "/edit/person/" + this.state.objectId,
+          process.env.SERVER_URL + "/edit/person/" + this.state.objectId,
           submittedPerson
         )
         .then((res) => {
           alert(res.data);
-          window.location.replace(window.location.origin + "/admin");
+          window.location.replace(process.env.BASE_URL + "/admin");
         });
     } //Add a new one
     else {
       axios
-        .post(window.location.origin + "/add/person", submittedPerson)
+        .post(process.env.SERVER_URL + "/add/person", submittedPerson)
         .then((res) => {
           alert(res.data);
-          window.location.replace(window.location.origin + "/admin");
+          window.location.replace(process.env.BASE_URL + "/admin");
         });
 
       //Reset input values

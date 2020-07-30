@@ -29,7 +29,7 @@ class FamilyAdder extends Component {
   componentDidMount() {
     console.log("About to connect");
     axios
-      .get(window.location.origin + "/read/family")
+      .get(process.env.SERVER_URL + "/read/family")
       .then((response) => {
         console.log("Family Response: ", response.data);
         const nullChecker = new NullChecker();
@@ -44,7 +44,7 @@ class FamilyAdder extends Component {
       });
 
     axios
-      .get(window.location.origin + "/read/person")
+      .get(process.env.SERVER_URL + "/read/person")
       .then((response) => {
         console.log("Person Response: ", response.data);
         this.setState({ persons: response.data });

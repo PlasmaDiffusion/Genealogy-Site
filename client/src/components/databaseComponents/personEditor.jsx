@@ -40,7 +40,7 @@ class PersonEditor extends Component {
     this.setState({ objectId: id });
 
     axios
-      .get(window.location.origin + "/read/person/" + id)
+      .get(process.env.BASE_URL + "/read/person/" + id)
       .then((response) => {
         console.log("Person Response: ", response.data);
         this.setState({
@@ -57,7 +57,7 @@ class PersonEditor extends Component {
       });
 
     axios
-      .get(window.location.origin + "/read/family/")
+      .get(process.env.BASE_URL + "/read/family/")
       .then((response) => {
         console.log("Family Response: ", response.data);
         this.setState({
@@ -85,12 +85,12 @@ class PersonEditor extends Component {
 
     axios
       .post(
-        window.location.origin + "/edit/person/" + this.state.objectId,
+        process.env.SERVER_URL + "/edit/person/" + this.state.objectId,
         updatedPerson
       )
       .then((res) => {
         alert(res.data);
-        window.location.replace(window.location.origin + "/admin");
+        window.location.replace(process.env.BASE_URL + "/admin");
       });
   }
 
@@ -106,10 +106,10 @@ class PersonEditor extends Component {
       console.log("About to delete this id:", deleteData);
 
       axios
-        .post(window.location.origin + "/delete/person", deleteData)
+        .post(process.env.SERVER_URL + "/delete/person", deleteData)
         .then((res) => {
           alert(res.data);
-          window.location.replace(window.location.origin + "/admin");
+          window.location.replace(process.env.BASE_URL + "/admin");
         });
     }
   }

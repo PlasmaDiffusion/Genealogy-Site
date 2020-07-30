@@ -49,7 +49,7 @@ class FamilyForm extends Component {
       this.setState({ objectId: id });
 
       axios
-        .get(window.location.origin + "/read/family/" + id)
+        .get(process.env.BASE_URL + "/read/family/" + id)
         .then((response) => {
           console.log("Family Response: ", response.data);
 
@@ -75,7 +75,7 @@ class FamilyForm extends Component {
 
     //Read in people to enter in family form dropdowns
     axios
-      .get(window.location.origin + "/read/person")
+      .get(process.env.BASE_URL + "/read/person")
       .then((response) => {
         console.log("Person Response: ", response.data);
         this.setState({ persons: response.data });
@@ -120,22 +120,22 @@ class FamilyForm extends Component {
       //Edit a family or...
       axios
         .post(
-          window.location.origin + "/edit/family/" + this.state.objectId,
+          process.env.SERVER_URL + "/edit/family/" + this.state.objectId,
           familyToSubmit
         )
         .then((res) => {
           console.log(res.data);
           alert(res.data);
-          window.location.replace(window.location.origin + "/admin");
+          window.location.replace(process.env.BASE_URL + "/admin");
         });
     } //Add a new family
     else {
       axios
-        .post(window.location.origin + "/add/family", familyToSubmit)
+        .post(process.env.SERVER_URL + "/add/family", familyToSubmit)
         .then((res) => {
           console.log(res.data);
           alert(res.data);
-          window.location.replace(window.location.origin + "/admin");
+          window.location.replace(process.env.BASE_URL + "/admin");
         });
     }
 

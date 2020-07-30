@@ -45,7 +45,7 @@ class FamilyEditor extends Component {
     this.setState({ objectId: id });
 
     axios
-      .get(window.location.origin + "/read/family/" + id)
+      .get(process.env.SERVER_URL + "/read/family/" + id)
       .then((response) => {
         console.log("Family Response: ", response.data);
 
@@ -68,7 +68,7 @@ class FamilyEditor extends Component {
 
     //Read in people to be selected
     axios
-      .get(window.location.origin + "/read/person")
+      .get(process.env.SERVER_URL + "/read/person")
       .then((response) => {
         console.log("Person Response: ", response.data);
         //Set people for dropdown menu
@@ -100,13 +100,13 @@ class FamilyEditor extends Component {
 
     axios
       .post(
-        window.location.origin + "/edit/family/" + this.state.objectId,
+        process.env.SERVER_URL + "/edit/family/" + this.state.objectId,
         updatedFamily
       )
       .then((res) => {
         console.log(res.data);
         alert(res.data);
-        window.location.replace(window.location.origin + "/admin");
+        window.location.replace(process.env.BASE_URL + "/admin");
       });
   }
 
@@ -120,10 +120,10 @@ class FamilyEditor extends Component {
       };
 
       axios
-        .post("window.location.origin +/delete/family", deleteData)
+        .post(process.env.SERVER_URL + "/delete/family", deleteData)
         .then((res) => {
           alert(res.data);
-          window.location.replace(window.location.origin + "/admin");
+          window.location.replace(process.env.BASE_URL + "/admin");
         });
     }
   }

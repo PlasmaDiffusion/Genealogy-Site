@@ -25,8 +25,13 @@ class FamilyLink extends Component {
   //Read in data
   componentDidMount() {
     console.log("About to connect");
+
+    const url =
+      (process.env.NODE_ENV == "development"
+        ? "http://localhost:4000"
+        : "https://geneology-site.herokuapp.com") + "/read/family";
     axios
-      .get(window.location.origin + "/read/family")
+      .get(url)
       .then((response) => {
         console.log("Family Response: ", response.data);
         this.setState({ families: response.data });
