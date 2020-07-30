@@ -11,7 +11,7 @@ class LoginPage extends Component {
     this.widget = new OktaSignIn({
       baseUrl: "https://dev-286829.okta.com", //"https://dev-286829.okta.com/oauth2/default",
       clientId: "0oam6b0jtnJpBC5OY4x6",
-      redirectUri: "http://localhost:3000/admin",
+      redirectUri: window.location.origin + "/admin",
       authParams: {
         responseType: "id_token",
       },

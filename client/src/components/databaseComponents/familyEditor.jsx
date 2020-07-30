@@ -106,7 +106,7 @@ class FamilyEditor extends Component {
       .then((res) => {
         console.log(res.data);
         alert(res.data);
-        window.location.replace("http://localhost:3000/admin");
+        window.location.replace(window.location.origin + "/admin");
       });
   }
 
@@ -123,7 +123,7 @@ class FamilyEditor extends Component {
         .post("window.location.origin +/delete/family", deleteData)
         .then((res) => {
           alert(res.data);
-          window.location.replace("http://localhost:3000/admin");
+          window.location.replace(window.location.origin + "/admin");
         });
     }
   }
