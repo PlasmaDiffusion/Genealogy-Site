@@ -82,6 +82,11 @@ class PersonEditor extends Component {
       startedFamilies: this.state.startedFamilies,
     };
 
+    const baseUrl =
+      process.env.NODE_ENV == "development"
+        ? "http://localhost:4000"
+        : "https://geneology-site.herokuapp.com";
+
     if (this.props.editing) {
       //Edit the person or...
       axios

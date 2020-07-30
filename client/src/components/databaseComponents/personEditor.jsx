@@ -82,12 +82,13 @@ class PersonEditor extends Component {
       deathdate: this.state.deathdate,
       startedFamilies: this.state.startedFamilies,
     };
+    const baseUrl =
+      process.env.NODE_ENV == "development"
+        ? "http://localhost:4000"
+        : "https://geneology-site.herokuapp.com";
 
     axios
-      .post(
-        process.env.SERVER_URL + "/edit/person/" + this.state.objectId,
-        updatedPerson
-      )
+      .post(baseUrl + "/edit/person/" + this.state.objectId, updatedPerson)
       .then((res) => {
         alert(res.data);
         window.location.replace(process.env.BASE_URL + "/admin");
