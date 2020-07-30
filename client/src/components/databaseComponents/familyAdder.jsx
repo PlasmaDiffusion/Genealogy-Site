@@ -44,7 +44,7 @@ class FamilyAdder extends Component {
       });
 
     axios
-      .get("http://localhost:4000/read/person")
+      .get(window.location.origin + "/read/person")
       .then((response) => {
         console.log("Person Response: ", response.data);
         this.setState({ persons: response.data });

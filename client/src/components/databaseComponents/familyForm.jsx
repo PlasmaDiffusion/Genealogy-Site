@@ -75,7 +75,7 @@ class FamilyForm extends Component {
 
     //Read in people to enter in family form dropdowns
     axios
-      .get("http://localhost:4000/read/person")
+      .get(window.location.origin + "/read/person")
       .then((response) => {
         console.log("Person Response: ", response.data);
         this.setState({ persons: response.data });
@@ -120,22 +120,22 @@ class FamilyForm extends Component {
       //Edit a family or...
       axios
         .post(
-          "http://localhost:4000/edit/family/" + this.state.objectId,
+          window.location.origin + "/edit/family/" + this.state.objectId,
           familyToSubmit
         )
         .then((res) => {
           console.log(res.data);
           alert(res.data);
-          window.location.replace("http://localhost:3000/admin");
+          window.location.replace(window.location.origin + "/admin");
         });
     } //Add a new family
     else {
       axios
-        .post("http://localhost:4000/add/family", familyToSubmit)
+        .post(window.location.origin + "/add/family", familyToSubmit)
         .then((res) => {
           console.log(res.data);
           alert(res.data);
-          window.location.replace("http://localhost:3000/admin");
+          window.location.replace(window.location.origin + "/admin");
         });
     }
 

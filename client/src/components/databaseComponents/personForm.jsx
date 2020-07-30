@@ -58,7 +58,7 @@ class PersonEditor extends Component {
     }
 
     axios
-      .get("http://localhost:4000/read/family/")
+      .get(window.location.origin + "/read/family/")
       .then((response) => {
         console.log("Family Response: ", response.data);
         this.setState({
@@ -86,20 +86,20 @@ class PersonEditor extends Component {
       //Edit the person or...
       axios
         .post(
-          "http://localhost:4000/edit/person/" + this.state.objectId,
+          window.location.origin + "/edit/person/" + this.state.objectId,
           submittedPerson
         )
         .then((res) => {
           alert(res.data);
-          window.location.replace("http://localhost:3000/admin");
+          window.location.replace(window.location.origin + "/admin");
         });
     } //Add a new one
     else {
       axios
-        .post("http://localhost:4000/add/person", submittedPerson)
+        .post(window.location.origin + "/add/person", submittedPerson)
         .then((res) => {
           alert(res.data);
-          window.location.replace("http://localhost:3000/admin");
+          window.location.replace(window.location.origin + "/admin");
         });
 
       //Reset input values

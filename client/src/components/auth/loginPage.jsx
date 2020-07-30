@@ -23,8 +23,6 @@ class LoginPage extends Component {
 
   //Check if logged in already, if not then show login
   componentDidMount() {
-    console.log(this.widget.redirectUri);
-
     this.widget.session.get((response) => {
       if (response.status !== "INACTIVE") {
         this.setState({ user: response.login });
