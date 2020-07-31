@@ -134,16 +134,40 @@ class FamilyDetails extends Component {
   }
 }
 
-//Parent "card"
+//Parent "card". Reads in first name, middle name and last name and adds spaces if none are there. Dates are read in but ignore specific time
 const Parent = (props) => {
   return (
     <div class="col-lg">
-      <h2 class="col-lg p-3 mb-2 bg-primary text-white">{props.person.name}</h2>
+      <div class="col-lg p-3 mb-2 bg-primary text-white">
+        <h2>{props.person.name.split(" ")[0]}</h2>
+        <h2>
+          {props.person.name.split(" ")[1] ? (
+            props.person.name.split(" ")[1]
+          ) : (
+            <br></br>
+          )}
+        </h2>
+        <h2>
+          {props.person.name.split(" ")[2] ? (
+            props.person.name.split(" ")[2]
+          ) : (
+            <br></br>
+          )}
+        </h2>
+      </div>
       <p>
         <i>{props.person.description}</i>
       </p>
-      <p>Born: {props.person.birthdate.split("T")[0]}</p>
-      <p>Died: {props.person.deathdate.split("T")[0]}</p>
+      <p>
+        {props.person.birthdate
+          ? "Born:" + props.person.birthdate.split("T")[0]
+          : ""}
+      </p>
+      <p>
+        {props.person.deathdate
+          ? "Died:" + props.person.deathdate.split("T")[0]
+          : ""}
+      </p>
     </div>
   );
 };
