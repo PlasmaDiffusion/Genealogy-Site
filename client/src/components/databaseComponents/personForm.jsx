@@ -23,6 +23,8 @@ class PersonEditor extends Component {
     this.onChangeDescription = this.onChangeDescription.bind(this);
     this.onChangeBirthdate = this.onChangeBirthdate.bind(this);
     this.onChangeDeathdate = this.onChangeDeathdate.bind(this);
+    this.onChangeBirthLocation = this.onChangeBirthLocation.bind(this);
+    this.onChangeDeathLocation = this.onChangeDeathLocation.bind(this);
 
     this.onSubmitPerson = this.onSubmitPerson.bind(this);
     this.addStartedFamilyInput = this.addStartedFamilyInput.bind(this);
@@ -50,6 +52,8 @@ class PersonEditor extends Component {
             description: response.data.description,
             birthdate: response.data.birthdate.split("T")[0],
             deathdate: response.data.deathdate.split("T")[0],
+            birthLocation: response.data.birthLocation,
+            deathLocation: response.data.deathLocation,
             startedFamilies: response.data.startedFamilies,
           });
         })
@@ -80,13 +84,10 @@ class PersonEditor extends Component {
       description: this.state.description,
       birthdate: this.state.birthdate,
       deathdate: this.state.deathdate,
+      birthLocation: this.state.birthLocation,
+      deathLocation: this.state.deathLocation,
       startedFamilies: this.state.startedFamilies,
     };
-
-    const baseUrl =
-      process.env.NODE_ENV == "development"
-        ? "http://localhost:4000"
-        : "https://geneology-site.herokuapp.com";
 
     if (this.props.editing) {
       //Edit the person or...
@@ -133,6 +134,14 @@ class PersonEditor extends Component {
 
   onChangeDeathdate(e) {
     this.setState({ deathdate: e.target.value });
+  }
+
+  onChangeBirthLocation(e) {
+    this.setState({ birthLocation: e.target.value });
+  }
+
+  onChangeDeathLocation(e) {
+    this.setState({ deathLocation: e.target.value });
   }
 
   onChangeStartedFamilies(e) {
@@ -234,27 +243,47 @@ class PersonEditor extends Component {
           </div>
 
           <div className="form-group">
-            <label>Birthdate: </label>
+            <label>Birthdate: </label> <br></br>
             <input
               type="date"
               value={this.state.birthdate}
               onChange={this.onChangeBirthdate}
               name="trip-start"
-              min="1800-01-01"
+              min="1750-01-01"
               max="2020-12-31"
             ></input>
           </div>
 
           <div className="form-group">
-            <label>Deathdate: </label>
+            <label>Birth Location: </label>
+            <input
+              type="text"
+              className="form-control"
+              value={this.state.birthLocation}
+              onChange={this.onChangeBirthLocation}
+            />
+          </div>
+
+          <div className="form-group">
+            <label>Deathdate: </label> <br></br>
             <input
               type="date"
               value={this.state.deathdate}
               onChange={this.onChangeDeathdate}
               name="trip-start"
-              min="1800-01-01"
+              min="1750-01-01"
               max="2020-12-31"
             ></input>
+          </div>
+
+          <div className="form-group">
+            <label>Death Location: </label>
+            <input
+              type="text"
+              className="form-control"
+              value={this.state.deathLocation}
+              onChange={this.onChangeDeathLocation}
+            />
           </div>
 
           {this.startedFamiliesInputList()}

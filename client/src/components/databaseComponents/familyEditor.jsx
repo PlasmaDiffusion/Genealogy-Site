@@ -38,12 +38,12 @@ class FamilyEditor extends Component {
 
   //Connect to the databaes and get family data here! <------------------------------
   componentDidMount() {
-    console.log("About to connect");
-
     //Read in the family being edited
     var url = new URLSearchParams(window.location.search);
     var id = url.get("id");
     this.setState({ objectId: id });
+
+    console.log("About to connect to " + getServerUrl() + "/read/family/" + id);
 
     axios
       .get(getServerUrl() + "/read/family/" + id)
@@ -87,6 +87,7 @@ class FamilyEditor extends Component {
     });
   }
 
+  //Submit the family here! <-----------------------------------------------------
   onSubmitFamily(e) {
     e.preventDefault();
 
@@ -96,6 +97,8 @@ class FamilyEditor extends Component {
       description: this.state.description,
       parentA: this.state.parentA,
       parentB: this.state.parentB,
+      marriageDate: this.state.marriageDate,
+      marriageLocation: this.state.marriageLocation,
       children: this.state.children,
     };
 

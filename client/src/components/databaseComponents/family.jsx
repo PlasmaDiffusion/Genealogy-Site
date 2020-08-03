@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Person from "./person";
 import { Collapse } from "react-collapse";
+import { formatDate } from "../formatDate";
 
 //Render family for a table
 
@@ -9,10 +10,12 @@ const Family = (props) => {
     <React.Fragment>
       <Collapse isOpened={props.viewingTable}>
         <th>{props.family.name}</th>
-        <th>Description: {props.family.description}</th>
+        <th>
+          <i>{props.family.description}</i>
+        </th>
         <tr>
           <td>
-            <Person //Iterate through child data here
+            <Person //ParentA
               name={props.family.parentA.name}
               description={props.family.parentA.description}
               birthdate={props.family.parentA.birthdate}
@@ -21,7 +24,7 @@ const Family = (props) => {
             />
           </td>
           <td>
-            <Person //Iterate through child data here
+            <Person //ParentB
               name={props.family.parentB.name}
               description={props.family.parentB.description}
               birthdate={props.family.parentB.birthdate}
@@ -29,6 +32,15 @@ const Family = (props) => {
               _id={props.family.parentB._id}
             />
           </td>
+        </tr>
+        <tr>
+          <td>
+            Marriage Date:
+            {props.family.marriageDate
+              ? formatDate(props.family.marriageDate)
+              : ""}
+          </td>
+          <td>Marriage Location: {props.family.marriageLocation}</td>
         </tr>
 
         <Collapse isOpened={props.family.children.length > 0}>

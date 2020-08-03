@@ -7,6 +7,8 @@ let Person = new Schema({
   description: String,
   birthdate: Date,
   deathdate: Date,
+  birthLocation: String,
+  deathLocation: String,
 
   //Every person can create a family
   startedFamilies: [{ type: mongoose.Schema.Types.ObjectId, ref: "Family" }],
@@ -15,6 +17,8 @@ let Person = new Schema({
 let Family = new Schema({
   name: String,
   description: String,
+  marriageDate: Date,
+  marriageLocation: String,
 
   //People within the family have two parents and x number of children
   parentA: { type: mongoose.Schema.Types.ObjectId, ref: "Person" },

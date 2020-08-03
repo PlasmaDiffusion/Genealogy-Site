@@ -50,6 +50,8 @@ class PersonEditor extends Component {
           description: response.data.description,
           birthdate: response.data.birthdate.split("T")[0],
           deathdate: response.data.deathdate.split("T")[0],
+          birthLocation: response.data.birthLocation,
+          deathLocation: response.data.deathLocation,
           startedFamilies: response.data.startedFamilies,
         });
       })

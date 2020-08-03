@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import NullChecker from "./databaseComponents/classes/nullChecker.js";
 import axios from "axios";
 import { getClientUrl, getServerUrl } from "./getUrl.js";
+import { formatDate } from "./formatDate.js";
 import Family from "./databaseComponents/family";
 import FamilyTree from "./familyTree";
 
@@ -45,8 +46,9 @@ class FamilyDetails extends Component {
           children: response.data.children,
           parentA: response.data.parentA,
           parentB: response.data.parentB,
+          marriageDate: response.data.marriageDate,
+          marriageLocation: response.data.marriageLocation,
         });
-        //this.state.family.push(response.data);
       })
       .catch(function (error) {
         console.log(error);
@@ -88,9 +90,25 @@ class FamilyDetails extends Component {
             {/*parent row*/}
             <div class="row">
               <Parent person={this.state.parentA} />
-              <span class="col-lg d-flex justify-content-center border-bottom">
-                Married
-              </span>
+              <div class="col-lg border-bottom">
+                <div class="container">
+                  <div class="row">
+                    <div class="col-sm d-flex justify-content-center">
+                      <h3> &larr; Married &rarr;</h3>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm d-flex justify-content-center">
+                      {this.state.marriageLocation}
+                    </div>
+                    <div class="col-sm d-flex justify-content-center">
+                      {this.state.marriageDate
+                        ? formatDate(this.state.marriageDate)
+                        : ""}
+                    </div>
+                  </div>
+                </div>
+              </div>
               <Parent person={this.state.parentB} />
             </div>
             {/*divider row */}
@@ -160,12 +178,12 @@ const Parent = (props) => {
       </p>
       <p>
         {props.person.birthdate
-          ? "Born:" + props.person.birthdate.split("T")[0]
+          ? "Born:" + formatDate(props.person.birthdate)
           : ""}
       </p>
       <p>
         {props.person.deathdate
-          ? "Died:" + props.person.deathdate.split("T")[0]
+          ? "Died:" + formatDate(props.person.deathdate)
           : ""}
       </p>
     </div>

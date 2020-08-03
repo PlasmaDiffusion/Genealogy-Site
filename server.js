@@ -85,6 +85,7 @@ async function findFamilies(req) {
   return startedFamilies;
 }
 
+//Get people
 routes.route("/read/person").get(function (req, res) {
   Person.find()
     .populate("startedFamilies")
@@ -182,6 +183,8 @@ routes.route("/edit/family/:id").post(async function (req, res) {
           family.description = req.body.description;
           family.parentA = parentA._id;
           family.parentB = parentB._id;
+          family.marriageDate = req.body.marriageDate;
+          family.marriageLocation = req.body.marriageLocation;
           family.children = children;
           family
             .save()
@@ -211,6 +214,8 @@ routes.route("/edit/person/:id").post(function (req, res) {
       person.description = req.body.description;
       person.birthdate = req.body.birthdate;
       person.deathdate = req.body.deathdate;
+      person.birthLocation = req.body.birthLocation;
+      person.deathLocation = req.body.deathLocation;
       person.startedFamilies = await findFamilies(req);
 
       person

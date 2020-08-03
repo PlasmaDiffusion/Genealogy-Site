@@ -30,6 +30,8 @@ class FamilyForm extends Component {
     this.onChangeParentB = this.onChangeParentB.bind(this);
     this.onChangeFamilyName = this.onChangeFamilyName.bind(this);
     this.onChangeFamilyDescription = this.onChangeFamilyDescription.bind(this);
+    this.onChangeMarriageDate = this.onChangeMarriageDate.bind(this);
+    this.onChangeMarriageLocation = this.onChangeMarriageLocation.bind(this);
 
     this.onChangeChild = this.onChangeChild.bind(this);
 
@@ -50,7 +52,7 @@ class FamilyForm extends Component {
       this.setState({ objectId: id });
 
       axios
-        .get(getClientUrl() + "/read/family/" + id)
+        .get(getServerUrl() + "/read/family/" + id)
         .then((response) => {
           console.log("Family Response: ", response.data);
 
@@ -64,6 +66,8 @@ class FamilyForm extends Component {
             familyDescription: response.data.description,
             parentA: response.data.parentA.name,
             parentB: response.data.parentB.name,
+            marriageDate: response.data.marriageDate,
+            marriageLocation: response.data.marriageLocation,
             children: response.data.children,
           });
 
@@ -76,7 +80,7 @@ class FamilyForm extends Component {
 
     //Read in people to enter in family form dropdowns
     axios
-      .get(getClientUrl() + "/read/person")
+      .get(getServerUrl() + "/read/person")
       .then((response) => {
         console.log("Person Response: ", response.data);
         this.setState({ persons: response.data });
@@ -103,6 +107,8 @@ class FamilyForm extends Component {
       description: this.state.familyDescription,
       parentA: this.state.parentA,
       parentB: this.state.parentB,
+      marriageDate: this.state.marriageDate,
+      marriageLocation: this.state.marriageLocation,
       children: this.state.children,
     };
 
@@ -161,6 +167,14 @@ class FamilyForm extends Component {
 
   onChangeParentB(e) {
     this.setState({ parentB: e.target.value });
+  }
+
+  onChangeMarriageDate(e) {
+    this.setState({ marriageDate: e.target.value });
+  }
+
+  onChangeMarriageLocation(e) {
+    this.setState({ marriageLocation: e.target.value });
   }
 
   onChangeChild(e) {
@@ -284,6 +298,29 @@ class FamilyForm extends Component {
               required
             />
             <datalist id="parentB">{this.personDropdown()}</datalist>
+          </div>
+
+          <div className="form-group">
+            <label>Marriage Date: </label>
+            <br></br>
+            <input
+              type="date"
+              value={this.state.marriageDate}
+              onChange={this.onChangeMarriageDate}
+              name="trip-start"
+              min="1750-01-01"
+              max="2020-12-31"
+            ></input>
+          </div>
+
+          <div className="form-group">
+            <label>Marriage Location: </label>
+            <input
+              type="text"
+              className="form-control"
+              value={this.state.marriageLocation}
+              onChange={this.onChangeMarriageLocation}
+            />
           </div>
 
           {this.childInputList()}

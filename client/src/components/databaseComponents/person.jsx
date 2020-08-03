@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { formatDate } from "../formatDate";
 
 //Render person to appear in family table
 const Person = (props) => {
@@ -21,10 +22,16 @@ const Person = (props) => {
         <td>{props.description}</td>
       </tr>
       <tr>
-        <td>{props.birthdate != null ? props.birthdate.split("T")[0] : ""}</td>
+        <td>
+          <i>Born</i>{" "}
+          {props.birthdate != null ? formatDate(props.birthdate) : ""}
+        </td>
       </tr>
       <tr>
-        <td>{props.deathdate != null ? props.deathdate.split("T")[0] : ""}</td>
+        <td>
+          <i>Died</i>{" "}
+          {props.deathdate != null ? formatDate(props.deathdate) : ""}
+        </td>
       </tr>
     </div>
   );
