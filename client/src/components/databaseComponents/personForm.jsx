@@ -56,6 +56,16 @@ class PersonEditor extends Component {
             deathLocation: response.data.deathLocation,
             startedFamilies: response.data.startedFamilies,
           });
+          //Add families in here (By name)
+          let startedFamilyNames = [];
+
+          for (let i = 0; i < response.data.startedFamilies.length; i++) {
+            startedFamilyNames.push(response.data.startedFamilies[i].name);
+          }
+
+          this.setState({
+            startedFamilies: [...startedFamilyNames],
+          });
         })
         .catch(function (error) {
           console.log(error);
