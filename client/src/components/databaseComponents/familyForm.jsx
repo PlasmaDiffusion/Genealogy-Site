@@ -21,6 +21,8 @@ class FamilyForm extends Component {
       familyName: "",
       initialName: "",
       familyDescription: "",
+      marriageDate: "",
+      marriageLocation: "",
       parentA: "",
       parentB: "",
       children: [],
@@ -66,9 +68,20 @@ class FamilyForm extends Component {
             familyDescription: response.data.description,
             parentA: response.data.parentA.name,
             parentB: response.data.parentB.name,
-            marriageDate: response.data.marriageDate,
+            marriageDate: response.data.marriageDate.split("T")[0],
             marriageLocation: response.data.marriageLocation,
             children: response.data.children,
+          });
+
+          //Add children in here (By name)
+          let childrenNames = [];
+
+          for (let i = 0; i < response.data.children.length; i++) {
+            childrenNames.push(response.data.children[i].name);
+          }
+
+          this.setState({
+            children: [...childrenNames],
           });
 
           console.log("Children:", this.state.children);
@@ -122,6 +135,8 @@ class FamilyForm extends Component {
       familyToSubmit.parentB == null
     )
       return;
+
+    console.log("Sending JSON data:", familyToSubmit.children);
 
     if (this.props.editing) {
       //Edit a family or...
@@ -307,7 +322,7 @@ class FamilyForm extends Component {
               type="date"
               value={this.state.marriageDate}
               onChange={this.onChangeMarriageDate}
-              name="trip-start"
+              name="marriage-date"
               min="1750-01-01"
               max="2020-12-31"
             ></input>

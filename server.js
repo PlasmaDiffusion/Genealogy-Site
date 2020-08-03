@@ -44,17 +44,19 @@ async function findPeople(req, parentA, parentB, children) {
   await Person.findOne({ name: req.body.parentA }, function (err, person) {
     if (err) return handleError(err);
     parentA = person;
-    console.log("ParentA found ", person);
+    //console.log("ParentA found ", person);
   });
 
   //Find the second parent
   await Person.findOne({ name: req.body.parentB }, function (err, person) {
     if (err) return handleError(err);
     parentB = person;
-    console.log("ParentB found ", person);
+    //console.log("ParentB found ", person);
   });
 
   let childrenToFind = req.body.children;
+
+  console.log("Children trying to find:", childrenToFind);
 
   //Find the children parent
   for (let i = 0; i < childrenToFind.length; i++) {

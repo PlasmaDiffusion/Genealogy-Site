@@ -23,13 +23,13 @@ const Person = (props) => {
       </tr>
       <tr>
         <td>
-          <i>Born</i>{" "}
+          <i>Born </i>
           {props.birthdate != null ? formatDate(props.birthdate) : ""}
         </td>
       </tr>
       <tr>
         <td>
-          <i>Died</i>{" "}
+          <i>Died </i>
           {props.deathdate != null ? formatDate(props.deathdate) : ""}
         </td>
       </tr>

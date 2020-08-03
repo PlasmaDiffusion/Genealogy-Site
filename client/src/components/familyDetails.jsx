@@ -178,12 +178,12 @@ const Parent = (props) => {
       </p>
       <p>
         {props.person.birthdate
-          ? "Born:" + formatDate(props.person.birthdate)
+          ? "Born: " + formatDate(props.person.birthdate)
           : ""}
       </p>
       <p>
         {props.person.deathdate
-          ? "Died:" + formatDate(props.person.deathdate)
+          ? "Died: " + formatDate(props.person.deathdate)
           : ""}
       </p>
     </div>
