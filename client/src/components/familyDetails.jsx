@@ -18,6 +18,7 @@ class FamilyDetails extends Component {
       children: [],
       parentA: "",
       parentB: "",
+      baseId: "",
     };
 
     this.getFamily = this.getFamily.bind(this);
@@ -30,7 +31,11 @@ class FamilyDetails extends Component {
     //Read in the family being edited
     var url = new URLSearchParams(window.location.search);
     var id = url.get("id");
-    this.setState({ objectId: id });
+    var baseId = url.get("baseId");
+    this.setState({ familyId: id });
+
+    if (baseId) this.setState({ baseId: baseId });
+    console.log("baseId", baseId, this.state.baseId);
 
     axios
       .get(getServerUrl() + "/read/family/" + id)
@@ -80,7 +85,6 @@ class FamilyDetails extends Component {
     if (this.state.name != "") {
       return (
         <React.Fragment>
-          <FamilyBranch family={this.state} />
           <div class="container">
             <h1 class="d-flex justify-content-center">{this.state.name}</h1>
             <p class="d-flex justify-content-center">
@@ -127,6 +131,11 @@ class FamilyDetails extends Component {
               ))}
             </div>
           </div>
+          <h2>Tree</h2>
+          <FamilyBranch
+            familyId={this.state.baseId}
+            baseId={this.state.baseId}
+          />
         </React.Fragment>
       );
     } else return;

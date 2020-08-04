@@ -7,7 +7,7 @@ import axios from "axios";
 const Family = (props) => (
   <React.Fragment>
     <a
-      href={"/family/ ?id=" + props.family._id}
+      href={"/family/ ?id=" + props.family._id + "&baseId=" + props.family._id}
       title={props.family.description}
     >
       {props.family.name}

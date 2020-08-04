@@ -9,15 +9,16 @@ class FamilyBranch extends Component {
   constructor(props) {
     super(props);
 
-    this.setState({
+    this.state = {
+      _id: "",
       name: "",
       description: "",
-      children: "",
+      children: [],
       parentA: "",
       parentB: "",
       marriageDate: "",
       marriageLocation: "",
-    });
+    };
 
     this.getChildrenLI = this.getChildrenLI.bind(this);
     this.getStartedFamiliesLI = this.getStartedFamiliesLI.bind(this);
@@ -26,7 +27,7 @@ class FamilyBranch extends Component {
   //Load in stuff for each family branch
   componentDidMount() {
     axios
-      .get(getServerUrl() + "/read/family/" + this.props.family._id)
+      .get(getServerUrl() + "/read/family/" + this.props.familyId)
       .then((response) => {
         console.log("Family Response: ", response.data);
 
@@ -48,29 +49,38 @@ class FamilyBranch extends Component {
   }
 
   getStartedFamiliesLI(child) {
-    if (child.startedFamilies)
+    if (child.startedFamilies) {
+      let baseFamilyId = this.props.baseId;
       return (
         <ul>
           {child.startedFamilies.map((startedFamily, i) => {
-            return <FamilyBranch family={startedFamily} />;
+            return (
+              <FamilyBranch
+                familyId={startedFamily._id}
+                baseId={baseFamilyId}
+              />
+            );
           })}
         </ul>
       );
-    else return;
+    } else return;
   }
 
   getChildrenLI() {
     return (
-      <ul>
-        {this.props.family.children.map((child, i) => {
-          return (
-            <React.Fragment>
-              <li>{child.name}</li>
-              {this.getStartedFamiliesLI(child)}
-            </React.Fragment>
-          );
-        })}
-      </ul>
+      <React.Fragment>
+        <u>{this.state.children.length > 0 ? "Children" : ""}</u>
+        <ul>
+          {this.state.children.map((child, i) => {
+            return (
+              <React.Fragment>
+                <li>{child.name}</li>
+                {this.getStartedFamiliesLI(child)}
+              </React.Fragment>
+            );
+          })}
+        </ul>
+      </React.Fragment>
     );
   }
 
@@ -80,19 +90,22 @@ class FamilyBranch extends Component {
         <li>
           <a
             href={
-              this.props.family._id
-                ? "/family/ ?id=" + this.props.family._id
+              this.props.familyId
+                ? "/family/ ?id=" +
+                  this.props.familyId +
+                  "&baseId=" +
+                  this.props.baseId
                 : null
             }
-            title={this.props.family.description}
+            title={this.state.description}
           >
-            {this.props.family.name}
+            {this.state.name}
           </a>
         </li>
 
         <ul>
-          <li>{this.props.family.parentA.name}</li>
-          <li>{this.props.family.parentB.name}</li>
+          <li>{this.state.parentA.name}</li>
+          <li>{this.state.parentB.name}</li>
           {this.getChildrenLI()}
         </ul>
       </ul>
