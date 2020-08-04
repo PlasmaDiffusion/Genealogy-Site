@@ -198,8 +198,15 @@ const Child = (props) => {
       <p>
         <i>{props.person.description}</i>
       </p>
-      <p>Born: {props.person.birthdate.split("T")[0]}</p>
-      <p>Died: {props.person.deathdate.split("T")[0]}</p>
+      <p>
+        {props.person.birthdate
+          ? "Born: " + formatDate(props.person.birthdate)
+          : ""}
+      </p>
+      {props.person.deathdate
+          ? "Died: " + formatDate(props.person.deathdate)
+          : ""}
+      </p>
       <p>
         {props.person.startedFamilies.length > 0 ? <u>Started families</u> : ""}
         {props.person.startedFamilies.map((currentFamily) => (
