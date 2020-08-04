@@ -68,7 +68,9 @@ class FamilyForm extends Component {
             familyDescription: response.data.description,
             parentA: response.data.parentA.name,
             parentB: response.data.parentB.name,
-            marriageDate: response.data.marriageDate.split("T")[0],
+            marriageDate: response.data.marriageDate
+              ? response.data.marriageDate.split("T")[0]
+              : "",
             marriageLocation: response.data.marriageLocation,
             children: response.data.children,
           });
