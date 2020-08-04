@@ -5,6 +5,7 @@ import { getClientUrl, getServerUrl } from "./getUrl.js";
 import { formatDate } from "./formatDate.js";
 import Family from "./databaseComponents/family";
 import FamilyTree from "./familyTree";
+import FamilyBranch from "./familyBranch";
 
 //Display parents and children, but not a complex tree
 class FamilyDetails extends Component {
@@ -79,9 +80,7 @@ class FamilyDetails extends Component {
     if (this.state.name != "") {
       return (
         <React.Fragment>
-          {
-            //<FamilyTree tree={this.state} />
-          }
+          <FamilyBranch family={this.state} />
           <div class="container">
             <h1 class="d-flex justify-content-center">{this.state.name}</h1>
             <p class="d-flex justify-content-center">
@@ -101,6 +100,8 @@ class FamilyDetails extends Component {
                     <div class="col-sm d-flex justify-content-center">
                       {this.state.marriageLocation}
                     </div>
+                  </div>
+                  <div class="row">
                     <div class="col-sm d-flex justify-content-center">
                       {this.state.marriageDate
                         ? formatDate(this.state.marriageDate)
@@ -180,11 +181,15 @@ const Parent = (props) => {
         {props.person.birthdate
           ? "Born: " + formatDate(props.person.birthdate)
           : ""}
+        <br></br>
+        {props.person.birthLocation ? props.person.birthLocation : ""}
       </p>
       <p>
         {props.person.deathdate
           ? "Died: " + formatDate(props.person.deathdate)
           : ""}
+        <br></br>
+        {props.person.deathdate ? props.person.deathLocation : ""}
       </p>
     </div>
   );
@@ -202,11 +207,15 @@ const Child = (props) => {
         {props.person.birthdate
           ? "Born: " + formatDate(props.person.birthdate)
           : ""}
+        <br></br>
+        {props.person.birthLocation ? props.person.birthLocation : ""}
       </p>
       <p>
         {props.person.deathdate
           ? "Died: " + formatDate(props.person.deathdate)
           : ""}
+        <br></br>
+        {props.person.deathLocation ? props.person.deathLocation : ""}
       </p>
       <p>
         {props.person.startedFamilies.length > 0 ? <u>Started families</u> : ""}

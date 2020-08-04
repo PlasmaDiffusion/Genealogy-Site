@@ -78,7 +78,12 @@ class FamilyTree extends Component {
                 this.toggle(id);
               }}
             >
-              {family.name}
+              <a
+                href={family._id ? "/family/ ?id=" + family._id : null}
+                title={family.description}
+              >
+                {family.name}
+              </a>
             </span>
           </li>
 
@@ -122,6 +127,7 @@ class FamilyTree extends Component {
                     >
                       {id}
                       {currentChild.name}
+
                       {console.log("Child family", currentChild)}
                       {currentChild.startedFamilies.map((currentFamily) =>
                         this.getTreeData(currentFamily, id)
