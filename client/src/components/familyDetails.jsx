@@ -203,7 +203,8 @@ const Child = (props) => {
           ? "Born: " + formatDate(props.person.birthdate)
           : ""}
       </p>
-      {props.person.deathdate
+      <p>
+        {props.person.deathdate
           ? "Died: " + formatDate(props.person.deathdate)
           : ""}
       </p>
