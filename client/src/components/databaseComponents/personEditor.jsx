@@ -204,6 +204,7 @@ class PersonEditor extends Component {
   render() {
     return (
       <div>
+        <a href={getClientUrl() + "/admin"}>Back to Admin</a>
         <PersonForm editing={true} />
 
         {/*Delete person form*/}

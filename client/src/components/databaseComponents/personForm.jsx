@@ -261,6 +261,7 @@ class PersonEditor extends Component {
               name="trip-start"
               min="1750-01-01"
               max="2020-12-31"
+              required
             ></input>
           </div>
 

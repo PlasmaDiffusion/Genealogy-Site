@@ -97,19 +97,19 @@ class FamilyAdder extends Component {
         <FamilyLink />
         <div class="container">
           <p class="alert alert-warning">
-            Add people on the right. Then on the left, enter peoples' names
+            Add people on the left. Then on the right, enter peoples' names
             under ParentA, ParentB or Child.
             <br></br>
             The family won't be created if the people entered don't exist.
           </p>
           <div class="row">
-            <div class="col-sm-5">
+            <div class="col-sm-6">
+              <PersonForm editing={false} />
+            </div>
+            <div class="col-sm-6">
               <FamilyForm editing={false} />
             </div>
 
-            <div class="col-sm-5">
-              <PersonForm editing={false} />
-            </div>
             <div class="col-sm"></div>
           </div>
           <div class="row">

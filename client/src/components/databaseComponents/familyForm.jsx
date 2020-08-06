@@ -23,9 +23,12 @@ class FamilyForm extends Component {
       familyDescription: "",
       marriageDate: "",
       marriageLocation: "",
-      parentA: "",
-      parentB: "",
+      parentA: "", //For searching
+      parentA_Birthdate: "", //For searching
+      parentB: "", //For searching
+      parentB_Birthdate: "", //For searching
       children: [],
+      children_Birthdates: [],
     };
 
     this.onChangeParentA = this.onChangeParentA.bind(this);
@@ -67,7 +70,10 @@ class FamilyForm extends Component {
             initialName: response.data.name,
             familyDescription: response.data.description,
             parentA: response.data.parentA.name,
+            parentA_Birthdate: response.data.parentA.birthdate,
             parentB: response.data.parentB.name,
+            parentB_Birthdate: response.data.parentB.birthdate,
+
             marriageDate: response.data.marriageDate
               ? response.data.marriageDate.split("T")[0]
               : "",
@@ -75,15 +81,18 @@ class FamilyForm extends Component {
             children: response.data.children,
           });
 
-          //Add children in here (By name)
+          //Add children in here (By name and date)
           let childrenNames = [];
+          let children_Birthdates = [];
 
           for (let i = 0; i < response.data.children.length; i++) {
             childrenNames.push(response.data.children[i].name);
+            children_Birthdates.push(response.data.children[i].birthdate);
           }
 
           this.setState({
             children: [...childrenNames],
+            children_Birthdates: [...children_Birthdates],
           });
 
           console.log("Children:", this.state.children);
@@ -105,13 +114,6 @@ class FamilyForm extends Component {
       });
   }
 
-  //Give a selection of people
-  personDropdown() {
-    return this.state.persons.map(function (currentPerson, i) {
-      return <option value={currentPerson.name}>{currentPerson.name}</option>;
-    });
-  }
-
   //Submit form data here -----------------------------------------------
   onSubmitFamily(e) {
     e.preventDefault();
@@ -121,10 +123,13 @@ class FamilyForm extends Component {
       name: this.state.familyName,
       description: this.state.familyDescription,
       parentA: this.state.parentA,
+      parentA_Birthdate: this.state.parentA_Birthdate,
       parentB: this.state.parentB,
+      parentB_Birthdate: this.state.parentB_Birthdate,
       marriageDate: this.state.marriageDate,
       marriageLocation: this.state.marriageLocation,
       children: this.state.children,
+      children_Birthdates: this.state.children_Birthdates,
     };
 
     //Name and parents must be filled in at the very least.
@@ -160,14 +165,6 @@ class FamilyForm extends Component {
         window.location.replace(getClientUrl() + "/admin");
       });
     }
-
-    //Reset input values
-    this.setState({
-      name: "",
-      description: "",
-      birthdate: "",
-      deathdate: "",
-    });
   }
 
   onChangeFamilyName(e) {
@@ -178,12 +175,47 @@ class FamilyForm extends Component {
     this.setState({ familyDescription: e.target.value });
   }
 
+  //Give a selection of people
+  personDropdown() {
+    return this.state.persons.map(function (currentPerson, i) {
+      return (
+        <option
+          value={
+            currentPerson.name +
+            " | " +
+            (currentPerson.birthdate
+              ? currentPerson.birthdate.split("T")[0]
+              : "")
+          }
+        ></option>
+      );
+    });
+  }
+
   onChangeParentA(e) {
-    this.setState({ parentA: e.target.value });
+    //Split em apart as a name and date to search for
+    var nameAndDate = e.target.value.split(" | ");
+
+    if (nameAndDate.length > 1) {
+      this.setState({ parentA: nameAndDate[0] });
+      this.setState({ parentA_Birthdate: nameAndDate[1] + "T00:00:00.000Z" });
+    } else {
+      this.setState({ parentA: e.target.value });
+    }
+
+    console.log(this.state.parentA, this.state.parentA_Birthdate);
   }
 
   onChangeParentB(e) {
-    this.setState({ parentB: e.target.value });
+    //Split em apart as a name and date to search for
+    var nameAndDate = e.target.value.split(" | ");
+
+    if (nameAndDate.length > 1) {
+      this.setState({ parentB: nameAndDate[0] });
+      this.setState({ parentB_Birthdate: nameAndDate[1] + "T00:00:00.000Z" });
+    } else {
+      this.setState({ parentB: e.target.value });
+    }
   }
 
   onChangeMarriageDate(e) {
@@ -195,12 +227,25 @@ class FamilyForm extends Component {
   }
 
   onChangeChild(e) {
-    let newChildren = [...this.state.children];
+    //Split em apart as a name and date to search for
+    var nameAndDate = e.target.value.split(" | ");
 
-    newChildren[e.target.list.id] = e.target.value;
+    //Get a copy of the previous child state arrays to modify them
+    var newChildren = [...this.state.children];
+    var newChildren_Birthdates = [...this.state.children_Birthdates];
+
+    //Add a child with a name and date
+    if (nameAndDate.length > 1) {
+      newChildren[e.target.list.id] = nameAndDate[0];
+      newChildren_Birthdates[e.target.list.id] =
+        nameAndDate[1] + "T00:00:00.000Z";
+    } else {
+      newChildren[e.target.list.id] = e.target.value;
+    }
 
     this.setState({
       children: newChildren,
+      children_Birthdates: newChildren_Birthdates,
     });
   }
 

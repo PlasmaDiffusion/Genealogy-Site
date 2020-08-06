@@ -211,6 +211,7 @@ class FamilyEditor extends Component {
   render() {
     return (
       <div class="container">
+        <a href={getClientUrl() + "/admin"}>Back to Admin</a>
         {/*Edit family form*/}
         <FamilyForm editing={true} />
 

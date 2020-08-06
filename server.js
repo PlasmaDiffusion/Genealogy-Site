@@ -6,6 +6,7 @@ const mongoose = require("mongoose");
 const PORT = process.env.PORT || 4000;
 const routes = express.Router();
 const path = require("path");
+const { findPeople, findFamilies } = require("./serverFunctions");
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -13,7 +14,9 @@ app.use("/", routes);
 
 var ObjectID = require("mongodb").ObjectID;
 var Family = require("./family.js").family;
+exports.Family = Family;
 var Person = require("./family.js").person;
+exports.Person = Person;
 
 const uri =
   "mongodb+srv://admin:" +
@@ -40,53 +43,6 @@ app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname + "/client/build/index.html"));
 });
 
-async function findPeople(req, parentA, parentB, children) {
-  await Person.findOne({ name: req.body.parentA }, function (err, person) {
-    if (err) return handleError(err);
-    parentA = person;
-    //console.log("ParentA found ", person);
-  });
-
-  //Find the second parent
-  await Person.findOne({ name: req.body.parentB }, function (err, person) {
-    if (err) return handleError(err);
-    parentB = person;
-    //console.log("ParentB found ", person);
-  });
-
-  let childrenToFind = req.body.children;
-
-  console.log("Children trying to find:", childrenToFind);
-
-  //Find the children parent
-  for (let i = 0; i < childrenToFind.length; i++) {
-    await Person.findOne({ name: childrenToFind[i] }, function (err, person) {
-      if (err) return handleError(err);
-      if (person == null) return "Failed to find " + req.body.children[i];
-      children.push(person);
-      console.log("Child found ", person);
-    });
-  }
-  return { parentA, parentB };
-}
-
-async function findFamilies(req) {
-  let familiesToFind = req.body.startedFamilies;
-
-  let startedFamilies = [];
-
-  //Find some families
-  for (let i = 0; i < familiesToFind.length; i++) {
-    await Family.findOne({ name: familiesToFind[i] }, function (err, family) {
-      if (err) return handleError(err);
-      if (family == null) return "Failed to find " + familiesToFind[i].name;
-      startedFamilies.push(family);
-    });
-  }
-  console.log("Found these families", startedFamilies);
-  return startedFamilies;
-}
-
 //Get people
 routes.route("/read/person").get(function (req, res) {
   Person.find()
@@ -101,7 +57,7 @@ routes.route("/read/person").get(function (req, res) {
 });
 
 routes.route("/read/family").get(function (req, res) {
-  console.log("Reading in all families");
+  //console.log("Reading in all families");
 
   Family.find()
     .populate("parentA")
@@ -118,7 +74,7 @@ routes.route("/read/family").get(function (req, res) {
 
 //Get a family (read in json data)
 routes.route("/read/person/:id").get(function (req, res) {
-  console.log(req.params.id);
+  //console.log(req.params.id);
 
   Person.findById(req.params.id)
     .populate("startedFamilies")
@@ -293,6 +249,8 @@ routes.route("/add/family").post(async function (req, res) {
       parentA: parentA._id,
       parentB: parentB._id,
       children: children,
+      marriageDate: req.body.marriageDate,
+      marriageLocation: req.body.marriageLocation,
     });
 
     family

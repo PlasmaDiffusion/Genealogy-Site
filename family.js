@@ -6,7 +6,9 @@ let Person = new Schema({
   //Extra information
   description: String,
   birthdate: Date,
+  birthdateYearOnly: Boolean,
   deathdate: Date,
+  deathdateYearOnly: Boolean,
   birthLocation: String,
   deathLocation: String,
 
@@ -18,6 +20,7 @@ let Family = new Schema({
   name: String,
   description: String,
   marriageDate: Date,
+  marriageDateYearOnly: Boolean,
   marriageLocation: String,
 
   //People within the family have two parents and x number of children

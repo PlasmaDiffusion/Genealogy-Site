@@ -102,14 +102,14 @@ class FamilyDetails extends Component {
                   </div>
                   <div class="row">
                     <div class="col-sm d-flex justify-content-center">
-                      {this.state.marriageLocation}
+                      {this.state.marriageDate
+                        ? formatDate(this.state.marriageDate)
+                        : ""}
                     </div>
                   </div>
                   <div class="row">
                     <div class="col-sm d-flex justify-content-center">
-                      {this.state.marriageDate
-                        ? formatDate(this.state.marriageDate)
-                        : ""}
+                      {this.state.marriageLocation}
                     </div>
                   </div>
                 </div>
@@ -127,6 +127,7 @@ class FamilyDetails extends Component {
               {this.state.children.map((child) => (
                 <Child //Iterate through child data here
                   person={child}
+                  baseId={this.state.baseId}
                 />
               ))}
             </div>
@@ -232,7 +233,9 @@ const Child = (props) => {
           <React.Fragment>
             <br></br>
             <a
-              href={"/family/ ?id=" + currentFamily._id}
+              href={
+                "/family/ ?id=" + currentFamily._id + "&baseId=" + props.baseId
+              }
               title={currentFamily.description}
             >
               {currentFamily.name}
