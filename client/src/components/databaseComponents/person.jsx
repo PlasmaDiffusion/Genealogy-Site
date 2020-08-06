@@ -24,13 +24,17 @@ const Person = (props) => {
       <tr>
         <td>
           <i>Born </i>
-          {props.birthdate != null ? formatDate(props.birthdate) : ""}
+          {props.birthdate
+            ? formatDate(props.birthdate, props.birthdateYearOnly)
+            : ""}
         </td>
       </tr>
       <tr>
         <td>
           <i>Died </i>
-          {props.deathdate != null ? formatDate(props.deathdate) : ""}
+          {props.deathdate
+            ? formatDate(props.deathdate, props.deathdateYearOnly)
+            : ""}
         </td>
       </tr>
     </div>

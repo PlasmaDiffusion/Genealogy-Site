@@ -12,7 +12,9 @@ class PersonEditor extends Component {
       initialName: "",
       description: "",
       birthdate: "",
+      birthdateYearOnly: false,
       deathdate: "",
+      deathdateYearOnly: false,
       objectId: "",
       confirmedDelete: false,
       startedFamilies: [],
@@ -23,6 +25,8 @@ class PersonEditor extends Component {
     this.onChangeDescription = this.onChangeDescription.bind(this);
     this.onChangeBirthdate = this.onChangeBirthdate.bind(this);
     this.onChangeDeathdate = this.onChangeDeathdate.bind(this);
+    this.onChangeBirthdateYearOnly = this.onChangeBirthdateYearOnly.bind(this);
+    this.onChangeDeathdateYearOnly = this.onChangeDeathdateYearOnly.bind(this);
     this.onChangeBirthLocation = this.onChangeBirthLocation.bind(this);
     this.onChangeDeathLocation = this.onChangeDeathLocation.bind(this);
 
@@ -50,8 +54,12 @@ class PersonEditor extends Component {
             name: response.data.name,
             initialName: response.data.name,
             description: response.data.description,
-            birthdate: response.data.birthdate.split("T")[0],
-            deathdate: response.data.deathdate.split("T")[0],
+            birthdate: response.data.birthdate.split("T")[0], //Must always be a birthdate
+            deathdate: response.data.deathdate
+              ? response.data.deathdate.split("T")[0] //Death dates aren't required so check if they exist
+              : "",
+            birthdateYearOnly: response.data.birthdateYearOnly,
+            deathdateYearOnly: response.data.deathdateYearOnly,
             birthLocation: response.data.birthLocation,
             deathLocation: response.data.deathLocation,
             startedFamilies: response.data.startedFamilies,
@@ -94,6 +102,8 @@ class PersonEditor extends Component {
       description: this.state.description,
       birthdate: this.state.birthdate,
       deathdate: this.state.deathdate,
+      birthdateYearOnly: this.state.birthdateYearOnly,
+      deathdateYearOnly: this.state.deathdateYearOnly,
       birthLocation: this.state.birthLocation,
       deathLocation: this.state.deathLocation,
       startedFamilies: this.state.startedFamilies,
@@ -144,6 +154,16 @@ class PersonEditor extends Component {
 
   onChangeDeathdate(e) {
     this.setState({ deathdate: e.target.value });
+  }
+
+  onChangeBirthdateYearOnly(e) {
+    console.log("Birthdate yearonly");
+    this.setState({ birthdateYearOnly: e.target.checked });
+  }
+
+  onChangeDeathdateYearOnly(e) {
+    console.log("Deathdate yearonly");
+    this.setState({ deathdateYearOnly: e.target.checked });
   }
 
   onChangeBirthLocation(e) {
@@ -263,6 +283,13 @@ class PersonEditor extends Component {
               max="2020-12-31"
               required
             ></input>
+            <br></br>
+            <label>Show Year Only: &nbsp; </label>
+            <input
+              type="checkbox"
+              checked={this.state.birthdateYearOnly}
+              onClick={this.onChangeBirthdateYearOnly}
+            ></input>
           </div>
 
           <div className="form-group">
@@ -284,6 +311,13 @@ class PersonEditor extends Component {
               name="trip-start"
               min="1750-01-01"
               max="2020-12-31"
+            ></input>
+            <br></br>
+            <label>Show Year Only: &nbsp; </label>
+            <input
+              type="checkbox"
+              checked={this.state.deathdateYearOnly}
+              onClick={this.onChangeDeathdateYearOnly}
             ></input>
           </div>
 

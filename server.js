@@ -142,6 +142,7 @@ routes.route("/edit/family/:id").post(async function (req, res) {
           family.parentA = parentA._id;
           family.parentB = parentB._id;
           family.marriageDate = req.body.marriageDate;
+          family.marriageDateYearOnly = req.body.marriageDateYearOnly;
           family.marriageLocation = req.body.marriageLocation;
           family.children = children;
           family
@@ -171,7 +172,9 @@ routes.route("/edit/person/:id").post(function (req, res) {
       person.name = req.body.name;
       person.description = req.body.description;
       person.birthdate = req.body.birthdate;
+      person.birthdateYearOnly = req.body.birthdateYearOnly;
       person.deathdate = req.body.deathdate;
+      person.deathdateYearOnly = req.body.deathdateYearOnly;
       person.birthLocation = req.body.birthLocation;
       person.deathLocation = req.body.deathLocation;
       person.startedFamilies = await findFamilies(req);
@@ -250,6 +253,7 @@ routes.route("/add/family").post(async function (req, res) {
       parentB: parentB._id,
       children: children,
       marriageDate: req.body.marriageDate,
+      marriageDateYearOnly: req.body.marriageDateYearOnly,
       marriageLocation: req.body.marriageLocation,
     });
 

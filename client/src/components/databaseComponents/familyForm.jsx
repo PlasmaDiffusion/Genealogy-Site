@@ -22,6 +22,7 @@ class FamilyForm extends Component {
       initialName: "",
       familyDescription: "",
       marriageDate: "",
+      marriageDateYearOnly: false,
       marriageLocation: "",
       parentA: "", //For searching
       parentA_Birthdate: "", //For searching
@@ -36,6 +37,9 @@ class FamilyForm extends Component {
     this.onChangeFamilyName = this.onChangeFamilyName.bind(this);
     this.onChangeFamilyDescription = this.onChangeFamilyDescription.bind(this);
     this.onChangeMarriageDate = this.onChangeMarriageDate.bind(this);
+    this.onChangeMarriageDateYearOnly = this.onChangeMarriageDateYearOnly.bind(
+      this
+    );
     this.onChangeMarriageLocation = this.onChangeMarriageLocation.bind(this);
 
     this.onChangeChild = this.onChangeChild.bind(this);
@@ -127,6 +131,7 @@ class FamilyForm extends Component {
       parentB: this.state.parentB,
       parentB_Birthdate: this.state.parentB_Birthdate,
       marriageDate: this.state.marriageDate,
+      marriageDateYearOnly: this.state.marriageDateYearOnly,
       marriageLocation: this.state.marriageLocation,
       children: this.state.children,
       children_Birthdates: this.state.children_Birthdates,
@@ -220,6 +225,10 @@ class FamilyForm extends Component {
 
   onChangeMarriageDate(e) {
     this.setState({ marriageDate: e.target.value });
+  }
+
+  onChangeMarriageDateYearOnly(e) {
+    this.setState({ marriageDateYearOnly: e.target.checked });
   }
 
   onChangeMarriageLocation(e) {
@@ -372,6 +381,13 @@ class FamilyForm extends Component {
               name="marriage-date"
               min="1750-01-01"
               max="2020-12-31"
+            ></input>
+            <br></br>
+            <label>Show Year Only: &nbsp; </label>
+            <input
+              type="checkbox"
+              checked={this.state.marriageDateYearOnly}
+              onClick={this.onChangeMarriageDateYearOnly}
             ></input>
           </div>
 

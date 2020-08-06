@@ -37,7 +37,10 @@ const Family = (props) => {
           <td>
             Marriage Date:
             {props.family.marriageDate
-              ? formatDate(props.family.marriageDate)
+              ? formatDate(
+                  props.family.marriageDate,
+                  props.family.marriageDateYearOnly
+                )
               : ""}
           </td>
           <td>Marriage Location: {props.family.marriageLocation}</td>
@@ -52,7 +55,9 @@ const Family = (props) => {
                   name={child.name}
                   description={child.description}
                   birthdate={child.birthdate}
+                  brithdateYearOnly={child.birthdateYearOnly}
                   deathdate={child.deathdate}
+                  deathdateYearOnly={child.deathdateYearOnly}
                   _id={child._id}
                 />
                 <br></br>

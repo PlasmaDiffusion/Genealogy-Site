@@ -53,6 +53,7 @@ class FamilyDetails extends Component {
           parentA: response.data.parentA,
           parentB: response.data.parentB,
           marriageDate: response.data.marriageDate,
+          marriageDateYearOnly: response.data.marriageDateYearOnly,
           marriageLocation: response.data.marriageLocation,
         });
       })
@@ -103,7 +104,10 @@ class FamilyDetails extends Component {
                   <div class="row">
                     <div class="col-sm d-flex justify-content-center">
                       {this.state.marriageDate
-                        ? formatDate(this.state.marriageDate)
+                        ? formatDate(
+                            this.state.marriageDate,
+                            this.state.marriageDateYearOnly
+                          )
                         : ""}
                     </div>
                   </div>
@@ -189,14 +193,16 @@ const Parent = (props) => {
       </p>
       <p>
         {props.person.birthdate
-          ? "Born: " + formatDate(props.person.birthdate)
+          ? "Born: " +
+            formatDate(props.person.birthdate, props.person.birthdateYearOnly)
           : ""}
         <br></br>
         {props.person.birthLocation ? props.person.birthLocation : ""}
       </p>
       <p>
         {props.person.deathdate
-          ? "Died: " + formatDate(props.person.deathdate)
+          ? "Died: " +
+            formatDate(props.person.deathdate, props.person.deathdateYearOnly)
           : ""}
         <br></br>
         {props.person.deathdate ? props.person.deathLocation : ""}
@@ -215,14 +221,16 @@ const Child = (props) => {
       </p>
       <p>
         {props.person.birthdate
-          ? "Born: " + formatDate(props.person.birthdate)
+          ? "Born: " +
+            formatDate(props.person.birthdate, props.person.birthdateYearOnly)
           : ""}
         <br></br>
         {props.person.birthLocation ? props.person.birthLocation : ""}
       </p>
       <p>
         {props.person.deathdate
-          ? "Died: " + formatDate(props.person.deathdate)
+          ? "Died: " +
+            formatDate(props.person.deathdate, props.person.deathdateYearOnly)
           : ""}
         <br></br>
         {props.person.deathLocation ? props.person.deathLocation : ""}
