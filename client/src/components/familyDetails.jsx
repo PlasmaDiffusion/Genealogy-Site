@@ -130,6 +130,9 @@ class FamilyDetails extends Component {
                   {this.state.children.length > 0 ? "Children" : ""}
                 </h4>
               </div>
+              <br></br>
+              <br></br>
+              <br></br>
             </div>
             {/*children row*/}
             <div class="row">
