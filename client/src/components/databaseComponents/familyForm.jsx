@@ -21,6 +21,7 @@ class FamilyForm extends Component {
       familyName: "",
       initialName: "",
       familyDescription: "",
+      subFamily: false,
       marriageDate: "",
       marriageDateYearOnly: false,
       marriageLocation: "",
@@ -36,6 +37,7 @@ class FamilyForm extends Component {
     this.onChangeParentB = this.onChangeParentB.bind(this);
     this.onChangeFamilyName = this.onChangeFamilyName.bind(this);
     this.onChangeFamilyDescription = this.onChangeFamilyDescription.bind(this);
+    this.onChangeSubFamily = this.onChangeSubFamily.bind(this);
     this.onChangeMarriageDate = this.onChangeMarriageDate.bind(this);
     this.onChangeMarriageDateYearOnly = this.onChangeMarriageDateYearOnly.bind(
       this
@@ -73,6 +75,7 @@ class FamilyForm extends Component {
             familyName: response.data.name,
             initialName: response.data.name,
             familyDescription: response.data.description,
+            subFamily: response.data.subFamily,
             parentA: response.data.parentA.name,
             parentA_Birthdate: response.data.parentA.birthdate,
             parentB: response.data.parentB.name,
@@ -126,6 +129,7 @@ class FamilyForm extends Component {
     const familyToSubmit = {
       name: this.state.familyName,
       description: this.state.familyDescription,
+      subFamily: this.state.subFamily,
       parentA: this.state.parentA,
       parentA_Birthdate: this.state.parentA_Birthdate,
       parentB: this.state.parentB,
@@ -178,6 +182,10 @@ class FamilyForm extends Component {
 
   onChangeFamilyDescription(e) {
     this.setState({ familyDescription: e.target.value });
+  }
+
+  onChangeSubFamily(e) {
+    this.setState({ subFamily: e.target.checked });
   }
 
   //Give a selection of people
@@ -343,6 +351,29 @@ class FamilyForm extends Component {
               value={this.state.familyDescription}
               onChange={this.onChangeFamilyDescription}
             />
+          </div>
+
+          <div
+            className="form-group"
+            data-toggle="tooltip"
+            data-placement="right"
+            title="A sub family won't show up on the sidebar. It can only be accessed from family trees."
+          >
+            <label>Sub Family: &nbsp; </label>{" "}
+            <input
+              type="checkbox"
+              checked={this.state.subFamily}
+              onClick={this.onChangeSubFamily}
+            ></input>
+            <button
+              type="button"
+              class="btn btn-link btn-sm"
+              data-toggle="tooltip"
+              data-placement="top"
+              disabled
+            >
+              ?
+            </button>
           </div>
 
           <div className="form-group">

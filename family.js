@@ -19,6 +19,7 @@ let Person = new Schema({
 let Family = new Schema({
   name: String,
   description: String,
+  subFamily: Boolean,
   marriageDate: Date,
   marriageDateYearOnly: Boolean,
   marriageLocation: String,

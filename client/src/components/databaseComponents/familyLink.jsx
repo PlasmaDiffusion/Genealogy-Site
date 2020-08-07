@@ -3,24 +3,15 @@ import { getClientUrl, getServerUrl } from "../getUrl.js";
 
 import axios from "axios";
 
-//Iterate through family data here
-const Family = (props) => (
-  <React.Fragment>
-    <a
-      href={"/family/ ?id=" + props.family._id + "&baseId=" + props.family._id}
-      title={props.family.description}
-    >
-      {props.family.name}
-    </a>
-  </React.Fragment>
-);
-
+//Read in families, and show non sub families as links on the sidebar.
 class FamilyLink extends Component {
   constructor(props) {
     super(props);
     this.state = {
       families: [],
     };
+
+    this.familyList = this.familyList.bind(this);
   }
 
   //Read in data
@@ -40,8 +31,24 @@ class FamilyLink extends Component {
 
   //Show links to families
   familyList() {
+    var thisObj = this;
     return this.state.families.map(function (currentFamily, i) {
-      return <Family family={currentFamily} key={i} />;
+      return currentFamily.subFamily ? (
+        ""
+      ) : (
+        <React.Fragment>
+          <FamilyWithEdit
+            family={currentFamily}
+            key={i}
+            editing={thisObj.props.editing}
+          />
+          <Family
+            family={currentFamily}
+            key={i}
+            editing={thisObj.props.editing}
+          />
+        </React.Fragment>
+      );
     });
   }
 
@@ -56,5 +63,58 @@ class FamilyLink extends Component {
     );
   }
 }
+
+//Put links here to later be put on the sidebar
+const Family = (props) =>
+  props.editing ? (
+    <React.Fragment />
+  ) : (
+    <React.Fragment>
+      <a
+        href={
+          "/family/ ?id=" + props.family._id + "&baseId=" + props.family._id
+        }
+        title={props.family.description}
+      >
+        {props.family.name}
+      </a>
+    </React.Fragment>
+  );
+
+//Family links appear here in a table, both to the actual page and an edit link
+const FamilyWithEdit = (props) =>
+  props.editing ? (
+    <React.Fragment>
+      <table class="table table-sm">
+        <tbody>
+          <tr scope="row">
+            <td scope="col">
+              <a
+                href={
+                  "/family/ ?id=" +
+                  props.family._id +
+                  "&baseId=" +
+                  props.family._id
+                }
+                title={props.family.description}
+              >
+                {props.family.name}
+              </a>
+            </td>
+            <td scope="col">
+              <a
+                class="btn btn-link btn-sm"
+                href={"/edit/family/ ?id=" + props.family._id}
+              >
+                (Edit)
+              </a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </React.Fragment>
+  ) : (
+    <React.Fragment />
+  );
 
 export default FamilyLink;

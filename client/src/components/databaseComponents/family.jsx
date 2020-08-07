@@ -9,7 +9,9 @@ const Family = (props) => {
   return (
     <React.Fragment>
       <Collapse isOpened={props.viewingTable}>
-        <th>{props.family.name}</th>
+        <th>
+          {props.family.name} {props.family.subFamily ? "(Sub Family)" : ""}
+        </th>
         <th>
           <i>{props.family.description}</i>
         </th>

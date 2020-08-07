@@ -24,7 +24,6 @@ import FamilyLink from "./databaseComponents/familyLink";
 import PersonEditor from "./databaseComponents/personEditor";
 import FamilyEditor from "./databaseComponents/familyEditor";
 import FamilyDetails from "./familyDetails";
-import FamilyTree from "./familyTree";
 import Login from "./auth/Login";
 import Logout from "./auth/Logout";
 
@@ -69,7 +68,7 @@ export default withOktaAuth(
           */}
             <Switch>
               <Route exact path="/">
-                <FamilyLink />
+                <FamilyLink editing={false} />
               </Route>
               <Route path="/family/:id">
                 <FamilyDetails />

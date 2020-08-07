@@ -1,5 +1,3 @@
-import { Component } from "react";
-
 //Use this class to check if families have references to deleted people.
 class NullChecker {
   constructor() {}

@@ -42,6 +42,8 @@ class FamilyBranch extends Component {
           parentA: response.data.parentA,
           parentB: response.data.parentB,
         });
+
+        this.setState({ children: [...this.state.children.sort()] });
       })
       .catch(function (error) {
         console.log(error);

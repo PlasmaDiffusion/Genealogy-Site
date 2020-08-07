@@ -139,6 +139,7 @@ routes.route("/edit/family/:id").post(async function (req, res) {
         else {
           family.name = req.body.name;
           family.description = req.body.description;
+          family.subFamily = req.body.subFamily;
           family.parentA = parentA._id;
           family.parentB = parentB._id;
           family.marriageDate = req.body.marriageDate;
@@ -249,6 +250,7 @@ routes.route("/add/family").post(async function (req, res) {
     let family = new Family({
       name: req.body.name,
       description: req.body.description,
+      subFamily: req.body.subFamily,
       parentA: parentA._id,
       parentB: parentB._id,
       children: children,

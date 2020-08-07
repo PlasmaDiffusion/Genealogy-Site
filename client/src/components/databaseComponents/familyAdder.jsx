@@ -71,7 +71,9 @@ class FamilyAdder extends Component {
       return (
         <div>
           <button
-            class="btn btn-info"
+            class={
+              currentFamily.subFamily ? "btn btn-outline-info" : "btn btn-info"
+            }
             onClick={() => {
               obj.revealFamily(i);
             }}
@@ -94,11 +96,12 @@ class FamilyAdder extends Component {
   render() {
     return (
       <div>
-        <FamilyLink />
+        <FamilyLink editing={true} />
         <div class="container">
           <p class="alert alert-warning">
-            Add people on the left. Then on the right, enter peoples' names
-            under ParentA, ParentB or Child.
+            Add people on the left. Every person must have a name and birthdate.
+            <br></br> Then on the right, create a family by entering peoples'
+            names under ParentA, ParentB or Child.
             <br></br>
             The family won't be created if the people entered don't exist.
           </p>
@@ -112,8 +115,25 @@ class FamilyAdder extends Component {
 
             <div class="col-sm"></div>
           </div>
+          <br></br>
+          <br></br>
+          <br></br>
+          <br></br>
           <div class="row">
             <h3>Family Editor</h3>
+          </div>
+          <div class="row">
+            <p class="alert alert-warning">
+              Click on a button to see a table of the family. Then click the
+              edit links to edit that family or a specific person.
+              <br></br>
+              Alternatively, you can click edit next to families on the sidebar.
+              <br></br>
+              Outlined buttons are for families that don't show up on the
+              sidebar.
+            </p>
+          </div>
+          <div class="row">
             <table className="table table-striped" style={{ marginTop: 20 }}>
               <tbody>{this.familyList()}</tbody>
             </table>
