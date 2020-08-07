@@ -90,7 +90,9 @@ class FamilyDetails extends Component {
       return (
         <React.Fragment>
           <div class="container">
-            <h1 class="d-flex justify-content-center">{this.state.name}</h1>
+            <h1 class="d-flex justify-content-center">
+              The {this.state.name} Family
+            </h1>
             <p class="d-flex justify-content-center">
               <i>{this.state.description}</i>
             </p>
