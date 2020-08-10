@@ -24,8 +24,11 @@ import FamilyLink from "./databaseComponents/familyLink";
 import PersonEditor from "./databaseComponents/personEditor";
 import FamilyEditor from "./databaseComponents/familyEditor";
 import FamilyDetails from "./familyDetails";
+import FamilyTree from "./familyTree";
 import Login from "./auth/Login";
 import Logout from "./auth/Logout";
+
+//import data from "../data";
 
 export default withOktaAuth(
   class Home extends Component {
@@ -58,7 +61,7 @@ export default withOktaAuth(
             <Link to=""> Home </Link>
             <br></br>
             <hr />
-
+            <FamilyTree />
             {/*
             A <Switch> looks through all its children <Route>
             elements and renders the first one whose path
@@ -95,44 +98,6 @@ export default withOktaAuth(
           </div>
         </Router>
       );
-
-      /*render() {
-      if (this.props.authState.isPending) {
-        return <div>Loading...</div>;
-      }
-
-      const button = this.props.authState.isAuthenticated ? (
-        <button
-          onClick={() => {
-            this.props.authService.logout();
-          }}
-        >
-          Logout
-        </button>
-      ) : (
-        <button
-          onClick={() => {
-            this.props.authService.login();
-          }}
-        >
-          Login
-        </button>
-      );
-
-      return (
-        <div>
-          {this.state.userInfo && (
-            <div>
-              <p>Logged in as {this.state.userInfo.name}.</p>
-            </div>
-          )}
-
-          <Link to="/">Home</Link>
-          <br />
-          {button}
-        </div>
-      );
-    }*/
     }
   }
 );

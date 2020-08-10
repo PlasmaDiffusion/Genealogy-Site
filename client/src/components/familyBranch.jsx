@@ -3,6 +3,7 @@ import axios from "axios";
 import { getClientUrl, getServerUrl } from "./getUrl.js";
 import { formatDate } from "./formatDate.js";
 import NullChecker from "./databaseComponents/classes/nullChecker.js";
+import TreeData from "./databaseComponents/classes/treeData.js";
 
 //Each component is a branch on a tree. It shows the family, then the parents, then the children all in their own lists. It can create more components recursively.
 class FamilyBranch extends Component {
@@ -20,8 +21,11 @@ class FamilyBranch extends Component {
       marriageLocation: "",
     };
 
+    this.myRef = React.createRef();
+
     this.getChildrenLI = this.getChildrenLI.bind(this);
     this.getStartedFamiliesLI = this.getStartedFamiliesLI.bind(this);
+    this.makeTreeData = this.makeTreeData.bind(this);
   }
 
   //Load in stuff for each family branch
@@ -48,6 +52,26 @@ class FamilyBranch extends Component {
       .catch(function (error) {
         console.log(error);
       });
+  }
+
+  componentDidUpdate() {
+    if (this.props.baseId == this.props.familyId) {
+      console.log("treeDataStart", this.myRef);
+      this.makeTreeData(this.myRef.current);
+    }
+  }
+
+  makeTreeData(element) {
+    if (element.children) {
+      let children = element.children;
+      for (let i = 0; i < children.length; i++) {
+        let html = children[i].innerHTML;
+        if (html)
+          if (!html.includes("<"))
+            console.log("treeDataChildrenInnerHtml", children[i].innerHTML);
+        this.makeTreeData(children[i]);
+      }
+    }
   }
 
   getStartedFamiliesLI(child) {
@@ -88,7 +112,7 @@ class FamilyBranch extends Component {
 
   render() {
     return (
-      <ul>
+      <ul ref={this.myRef}>
         <li>
           <a
             href={
