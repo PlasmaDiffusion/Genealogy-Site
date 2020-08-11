@@ -60,6 +60,7 @@ routes.route("/read/family").get(function (req, res) {
   //console.log("Reading in all families");
 
   Family.find()
+    .populate("rootFamily")
     .populate("parentA")
     .populate("parentB")
     .populate("children") // Populate the person object references
@@ -91,6 +92,7 @@ routes.route("/read/person/:id").get(function (req, res) {
 //Get a family (read in json data)
 routes.route("/read/family/:id").get(function (req, res) {
   Family.findById(req.params.id)
+    .populate("rootFamily")
     .populate("parentA")
     .populate("parentB")
     .populate({
@@ -140,7 +142,7 @@ routes.route("/edit/family/:id").post(async function (req, res) {
           family.name = req.body.name;
           family.description = req.body.description;
           family.subFamily = req.body.subFamily;
-          family.parentA = parentA._id;
+          family.rootFamily = family.parentA = parentA._id;
           family.parentB = parentB._id;
           family.marriageDate = req.body.marriageDate;
           family.marriageDateYearOnly = req.body.marriageDateYearOnly;

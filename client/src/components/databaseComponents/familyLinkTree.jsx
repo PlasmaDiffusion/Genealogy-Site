@@ -9,35 +9,11 @@ class FamilyLinkTree extends Component {
     super(props);
     this.state = {
       families: [],
+      rootFamily: "", //Root family that all sub families should belong to
     };
 
-    //Refs can't normally be used with arrays :(
-    this.ref0 = React.createRef();
-    this.ref1 = React.createRef();
-    this.ref2 = React.createRef();
-    this.ref3 = React.createRef();
-    this.ref4 = React.createRef();
-    this.ref5 = React.createRef();
-    this.ref6 = React.createRef();
-    this.ref7 = React.createRef();
-    this.ref8 = React.createRef();
-
-    this.familyList = this.familyList.bind(this);
+    this.filterOutSubFamilies = this.filterOutSubFamilies.bind(this);
     this.displayFamily = this.displayFamily.bind(this);
-  }
-
-  getRefArray() {
-    return [
-      this.ref0.current,
-      this.ref1.current,
-      this.ref2.current,
-      this.ref3.current,
-      this.ref4.current,
-      this.ref5.current,
-      this.ref6.current,
-      this.ref7.current,
-      this.ref8.current,
-    ];
   }
 
   //Read in data
@@ -47,22 +23,44 @@ class FamilyLinkTree extends Component {
     axios
       .get(getServerUrl() + "/read/family")
       .then((response) => {
+        //Collect families here
         console.log("Family Response: ", response.data);
         this.setState({ families: response.data });
 
-        var refs = this.getRefArray();
-        console.log("refs", refs);
-        refs[0] = (
-          <Family
-            family={this.state.families[0]}
-            key={0}
-            editing={this.props.editing}
-          />
-        );
+        //Remove the families we don't need (Either sub families or families not part of a specific family tree)
+        if (this.props.rootFamily) this.filterOutSubFamilies();
+        else this.filterOutWrongFamilies();
       })
       .catch(function (error) {
         console.log(error);
       });
+  }
+
+  //Overwrite the families state to ONLY use regular families
+  filterOutSubFamilies() {
+    var filteredArray = [];
+
+    this.state.families.forEach((family) => {
+      if (family.subFamily) {
+        if (family.rootFamily == this.props.rootFamily)
+          filteredArray.push(family);
+      }
+    });
+
+    //Get a copy of this new array for the families state
+    this.setState({ families: [...filteredArray] });
+  }
+
+  //Overwrite the families state to ONLY use regular families
+  filterOutWrongFamilies() {
+    var filteredArray = [];
+
+    this.state.families.forEach((family) => {
+      if (!family.subFamily) filteredArray.push(family);
+    });
+
+    //Get a copy of this new array for the families state
+    this.setState({ families: [...filteredArray] });
   }
 
   //Either return the family of the particular index or return nothing if it doesn't exist
@@ -76,38 +74,6 @@ class FamilyLinkTree extends Component {
     ) : (
       ""
     );
-  }
-
-  //Show links to families
-  familyList() {
-    var thisObj = this;
-    return this.state.families.map(function (currentFamily, i) {
-      return currentFamily.subFamily ? (
-        ""
-      ) : i % 2 == 0 ? (
-        <React.Fragment>
-          {/*New row*/}
-          <div class="row">
-            <Family
-              family={currentFamily}
-              key={i}
-              editing={thisObj.props.editing}
-            />
-          </div>
-        </React.Fragment>
-      ) : (
-        <React.Fragment>
-          {/*No new row*/}
-          <div class="col-sm">
-            <Family
-              family={currentFamily}
-              key={i}
-              editing={thisObj.props.editing}
-            />
-          </div>
-        </React.Fragment>
-      );
-    });
   }
 
   //Render a sidebar with links to families
@@ -143,17 +109,16 @@ class FamilyLinkTree extends Component {
           </div>
           <div class="row">
             <div class="col-sm">
-              <h1> {this.displayFamily(1)} </h1>
+              <h1> {this.displayFamily(2)} </h1>
             </div>
             <div class="col-sm">
               <h1 style={{ visibility: "hidden" }}> | </h1>
             </div>
             <div class="col-sm">
-              <h1> {this.displayFamily(0)} </h1>
+              <h1> {this.displayFamily(3)} </h1>
             </div>
           </div>
         </div>
-        {this.familyList()}
       </React.Fragment>
     );
   }

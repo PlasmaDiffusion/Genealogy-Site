@@ -23,7 +23,7 @@ let Family = new Schema({
   marriageDateYearOnly: Boolean,
   marriageLocation: String,
 
-  //Optionally, this can be a sub family. It will only be found in the main page from the root family
+  //If this is a "sub family", people can access it after clicking on a root family.
   subFamily: Boolean,
   rootFamily: { type: mongoose.Schema.Types.ObjectId, ref: "Family" },
 
