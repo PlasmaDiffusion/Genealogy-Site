@@ -19,6 +19,7 @@ class FamilyBranch extends Component {
       parentB: "",
       marriageDate: "",
       marriageLocation: "",
+      treeData: { name: "", children: [] },
     };
 
     this.myRef = React.createRef();
@@ -55,23 +56,39 @@ class FamilyBranch extends Component {
   }
 
   componentDidUpdate() {
+    //Check if the root part of the tree
     if (this.props.baseId == this.props.familyId) {
       console.log("treeDataStart", this.myRef);
-      this.makeTreeData(this.myRef.current);
+
+      var children = this.makeTreeData(this.myRef.current);
+      /*this.setState({
+        treeData: { name: this.state.name, children: children },
+      });*/
     }
   }
 
   makeTreeData(element) {
+    var childData = [];
+
     if (element.children) {
       let children = element.children;
       for (let i = 0; i < children.length; i++) {
         let html = children[i].innerHTML;
-        if (html)
+        if (true) {
           if (!html.includes("<"))
-            console.log("treeDataChildrenInnerHtml", children[i].innerHTML);
-        this.makeTreeData(children[i]);
+            console.log(
+              "treeDataChildrenInnerHtml",
+              children[i],
+              children[i].tagName,
+              html
+            );
+        }
       }
+
+      //return childData;
     }
+
+    return childData;
   }
 
   getStartedFamiliesLI(child) {

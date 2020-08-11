@@ -130,12 +130,10 @@ class FamilyTree extends Component {
       },
     };
   }
-
-  handleClick = (event: any, node: any) => {
-    console.log("handle click ", event);
-    console.log("handle click node", node);
-    alert(`${node} got clicked`);
-  };
+  handleClick(e, name) {
+    console.log(e, name);
+    alert(name);
+  }
 
   loadFamily(familyId, data) {
     axios
