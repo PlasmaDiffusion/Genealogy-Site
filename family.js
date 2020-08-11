@@ -19,10 +19,13 @@ let Person = new Schema({
 let Family = new Schema({
   name: String,
   description: String,
-  subFamily: Boolean,
   marriageDate: Date,
   marriageDateYearOnly: Boolean,
   marriageLocation: String,
+
+  //Optionally, this can be a sub family. It will only be found in the main page from the root family
+  subFamily: Boolean,
+  rootFamily: { type: mongoose.Schema.Types.ObjectId, ref: "Family" },
 
   //People within the family have two parents and x number of children
   parentA: { type: mongoose.Schema.Types.ObjectId, ref: "Person" },

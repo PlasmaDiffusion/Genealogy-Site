@@ -21,6 +21,7 @@ import NavBar from "./unused/navbar";
 import Counters from "./unused/counters";
 import FamilyAdder from "./databaseComponents/familyAdder";
 import FamilyLink from "./databaseComponents/familyLink";
+import FamilyLinkTree from "./databaseComponents/familyLinkTree";
 import PersonEditor from "./databaseComponents/personEditor";
 import FamilyEditor from "./databaseComponents/familyEditor";
 import FamilyDetails from "./familyDetails";
@@ -69,6 +70,7 @@ export default withOktaAuth(
             <Switch>
               <Route exact path="/">
                 <FamilyLink editing={false} />
+                <FamilyLinkTree></FamilyLinkTree>
               </Route>
               <Route path="/family/:id">
                 <FamilyDetails />

@@ -16,6 +16,12 @@ input[type="text"] {
   width: 40%;
 }
 
+#treeImg {
+  position: absolute;
+  left: 6%;
+  top: -20%;
+}
+
 /* The sidebar menu ------------------------------------------------------------------------------------------------------------------------ */
 .sidenav {
   height: 100%; /* Full-height: remove this if you want "auto" height */
