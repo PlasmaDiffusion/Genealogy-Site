@@ -23,9 +23,8 @@ let Family = new Schema({
   marriageDateYearOnly: Boolean,
   marriageLocation: String,
 
-  //If this is a "sub family", people can access it after clicking on a root family.
+  //If this is a "sub family", people can access it only after clicking on a main family.
   subFamily: Boolean,
-  rootFamily: { type: mongoose.Schema.Types.ObjectId, ref: "Family" },
 
   //People within the family have two parents and x number of children
   parentA: { type: mongoose.Schema.Types.ObjectId, ref: "Person" },
@@ -33,7 +32,14 @@ let Family = new Schema({
   children: [{ type: mongoose.Schema.Types.ObjectId, ref: "Person" }],
 });
 
+//Have a root family name that appears on the home page. One clicked, it shows all other families with that name
+let FamilyGroup = new Schema({
+  name: String,
+  order: Number,
+});
+
 module.exports = {
   family: mongoose.model("Family", Family),
   person: mongoose.model("Person", Person),
+  FamilyGroup: mongoose.model("FamilyGroup", FamilyGroup),
 };

@@ -13,6 +13,7 @@ class FamilyLinkTree extends Component {
     };
 
     this.filterOutSubFamilies = this.filterOutSubFamilies.bind(this);
+    this.filterOutWrongFamilies = this.filterOutWrongFamilies.bind(this);
     this.displayFamily = this.displayFamily.bind(this);
   }
 

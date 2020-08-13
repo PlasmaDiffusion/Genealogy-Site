@@ -12,11 +12,12 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use("/", routes);
 
-var ObjectID = require("mongodb").ObjectID;
 var Family = require("./family.js").family;
 exports.Family = Family;
 var Person = require("./family.js").person;
 exports.Person = Person;
+var FamilyGroup = require("./family.js").FamilyGroup;
+exports.FamilyGroup = FamilyGroup;
 
 const uri =
   "mongodb+srv://admin:" +
@@ -60,7 +61,7 @@ routes.route("/read/family").get(function (req, res) {
   //console.log("Reading in all families");
 
   Family.find()
-    .populate("rootFamily")
+    .populate("FamilyGroup")
     .populate("parentA")
     .populate("parentB")
     .populate("children") // Populate the person object references
@@ -73,7 +74,18 @@ routes.route("/read/family").get(function (req, res) {
     });
 });
 
-//Get a family (read in json data)
+//Read root families for the homepage
+routes.route("/read/FamilyGroup").post(async function (req, res) {
+  FamilyGroup.find().exec(function (err, rootFamilies) {
+    if (err) {
+      console.log(err);
+    } else {
+      res.json(rootFamilies);
+    }
+  });
+});
+
+//Get a person (read in json data)
 routes.route("/read/person/:id").get(function (req, res) {
   //console.log(req.params.id);
 
@@ -92,7 +104,6 @@ routes.route("/read/person/:id").get(function (req, res) {
 //Get a family (read in json data)
 routes.route("/read/family/:id").get(function (req, res) {
   Family.findById(req.params.id)
-    .populate("rootFamily")
     .populate("parentA")
     .populate("parentB")
     .populate({
@@ -142,7 +153,7 @@ routes.route("/edit/family/:id").post(async function (req, res) {
           family.name = req.body.name;
           family.description = req.body.description;
           family.subFamily = req.body.subFamily;
-          family.rootFamily = family.parentA = parentA._id;
+          family.FamilyGroup = family.parentA = parentA._id;
           family.parentB = parentB._id;
           family.marriageDate = req.body.marriageDate;
           family.marriageDateYearOnly = req.body.marriageDateYearOnly;
@@ -271,4 +282,49 @@ routes.route("/add/family").post(async function (req, res) {
         res.status(400).send("Adding new family failed");
       });
   }
+});
+
+//Add a root family (Name and number only)
+routes.route("/add/FamilyGroup").post(async function (req, res) {
+  console.log("Body", req.body);
+
+  let FamilyGroup = new FamilyGroup(req.body);
+
+  FamilyGroup.save()
+    .then((FamilyGroup) => {
+      res.status(200).json("Person added successfully.");
+    })
+    .catch((err) => {
+      res.status(400).send("Adding new Person failed");
+    });
+});
+
+//Edit a root family (Name only)
+routes.route("/edit/FamilyGroup/:id").post(async function (req, res) {
+  console.log("Body", req.body);
+
+  FamilyGroup.findById(req.params.id, async function (err, FamilyGroup) {
+    if (!FamilyGroup) res.status(404).send("data is not found");
+    else {
+      FamilyGroup.name = req.body.name;
+      FamilyGroup.order = req.body.order;
+
+      FamilyGroup.save()
+        .then((FamilyGroup) => {
+          res.json("Family Group updated!");
+        })
+        .catch((err) => {
+          res.status(400).send("Update not possible");
+        });
+    }
+  });
+});
+
+//Delete a root family (Name and number only)
+routes.route("/delete/FamilyGroup/:id").post(async function (req, res) {
+  FamilyGroup.deleteOne({ _id: req.body.id }, function (err) {
+    if (err) return handleError(err);
+    // deleted at most one tank document
+    else res.status(200).json("The family group was deleted.");
+  });
 });
