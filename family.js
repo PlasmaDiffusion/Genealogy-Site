@@ -34,8 +34,7 @@ let Family = new Schema({
 
 //Have a root family name that appears on the home page. One clicked, it shows all other families with that name
 let FamilyGroup = new Schema({
-  name: String,
-  order: Number,
+  names: [String],
 });
 
 module.exports = {

@@ -4,7 +4,7 @@ const { Person, Family, FamilyGroup } = require("../server");
 const { findPeople, findFamilies } = require("../serverFunctions");
 
 //Add a person
-routes.route("/add/person").post(function (req, res) {
+routes.post("/add/person", function (req, res) {
   console.log(req.body);
 
   let person = new Person(req.body);
@@ -20,7 +20,7 @@ routes.route("/add/person").post(function (req, res) {
 });
 
 //Add a family
-routes.route("/add/family").post(async function (req, res) {
+routes.post("/add/family", async function (req, res) {
   console.log("Body", req.body);
 
   //Declare variables to find
@@ -60,18 +60,29 @@ routes.route("/add/family").post(async function (req, res) {
   }
 });
 
-//Add a root family (Name and number only)
-routes.route("/add/FamilyGroup").post(async function (req, res) {
+//Add a root family and overwrite the old one (Name and number only)
+routes.post("/add/familyGroup", async function (req, res) {
   console.log("Body", req.body);
 
-  let FamilyGroup = new FamilyGroup(req.body);
+  //Remove older ones
+  FamilyGroup.deleteMany({}, function (err) {
+    if (err) return handleError(err);
+    // deleted at most one tank document
+    else {
+      console.log("Deleted old family group");
+    }
+  });
 
-  FamilyGroup.save()
-    .then((FamilyGroup) => {
-      res.status(200).json("Person added successfully.");
+  let familyGroup = new FamilyGroup(req.body);
+
+  familyGroup
+    .save()
+    .then((familyGroup) => {
+      console.log("Created new family group", familyGroup);
+      res.status(200).json("Family Groups added successfully.");
     })
     .catch((err) => {
-      res.status(400).send("Adding new Person failed");
+      res.status(400).send("Adding new set of Family Groups failed");
     });
 });
 

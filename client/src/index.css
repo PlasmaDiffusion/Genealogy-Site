@@ -22,6 +22,10 @@ input[type="text"] {
   top: -20%;
 }
 
+.padding-0 {
+  margin-right: -15%;
+}
+
 /* The sidebar menu ------------------------------------------------------------------------------------------------------------------------ */
 .sidenav {
   height: 100%; /* Full-height: remove this if you want "auto" height */

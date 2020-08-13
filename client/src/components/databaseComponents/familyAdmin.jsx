@@ -6,11 +6,12 @@ import Family from "./family";
 import FamilyLink from "./familyLink";
 import FamilyForm from "./familyForm";
 import PersonForm from "./personForm";
+import FamilyGroupForm from "./familyGroupForm";
 
 import axios from "axios";
 
 //The first admin database component shown. Show a form to add families, but also display them along with links to edit them.
-class FamilyAdder extends Component {
+class FamilyAdmin extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -115,6 +116,11 @@ class FamilyAdder extends Component {
 
             <div class="col-sm"></div>
           </div>
+          <div class="row">
+            <div class="col-lg-10">
+              <FamilyGroupForm length={15} />
+            </div>
+          </div>
           <br></br>
           <br></br>
           <br></br>
@@ -144,4 +150,4 @@ class FamilyAdder extends Component {
   }
 }
 
-export default FamilyAdder;
+export default FamilyAdmin;

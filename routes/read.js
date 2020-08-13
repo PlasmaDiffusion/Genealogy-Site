@@ -29,11 +29,12 @@ routes.get("/read/family", (req, res) => {
     });
 });
 //Read root families for the homepage
-routes.post("/read/FamilyGroup", async function (req, res) {
-  FamilyGroup.find().exec(function (err, rootFamilies) {
+routes.get("/read/familyGroup", async function (req, res) {
+  FamilyGroup.findOne().exec(function (err, rootFamilies) {
     if (err) {
       console.log(err);
     } else {
+      console.log(rootFamilies);
       res.json(rootFamilies);
     }
   });

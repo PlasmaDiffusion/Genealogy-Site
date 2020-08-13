@@ -82,7 +82,7 @@ routes.post("/edit/person/:id", function (req, res) {
 });
 
 //Update a family group (Name only)
-routes.post("/edit/FamilyGroup/:id", async function (req, res) {
+routes.post("/edit/familyGroup/:id", async function (req, res) {
   console.log("Body", req.body);
 
   FamilyGroup.findById(req.params.id, async function (err, FamilyGroup) {

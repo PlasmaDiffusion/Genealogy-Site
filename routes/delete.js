@@ -25,7 +25,7 @@ routes.route("/delete/family").post(function (req, res) {
 });
 
 //Delete a root family (Name and number only)
-routes.route("/delete/FamilyGroup/:id").post(async function (req, res) {
+routes.route("/delete/familyGroup/:id").post(async function (req, res) {
   FamilyGroup.deleteOne({ _id: req.body.id }, function (err) {
     if (err) return handleError(err);
     // deleted at most one tank document

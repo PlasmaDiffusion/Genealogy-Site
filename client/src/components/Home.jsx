@@ -17,9 +17,7 @@ import {
   withOktaAuth,
 } from "@okta/okta-react";
 
-import NavBar from "./unused/navbar";
-import Counters from "./unused/counters";
-import FamilyAdder from "./databaseComponents/familyAdder";
+import FamilyAdmin from "./databaseComponents/familyAdmin";
 import FamilyLink from "./databaseComponents/familyLink";
 import FamilyLinkTree from "./databaseComponents/familyLinkTree";
 import PersonEditor from "./databaseComponents/personEditor";
@@ -79,7 +77,7 @@ export default withOktaAuth(
                 <p>You have been logged out.</p>
               </Route>
 
-              <SecureRoute path="/admin" component={FamilyAdder} />
+              <SecureRoute path="/admin" component={FamilyAdmin} />
               <SecureRoute path="/logout" component={Logout} />
               <SecureRoute path="/edit/person/:id" component={PersonEditor} />
               <SecureRoute path="/edit/family/:id" component={FamilyEditor} />
