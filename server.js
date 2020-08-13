@@ -48,3 +48,8 @@ app.use("/", require("./routes/create"));
 app.use("/", require("./routes/read"));
 app.use("/", require("./routes/update"));
 app.use("/", require("./routes/delete"));
+
+// Anything that doesn't match the above, send back index.html
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname + "/client/build/index.html"));
+});
