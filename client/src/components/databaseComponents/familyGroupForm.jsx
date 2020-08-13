@@ -7,8 +7,7 @@ import FamilyLink from "./familyLink";
 
 import axios from "axios";
 
-//BUG: Submiting a family update without touching the children, removes all children.
-//A form that can be used to add new familys or to edit existing ones (Pass in editing = true or false as a prop)
+//A form that has a grid of family names to show on the family tree.
 class FamilyGroupForm extends Component {
   constructor(props) {
     super(props);
@@ -86,7 +85,7 @@ class FamilyGroupForm extends Component {
   //Get a column of a single input field
   getInputField(index) {
     return (
-      <div class="col-md-4 padding-0">
+      <div class="col-md-4 margin-n">
         <div className="form-group">
           <input
             type="text"

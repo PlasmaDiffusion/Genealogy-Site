@@ -95,44 +95,6 @@ export default withOktaAuth(
           </div>
         </Router>
       );
-
-      /*render() {
-      if (this.props.authState.isPending) {
-        return <div>Loading...</div>;
-      }
-
-      const button = this.props.authState.isAuthenticated ? (
-        <button
-          onClick={() => {
-            this.props.authService.logout();
-          }}
-        >
-          Logout
-        </button>
-      ) : (
-        <button
-          onClick={() => {
-            this.props.authService.login();
-          }}
-        >
-          Login
-        </button>
-      );
-
-      return (
-        <div>
-          {this.state.userInfo && (
-            <div>
-              <p>Logged in as {this.state.userInfo.name}.</p>
-            </div>
-          )}
-
-          <Link to="/">Home</Link>
-          <br />
-          {button}
-        </div>
-      );
-    }*/
     }
   }
 );
