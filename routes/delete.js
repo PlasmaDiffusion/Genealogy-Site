@@ -8,7 +8,6 @@ routes.route("/delete/person").post(function (req, res) {
 
   Person.deleteOne({ _id: req.body.id }, function (err) {
     if (err) return handleError(err);
-    // deleted at most one tank document
     else res.status(200).json("The person was deleted.");
   });
 });
@@ -19,7 +18,6 @@ routes.route("/delete/family").post(function (req, res) {
 
   Family.deleteOne({ _id: req.body.id }, function (err) {
     if (err) return handleError(err);
-    // deleted at most one tank document
     else res.status(200).json("The family was deleted.");
   });
 });
@@ -28,7 +26,6 @@ routes.route("/delete/family").post(function (req, res) {
 routes.route("/delete/familyGroup/:id").post(async function (req, res) {
   FamilyGroup.deleteOne({ _id: req.body.id }, function (err) {
     if (err) return handleError(err);
-    // deleted at most one tank document
     else res.status(200).json("The family group was deleted.");
   });
 });

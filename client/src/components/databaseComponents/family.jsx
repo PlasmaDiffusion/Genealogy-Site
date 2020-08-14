@@ -23,6 +23,7 @@ const Family = (props) => {
               birthdate={props.family.parentA.birthdate}
               deathdate={props.family.parentA.deathdate}
               _id={props.family.parentA._id}
+              viewingTable={true}
             />
           </td>
           <td>
@@ -32,6 +33,7 @@ const Family = (props) => {
               birthdate={props.family.parentB.birthdate}
               deathdate={props.family.parentB.deathdate}
               _id={props.family.parentB._id}
+              viewingTable={true}
             />
           </td>
         </tr>
@@ -61,6 +63,7 @@ const Family = (props) => {
                   deathdate={child.deathdate}
                   deathdateYearOnly={child.deathdateYearOnly}
                   _id={child._id}
+                  viewingTable={true}
                 />
                 <br></br>
               </React.Fragment>

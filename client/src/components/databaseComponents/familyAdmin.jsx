@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import NullChecker from "./classes/nullChecker.js";
 import { getClientUrl, getServerUrl } from "../getUrl.js";
 import Family from "./family";
+import Person from "./person";
 import FamilyLink from "./familyLink";
 import FamilyForm from "./familyForm";
 import PersonForm from "./personForm";
@@ -94,6 +95,38 @@ class FamilyAdmin extends Component {
     });
   }
 
+  personList() {
+    var thisObj = this;
+
+    return this.state.persons.map(function (currentPerson, i) {
+      return (
+        <div>
+          <button
+            class={"btn btn-warning"}
+            onClick={() => {
+              thisObj.revealFamily(i + thisObj.state.families.length);
+            }}
+          >
+            {currentPerson.name}
+          </button>
+          <Person //Iterate through child data here
+            name={currentPerson.name}
+            description={currentPerson.description}
+            birthdate={currentPerson.birthdate}
+            brithdateYearOnly={currentPerson.birthdateYearOnly}
+            deathdate={currentPerson.deathdate}
+            deathdateYearOnly={currentPerson.deathdateYearOnly}
+            _id={currentPerson._id}
+            viewingTable={
+              thisObj.state.viewingTables[thisObj.state.families.length + i]
+            }
+          />
+          <br></br>
+        </div>
+      );
+    });
+  }
+
   render() {
     return (
       <div>
@@ -142,6 +175,20 @@ class FamilyAdmin extends Component {
           <div class="row">
             <table className="table table-striped" style={{ marginTop: 20 }}>
               <tbody>{this.familyList()}</tbody>
+            </table>
+          </div>
+          <div class="row">
+            <h3>Person Editor</h3>
+          </div>
+          <div class="row">
+            <p class="alert alert-warning">
+              You can find individual people here, including those not currently
+              in a family.
+            </p>
+          </div>
+          <div class="row">
+            <table className="table table-striped" style={{ marginTop: 20 }}>
+              <tbody>{this.personList()}</tbody>
             </table>
           </div>
         </div>
