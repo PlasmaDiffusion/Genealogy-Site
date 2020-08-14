@@ -114,7 +114,7 @@ class FamilyLinkTree extends Component {
         {/*<h1 class="d-flex justify-content-center">Creating Family Trees</h1>*/}
         <img
           src={process.env.PUBLIC_URL + "/images/bigTree.png"}
-          id={"treeImg"}
+          class="img-fluid treeImg"
         ></img>
         <div class="container position-absolute treeLink">
           {rowArray.map((val, index) => this.getTreeRow(index * this.cols))}
