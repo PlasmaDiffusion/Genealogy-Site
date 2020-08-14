@@ -67,8 +67,11 @@ export default withOktaAuth(
           */}
             <Switch>
               <Route exact path="/">
+                <FamilyLinkTree onHomePage={true} />
+              </Route>
+              <Route path="/familyTree/:name">
                 <FamilyLink editing={false} />
-                <FamilyLinkTree></FamilyLinkTree>
+                <FamilyLinkTree onHomePage={false} />
               </Route>
               <Route path="/family/:id">
                 <FamilyDetails />

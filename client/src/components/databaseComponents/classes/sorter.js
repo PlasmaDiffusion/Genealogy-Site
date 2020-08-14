@@ -2,6 +2,7 @@
 class Sorter {
   constructor() {}
 
+  //Sort children by birthdate
   sortChildren(children) {
     //Array that will become 2d and store not only game
     var birthdates = [];
@@ -30,7 +31,33 @@ class Sorter {
     return newChildArray;
   }
 
-  //sortFamilies(families){}
+  sortTest() {
+    let strings = ["McNee 1981", "McNee 1990", "McNee 1812", "McNee 2006"];
+    strings.sort();
+    console.log(strings);
+  }
+
+  //Sort families by their names (Assume it's a name + a year)
+  sortFamilies(families) {
+    var familyNames = [];
+
+    //Get all names (and store the index too)
+    families.forEach((family, i) => {
+      if (family.name) familyNames.push([family.name, i]);
+    });
+
+    familyNames.sort();
+
+    var newFamilyArray = [];
+
+    //Match the families with the sorted family names (Using the previously stored index to match them)
+    familyNames.forEach((name, i) => {
+      newFamilyArray[i] = families[name[1]];
+    });
+
+    //Now return a sorted child array
+    return newFamilyArray;
+  }
 }
 
 export default Sorter;

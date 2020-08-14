@@ -1,78 +1,85 @@
 import React, { Component } from "react";
 import { getClientUrl, getServerUrl } from "../getUrl.js";
-
+import Sorter from "./classes/sorter.js";
 import axios from "axios";
 
-//Read in families, and show non sub families as links on the sidebar.
+//On the home page show family group links. After you click a group, only show families containing that group name.
 class FamilyLinkTree extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      familyNames: [],
       families: [],
-      rootFamily: "", //Root family that all sub families should belong to
+      rootFamilyId: "", //Root family that all sub families should belong to
     };
 
     //Grid size goes here
     this.rows = 3;
     this.cols = 5;
 
-    this.filterOutSubFamilies = this.filterOutSubFamilies.bind(this);
-    this.filterOutWrongFamilies = this.filterOutWrongFamilies.bind(this);
     this.displayFamily = this.displayFamily.bind(this);
   }
 
   //Read in data
   componentDidMount() {
-    console.log("About to connect to " + getServerUrl() + "/read/familyGroup");
+    //Read in family groups if on the home page (Basically just names of families to search for)
+    if (this.props.onHomePage) {
+      axios
+        .get(getServerUrl() + "/read/familyGroup")
+        .then((response) => {
+          //Collect families here
+          console.log("Family Response: ", response.data);
+          this.setState({ familyNames: response.data.names });
+          console.log("Fam", this.state.familyNames);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    } else {
+      //Read all families
+      let url = new URLSearchParams(window.location.search);
+      let nameToSearchFor = url.get("name");
 
-    axios
-      .get(getServerUrl() + "/read/familyGroup")
-      .then((response) => {
-        //Collect families here
-        console.log("Family Response: ", response.data);
-        this.setState({ families: response.data.names });
-        console.log("Fam", this.state.families);
+      console.log("searching for ", nameToSearchFor);
 
-        //Remove the families we don't need (Either sub families or families not part of a specific family tree)
-        /*if (this.props.rootFamily) this.filterOutSubFamilies();
-        else this.filterOutWrongFamilies();*/
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-  }
+      axios
+        .get(getServerUrl() + "/read/familyByName/" + nameToSearchFor)
+        .then((response) => {
+          //Collect families here
+          console.log("Family Response By Name: ", response.data);
 
-  //Overwrite the families state to ONLY use regular families
-  filterOutSubFamilies() {
-    var filteredArray = [];
+          //Sort families by their name
+          let sorter = new Sorter();
+          let sortedFamilies = sorter.sortFamilies(response.data);
 
-    this.state.families.forEach((family) => {
-      if (family.subFamily) {
-        if (family.rootFamily == this.props.rootFamily)
-          filteredArray.push(family);
-      }
-    });
+          this.setState({
+            families: [...sortedFamilies],
+          });
 
-    //Get a copy of this new array for the families state
-    this.setState({ families: [...filteredArray] });
-  }
+          console.log("Fam", this.state.families);
 
-  //Overwrite the families state to ONLY use regular families
-  filterOutWrongFamilies() {
-    var filteredArray = [];
-
-    this.state.families.forEach((family) => {
-      if (!family.subFamily) filteredArray.push(family);
-    });
-
-    //Get a copy of this new array for the families state
-    this.setState({ families: [...filteredArray] });
+          //this.filterOutFamiliesByName(nameToSearchFor);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    }
   }
 
   //Either return the family of the particular index or return nothing if it doesn't exist
   displayFamily(i) {
-    return this.state.families[i] ? (
-      <Family name={this.state.families[i]} key={i} />
+    return this.state.familyNames[i] || this.state.families[i] ? (
+      this.props.onHomePage ? (
+        <Family name={this.state.familyNames[i]} key={i} onHomePage={true} />
+      ) : (
+        <Family
+          name={this.state.families[i].name}
+          key={i}
+          onHomePage={false}
+          _id={this.state.families[i]._id}
+          baseId={this.state.families[0]._id}
+        />
+      )
     ) : (
       ""
     );
@@ -108,82 +115,35 @@ class FamilyLinkTree extends Component {
           src={process.env.PUBLIC_URL + "/images/bigTree.png"}
           id={"treeImg"}
         ></img>
-        <div class="container">
+        <div class="container position-absolute left">
           {rowArray.map((val, index) => this.getTreeRow(index * this.cols))}
         </div>
         {/*
-        <div class="container">
-          <div class="row">
-            <div class="col-sm-2">
-              <h2> {this.displayFamily(0)} </h2>
-            </div>
-            <div class="col-sm-2">
               <h2 style={{ visibility: "hidden" }}> | </h2>
-            </div>
-            <div class="col-sm-2">
-              <h2> {this.displayFamily(1)} </h2>
-            </div>
-            <div class="col-sm-2">
-              <h2 style={{ visibility: "hidden" }}> | </h2>
-            </div>
-            <div class="col-sm-2">
-              <h2 style={{ visibility: "hidden" }}> | </h2>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-sm-2">
-              <h2 style={{ visibility: "hidden" }}> | </h2>
-            </div>
-            <div class="col-sm-2">
-              <h2 style={{ visibility: "hidden" }}> | </h2>
-            </div>
-            <div class="col-sm-2">
-              <h2 style={{ visibility: "hidden" }}> | </h2>
-            </div>
-            <div class="col-sm-2">
-              <h2 style={{ visibility: "hidden" }}> | </h2>
-            </div>
-            <div class="col-sm-2">
-              <h2 style={{ visibility: "hidden" }}> | </h2>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-sm-2">
-              <h2> {this.displayFamily(2)} </h2>
-            </div>
-            <div class="col-sm-2">
-              <h2 style={{ visibility: "hidden" }}> | </h2>
-            </div>
-            <div class="col-sm-2">
-              <h2> {this.displayFamily(3)} </h2>
-            </div>
-            <div class="col-sm-2">
-              <h2 style={{ visibility: "hidden" }}> | </h2>
-            </div>
-            <div class="col-sm-2">
-              <h2 style={{ visibility: "hidden" }}> | </h2>
-            </div>
-            <div class="col-sm-2">
-              <h2 style={{ visibility: "hidden" }}> | </h2>
-            </div>
-          </div>
-        </div>
         */}
       </React.Fragment>
     );
   }
 }
 
-//Put links here to later be put on the sidebar
-const Family = (props) =>
-  props.editing ? (
-    <React.Fragment />
-  ) : (
-    <React.Fragment>
-      <h2>
-        <a href={"/familyTree/ ?name=" + props.name}>{props.name}</a>
-      </h2>
-    </React.Fragment>
-  );
+//Put links here to either a family tree page (when on the home page) or a link to a specific family
+const Family = (props) => (
+  <React.Fragment>
+    <h2 class="bg-success d-flex justify-content-center border">
+      {props.onHomePage ? (
+        <a class="text-white" href={"/familyTree/ ?name=" + props.name}>
+          {props.name}
+        </a>
+      ) : (
+        <a
+          class="text-white"
+          href={"/family/ ?id=" + props._id + "&baseId=" + props.baseId}
+        >
+          {props.name}
+        </a>
+      )}
+    </h2>
+  </React.Fragment>
+);
 
 export default FamilyLinkTree;

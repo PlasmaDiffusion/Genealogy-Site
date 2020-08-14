@@ -16,12 +16,18 @@ input[type="text"] {
   width: 40%;
 }
 
+/*Home page stuff*/
 #treeImg {
-  position: absolute;
-  left: 6%;
-  top: -20%;
+  position: fixed;
+  left: 10%;
+  top: -15%;
 }
 
+.left {
+  left: 10%;
+}
+
+/*Make grid input less spaced out*/
 .margin-n {
   margin-right: -15%;
 }

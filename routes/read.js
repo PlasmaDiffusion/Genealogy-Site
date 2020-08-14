@@ -78,5 +78,30 @@ routes.get("/read/family/:id", function (req, res) {
       }
     });
 });
+//Get all families containing a particular name
+routes.get("/read/familyByName/:name", function (req, res) {
+  Family.find({ name: { $regex: req.params.name, $options: "i" } })
+    .populate("parentA")
+    .populate("parentB")
+    .populate({
+      path: "children",
+      populate: {
+        path: "startedFamilies",
+        model: "Family",
+        populate: {
+          path: "parentA",
+          model: "Person",
+        },
+      },
+    })
+    .exec(function (err, family) {
+      if (err) {
+        console.log(err);
+      } else {
+        res.json(family);
+        console.log("Read in this from name", req.params.name, family);
+      }
+    });
+});
 
 module.exports = routes;
