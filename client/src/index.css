@@ -44,13 +44,6 @@ a:visited {
   margin-right: -15%;
 }
 
-/*Links look a tad too big*/
-@media only screen and (max-width: 1200px) {
-  a {
-    font-size: 24px;
-  }
-}
-
 /* The sidebar menu ------------------------------------------------------------------------------------------------------------------------ */
 .sidenav {
   height: 100%; /* Full-height: remove this if you want "auto" height */
