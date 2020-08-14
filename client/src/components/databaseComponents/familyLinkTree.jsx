@@ -111,11 +111,12 @@ class FamilyLinkTree extends Component {
 
     return (
       <React.Fragment>
+        {/*<h1 class="d-flex justify-content-center">Creating Family Trees</h1>*/}
         <img
           src={process.env.PUBLIC_URL + "/images/bigTree.png"}
           id={"treeImg"}
         ></img>
-        <div class="container position-absolute left">
+        <div class="container position-absolute treeLink">
           {rowArray.map((val, index) => this.getTreeRow(index * this.cols))}
         </div>
         {/*
@@ -129,16 +130,11 @@ class FamilyLinkTree extends Component {
 //Put links here to either a family tree page (when on the home page) or a link to a specific family
 const Family = (props) => (
   <React.Fragment>
-    <h2 class="bg-success d-flex justify-content-center border">
+    <h2 class=" d-flex justify-content-center">
       {props.onHomePage ? (
-        <a class="text-white" href={"/familyTree/ ?name=" + props.name}>
-          {props.name}
-        </a>
+        <a href={"/familyTree/ ?name=" + props.name}>{props.name}</a>
       ) : (
-        <a
-          class="text-white"
-          href={"/family/ ?id=" + props._id + "&baseId=" + props.baseId}
-        >
+        <a href={"/family/ ?id=" + props._id + "&baseId=" + props.baseId}>
           {props.name}
         </a>
       )}

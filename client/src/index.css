@@ -20,16 +20,35 @@ input[type="text"] {
 #treeImg {
   position: fixed;
   left: 10%;
-  top: -15%;
+  top: -5%;
+  z-index: -1;
 }
 
-.left {
+.treeLink {
   left: 10%;
+  top: 30%;
+}
+
+/* unvisited link */
+a:link {
+  color: rgb(2, 107, 2);
+}
+
+/* visited link */
+a:visited {
+  color: rgb(2, 107, 2);
 }
 
 /*Make grid input less spaced out*/
 .margin-n {
   margin-right: -15%;
+}
+
+/*Links look a tad too big*/
+@media only screen and (max-width: 1200px) {
+  a {
+    font-size: 24px;
+  }
 }
 
 /* The sidebar menu ------------------------------------------------------------------------------------------------------------------------ */
