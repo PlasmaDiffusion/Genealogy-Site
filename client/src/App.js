@@ -32,7 +32,9 @@ export default function BasicExample() {
       onAuthRequired={onAuthRequired}
       pkce={true}
     >
-      <Home />
+      <div class="bg">
+        <Home />
+      </div>
     </Security>
   );
 }

@@ -110,7 +110,7 @@ class FamilyLinkTree extends Component {
     for (let i = 0; i < this.rows; i++) rowArray.push("");
 
     return (
-      <React.Fragment>
+      <div class="bg">
         {/*<h1 class="d-flex justify-content-center">Creating Family Trees</h1>*/}
         <img
           src={process.env.PUBLIC_URL + "/images/bigTree.png"}
@@ -122,7 +122,7 @@ class FamilyLinkTree extends Component {
         {/*
               <h2 style={{ visibility: "hidden" }}> | </h2>
         */}
-      </React.Fragment>
+      </div>
     );
   }
 }

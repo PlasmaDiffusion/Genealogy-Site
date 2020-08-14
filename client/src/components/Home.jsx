@@ -53,7 +53,7 @@ export default withOktaAuth(
 
       return (
         <Router>
-          <div>
+          <div style={{ backgroundColor: "lightblue" }}>
             <Link to=""> Home </Link>
             <br></br>
             <hr />

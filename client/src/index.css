@@ -21,22 +21,28 @@ input[type="text"] {
   position: fixed;
   left: 10%;
   top: -5%;
-  z-index: -1;
+  z-index: 0;
 }
 
 .treeLink {
   left: 10%;
   top: 30%;
+  z-index: 1;
 }
 
 /* unvisited link */
-a:link {
-  color: rgb(2, 107, 2);
+.treeLink a:link {
+  color: black;
 }
 
 /* visited link */
-a:visited {
-  color: rgb(2, 107, 2);
+.treeLink a:visited {
+  color: black;
+}
+.bg {
+  background-color: lightblue;
+  width: 100%;
+  height: 100%;
 }
 
 /*Make grid input less spaced out*/
