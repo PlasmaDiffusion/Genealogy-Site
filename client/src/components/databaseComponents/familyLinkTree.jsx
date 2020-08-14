@@ -110,13 +110,13 @@ class FamilyLinkTree extends Component {
     for (let i = 0; i < this.rows; i++) rowArray.push("");
 
     return (
-      <div class="bg">
+      <div class="treeBg">
         {/*<h1 class="d-flex justify-content-center">Creating Family Trees</h1>*/}
         <img
           src={process.env.PUBLIC_URL + "/images/bigTree.png"}
           class="img-fluid treeImg"
         ></img>
-        <div class="container position-absolute treeLink">
+        <div class="container position-absolute img-fluid treeLink">
           {rowArray.map((val, index) => this.getTreeRow(index * this.cols))}
         </div>
         {/*

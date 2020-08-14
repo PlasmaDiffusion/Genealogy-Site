@@ -53,10 +53,14 @@ export default withOktaAuth(
 
       return (
         <Router>
-          <div style={{ backgroundColor: "lightblue" }}>
-            <Link to=""> Home </Link>
-            <br></br>
-            <hr />
+          <div>
+            <div
+              style={{ backgroundColor: "lightblue", padding: 10, margin: 0 }}
+            >
+              <Link to=""> Home </Link>
+              <br></br>
+              <hr />
+            </div>
 
             {/*
             A <Switch> looks through all its children <Route>
