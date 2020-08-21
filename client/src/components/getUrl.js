@@ -7,5 +7,5 @@ export function getClientUrl() {
 export function getServerUrl() {
   return process.env.NODE_ENV == "development"
     ? "http://localhost:4000"
-    : "https://geneology-site.herokuapp.com";
+    : "https://genealogy-site.herokuapp.com";
 }
