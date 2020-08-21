@@ -8,6 +8,7 @@ import {
   useParams,
   useHistory,
 } from "react-router-dom";
+import { Helmet } from "react-helmet";
 import Home from "./components/Home";
 import "./App.css";
 
@@ -25,16 +26,22 @@ export default function BasicExample() {
   };
 
   return (
-    <Security
-      issuer="https://dev-286829.okta.com/oauth2/default"
-      clientId="0oam6b0jtnJpBC5OY4x6"
-      redirectUri={window.location.origin + "/implicit/callback"}
-      onAuthRequired={onAuthRequired}
-      pkce={true}
-    >
-      <div class="bg">
-        <Home />
-      </div>
-    </Security>
+    <React.Fragment>
+      <Helmet>
+        <title>My Family Tree</title>
+      </Helmet>
+
+      <Security
+        issuer="https://dev-286829.okta.com/oauth2/default"
+        clientId="0oam6b0jtnJpBC5OY4x6"
+        redirectUri={window.location.origin + "/implicit/callback"}
+        onAuthRequired={onAuthRequired}
+        pkce={true}
+      >
+        <div class="bg">
+          <Home />
+        </div>
+      </Security>
+    </React.Fragment>
   );
 }
