@@ -151,7 +151,14 @@ class FamilyAdmin extends Component {
           </div>
           <div class="row">
             <div class="col-lg-10">
-              <FamilyGroupForm length={15} />
+              {/*Edit Home tree page*/}
+              <FamilyGroupForm length={25} modifyingHomePage={true} />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-10">
+              {/*Edit Family tree page*/}
+              <FamilyGroupForm length={25} modifyingHomePage={false} />
             </div>
           </div>
           <br></br>

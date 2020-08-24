@@ -11,10 +11,11 @@ class FamilyLinkTree extends Component {
       familyNames: [],
       families: [],
       rootFamilyId: "", //Root family that all sub families should belong to
+      specificFamilyName: "",
     };
 
     //Grid size goes here
-    this.rows = 3;
+    this.rows = 5;
     this.cols = 5;
 
     this.displayFamily = this.displayFamily.bind(this);
@@ -39,6 +40,7 @@ class FamilyLinkTree extends Component {
       //Read all families
       let url = new URLSearchParams(window.location.search);
       let nameToSearchFor = url.get("name");
+      this.setState({ specificFamilyName: nameToSearchFor + " Family Tree" });
 
       console.log("searching for ", nameToSearchFor);
 
@@ -110,19 +112,24 @@ class FamilyLinkTree extends Component {
     for (let i = 0; i < this.rows; i++) rowArray.push("");
 
     return (
-      <div class="treeBg">
-        {/*<h1 class="d-flex justify-content-center">Creating Family Trees</h1>*/}
-        <img
-          src={process.env.PUBLIC_URL + "/images/bigTree.png"}
-          class="img-fluid treeImg"
-        ></img>
-        <div class="container position-absolute img-fluid treeLink">
-          {rowArray.map((val, index) => this.getTreeRow(index * this.cols))}
-        </div>
-        {/*
+      <React.Fragment>
+        <h1 class="treeBg d-flex justify-content-center">
+          {this.state.specificFamilyName}
+        </h1>
+        <div class="treeBg">
+          {/*<h1 class="d-flex justify-content-center">Creating Family Trees</h1>*/}
+          <img
+            src={process.env.PUBLIC_URL + "/images/bigTree.png"}
+            class="img-fluid treeImg"
+          ></img>
+          <div class="container position-absolute img-fluid treeLink">
+            {rowArray.map((val, index) => this.getTreeRow(index * this.cols))}
+          </div>
+          {/*
               <h2 style={{ visibility: "hidden" }}> | </h2>
         */}
-      </div>
+        </div>
+      </React.Fragment>
     );
   }
 }

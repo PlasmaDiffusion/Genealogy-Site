@@ -16,11 +16,12 @@ class FamilyGroupForm extends Component {
     for (let i = 0; i < this.props.length; i++) nameArray.push("");
 
     this.state = {
-      names: [...nameArray],
+      names: new Array(this.props.length),
+      familyLinkOrder: new Array(this.props.length),
     };
 
     //Grid size goes here
-    this.rows = 3;
+    this.rows = 5;
     this.cols = 5;
 
     console.log(this.state.names);
@@ -84,13 +85,25 @@ class FamilyGroupForm extends Component {
 
   //Get a column of a single input field
   getInputField(index) {
-    return (
+    return this.props.modifyingHomePage ? (
       <div class="col-md-4 margin-n">
         <div className="form-group">
           <input
             type="text"
             className="form-control"
             value={this.state.names[index]}
+            onChange={this.onChangeName}
+            id={index}
+          />
+        </div>
+      </div>
+    ) : (
+      <div class="col-md-4 margin-n">
+        <div className="form-group">
+          <input
+            type="text"
+            className="form-control"
+            value={this.state.familyLinkOrder[index]}
             onChange={this.onChangeName}
             id={index}
           />
@@ -120,14 +133,28 @@ class FamilyGroupForm extends Component {
     return (
       <div>
         {/*Submit family group form*/}
+        {this.props.modifyingHomePage ? (
+          <h1>Homepage Family Grid</h1>
+        ) : (
+          <h1>Family Link Order Grid</h1>
+        )}
 
-        <h1>Family Tree Grid</h1>
-        <p class="alert alert-warning">
-          These names appear on the tree in the homepage, in a grid like
-          pattern. <br></br>Once clicked, all families containing those names
-          will be displayed. <br></br>(Enter "McNee" in here to have that button
-          lead to families containg the word "McNee" in their name.)
-        </p>
+        {this.props.modifyingHomePage ? (
+          <p class="alert alert-warning">
+            These names appear on the tree in the homepage, in a grid like
+            pattern. <br></br>Once clicked, all families containing those names
+            will be displayed. <br></br>(Enter "McNee" in here to have that
+            button lead to families containg the word "McNee" in their name.)
+          </p>
+        ) : (
+          <p class="alert alert-warning">
+            Enter numbers in the grid. (place 1 somewhere, then 2...) Blank
+            spaces won't have any links there.
+            <br></br> This will be the order they appear in after a name on the
+            homepage is clicked.
+          </p>
+        )}
+
         <form onSubmit={this.onSubmitFamilyGroup}>
           <div class="container">
             {rowArray.map((val, index) => this.getInputRow(index * this.cols))}
@@ -136,7 +163,11 @@ class FamilyGroupForm extends Component {
           <div className="form-group">
             <input
               type="submit"
-              value="Change Home Page Tree"
+              value={
+                this.props.modifyingHomePage
+                  ? "Change Home Page Tree"
+                  : "Change Family Link Order"
+              }
               className="btn btn-primary"
             />
           </div>
