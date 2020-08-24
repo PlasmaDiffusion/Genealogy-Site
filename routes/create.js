@@ -79,7 +79,7 @@ routes.post("/add/familyGroup", async function (req, res) {
     .save()
     .then((familyGroup) => {
       console.log("Created new family group", familyGroup);
-      res.status(200).json("Family Groups added successfully.");
+      res.status(200).json("Family Groups modified successfully.");
     })
     .catch((err) => {
       res.status(400).send("Adding new set of Family Groups failed");

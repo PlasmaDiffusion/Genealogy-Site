@@ -18,6 +18,7 @@ class FamilyDetails extends Component {
       parentA: "",
       parentB: "",
       baseId: "",
+      marriageLocation: [],
     };
 
     this.getFamily = this.getFamily.bind(this);
@@ -53,8 +54,15 @@ class FamilyDetails extends Component {
           parentB: response.data.parentB,
           marriageDate: response.data.marriageDate,
           marriageDateYearOnly: response.data.marriageDateYearOnly,
-          marriageLocation: response.data.marriageLocation,
+          marriageLocation: [],
         });
+
+        //Make marriage Location 3 lines
+        if (response.data.marriageLocation) {
+          this.setState({
+            marriageLocation: response.data.marriageLocation.split(" "),
+          });
+        }
 
         let sorter = new Sorter();
 
@@ -118,7 +126,14 @@ class FamilyDetails extends Component {
                   </div>
                   <div class="row">
                     <div class="col-sm d-flex justify-content-center">
-                      {this.state.marriageLocation}
+                      {this.state.marriageLocation.map((string, i) => {
+                        return (
+                          <React.Fragment>
+                            {string}
+                            <br></br>
+                          </React.Fragment>
+                        );
+                      })}
                     </div>
                   </div>
                 </div>

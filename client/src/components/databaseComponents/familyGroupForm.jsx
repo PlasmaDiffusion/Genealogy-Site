@@ -27,6 +27,7 @@ class FamilyGroupForm extends Component {
     console.log(this.state.names);
 
     this.onChangeName = this.onChangeName.bind(this);
+    this.onChangeFamilyLinkOrder = this.onChangeFamilyLinkOrder.bind(this);
     this.onSubmitFamilyGroup = this.onSubmitFamilyGroup.bind(this);
   }
 
@@ -46,6 +47,11 @@ class FamilyGroupForm extends Component {
             names: response.data.names,
           });
         }
+        if (response.data.linkOrder) {
+          this.setState({
+            familyLinkOrder: response.data.linkOrder,
+          });
+        }
       })
       .catch(function (error) {
         console.log(error);
@@ -56,13 +62,20 @@ class FamilyGroupForm extends Component {
   onSubmitFamilyGroup(e) {
     e.preventDefault();
 
-    //Json
-    const familyGroupToSubmit = {
-      names: this.state.names,
-    };
+    //Json to submit (Either grid of names or grid of link order)
+    var familyGroupToSubmit = null;
+
+    if (this.props.modifyingHomePage)
+      familyGroupToSubmit = {
+        names: this.state.names,
+      };
+    else
+      familyGroupToSubmit = {
+        linkOrder: this.state.familyLinkOrder,
+      };
 
     axios
-      .post(getServerUrl() + "/add/familyGroup", familyGroupToSubmit)
+      .post(getServerUrl() + "/edit/familyGroup", familyGroupToSubmit)
       .then((res) => {
         console.log(res.data);
         alert(res.data);
@@ -71,7 +84,7 @@ class FamilyGroupForm extends Component {
   }
 
   onChangeName(e) {
-    //Get a copy of the previous child state arrays to modify them
+    //Get a copy of the previous name arrays to modify them
     var newNames = [...this.state.names];
 
     console.log(e);
@@ -80,6 +93,19 @@ class FamilyGroupForm extends Component {
 
     this.setState({
       names: newNames,
+    });
+  }
+
+  onChangeFamilyLinkOrder(e) {
+    //Get a copy of the previous link order arrays to modify them
+    var newLinkOrder = [...this.state.familyLinkOrder];
+
+    console.log(e);
+
+    newLinkOrder[e.target.id] = e.target.value;
+
+    this.setState({
+      familyLinkOrder: newLinkOrder,
     });
   }
 
@@ -104,7 +130,7 @@ class FamilyGroupForm extends Component {
             type="text"
             className="form-control"
             value={this.state.familyLinkOrder[index]}
-            onChange={this.onChangeName}
+            onChange={this.onChangeFamilyLinkOrder}
             id={index}
           />
         </div>

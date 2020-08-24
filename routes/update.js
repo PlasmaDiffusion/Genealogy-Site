@@ -82,17 +82,18 @@ routes.post("/edit/person/:id", function (req, res) {
 });
 
 //Update a family group (Name only)
-routes.post("/edit/familyGroup/:id", async function (req, res) {
+routes.post("/edit/familyGroup/", async function (req, res) {
   console.log("Body", req.body);
 
-  FamilyGroup.findById(req.params.id, async function (err, FamilyGroup) {
-    if (!FamilyGroup) res.status(404).send("data is not found");
+  FamilyGroup.findOne(async function (err, familyGroup) {
+    if (!familyGroup) res.status(404).send("data is not found");
     else {
-      FamilyGroup.name = req.body.name;
-      FamilyGroup.order = req.body.order;
+      if (req.body.name) familyGroup.name = req.body.name;
+      if (req.body.linkOrder) familyGroup.linkOrder = req.body.linkOrder;
 
-      FamilyGroup.save()
-        .then((FamilyGroup) => {
+      familyGroup
+        .save()
+        .then((familyGroup) => {
           res.json("Family Group updated!");
         })
         .catch((err) => {

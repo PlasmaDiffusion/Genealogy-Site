@@ -9,9 +9,11 @@ class FamilyLinkTree extends Component {
     super(props);
     this.state = {
       familyNames: [],
+      familyLinkOrder: [],
       families: [],
       rootFamilyId: "", //Root family that all sub families should belong to
       specificFamilyName: "",
+      firstFamilyId: "",
     };
 
     //Grid size goes here
@@ -24,48 +26,72 @@ class FamilyLinkTree extends Component {
   //Read in data
   componentDidMount() {
     //Read in family groups if on the home page (Basically just names of families to search for)
-    if (this.props.onHomePage) {
-      axios
-        .get(getServerUrl() + "/read/familyGroup")
-        .then((response) => {
-          //Collect families here
-          console.log("Family Response: ", response.data);
+
+    axios
+      .get(getServerUrl() + "/read/familyGroup")
+      .then((response) => {
+        //Collect families here
+        console.log("Family Response: ", response.data);
+        if (this.props.onHomePage)
           this.setState({ familyNames: response.data.names });
-          console.log("Fam", this.state.familyNames);
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-    } else {
-      //Read all families
-      let url = new URLSearchParams(window.location.search);
-      let nameToSearchFor = url.get("name");
-      this.setState({ specificFamilyName: nameToSearchFor + " Family Tree" });
+        this.setState({ familyLinkOrder: response.data.linkOrder });
+        console.log("Fam", this.state.familyNames);
+        console.log("Link order", this.state.familyLinkOrder);
 
-      console.log("searching for ", nameToSearchFor);
-
-      axios
-        .get(getServerUrl() + "/read/familyByName/" + nameToSearchFor)
-        .then((response) => {
-          //Collect families here
-          console.log("Family Response By Name: ", response.data);
-
-          //Sort families by their name
-          let sorter = new Sorter();
-          let sortedFamilies = sorter.sortFamilies(response.data);
-
+        //Read all families of a particular name
+        if (!this.props.onHomePage) {
+          let url = new URLSearchParams(window.location.search);
+          let nameToSearchFor = url.get("name");
           this.setState({
-            families: [...sortedFamilies],
+            specificFamilyName: nameToSearchFor + " Family Tree",
           });
 
-          console.log("Fam", this.state.families);
+          console.log("searching for ", nameToSearchFor);
 
-          //this.filterOutFamiliesByName(nameToSearchFor);
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-    }
+          axios
+            .get(getServerUrl() + "/read/familyByName/" + nameToSearchFor)
+            .then((response) => {
+              //Collect families here
+              this.organizeSpecificFamilies(response);
+            })
+            .catch(function (error) {
+              console.log(error);
+            });
+        }
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }
+
+  //Call this function once a list of families from the server has been obtained.
+  organizeSpecificFamilies(response) {
+    console.log("Family Response By Name: ", response.data);
+
+    //Sort families by their name
+    let sorter = new Sorter();
+    let sortedFamilies = sorter.sortFamilies(response.data);
+
+    //Now display the families in the grid order set in the database (It's another sort, but this)
+    let unorderedFamilies = [...sortedFamilies];
+    let orderedFamilies = [];
+
+    //Go through each family, then go through each ordered link. If the order value matches the index, set that family there
+    unorderedFamilies.map((family, index) => {
+      this.state.familyLinkOrder.map((order, i) => {
+        //If the order value matches the index, set that family under i
+        if (order - 1 == index) orderedFamilies[i] = family;
+
+        //Save the id of what was the first family to be used later
+        if (index == 0) this.setState({ firstFamilyId: family._id });
+      });
+    });
+
+    this.setState({
+      families: [...orderedFamilies],
+    });
+
+    console.log("Fam", this.state.families);
   }
 
   //Either return the family of the particular index or return nothing if it doesn't exist
@@ -79,11 +105,11 @@ class FamilyLinkTree extends Component {
           key={i}
           onHomePage={false}
           _id={this.state.families[i]._id}
-          baseId={this.state.families[0]._id}
+          baseId={this.state.firstFamilyId}
         />
       )
     ) : (
-      ""
+      <h2 style={{ visibility: "hidden" }}>|</h2>
     );
   }
 
