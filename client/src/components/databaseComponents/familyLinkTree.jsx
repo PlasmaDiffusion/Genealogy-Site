@@ -70,7 +70,7 @@ class FamilyLinkTree extends Component {
 
     //Sort families by their name
     let sorter = new Sorter();
-    let sortedFamilies = sorter.sortFamilies(response.data);
+    let sortedFamilies = sorter.sortFamiliesByNameAndMarriage(response.data);
 
     //Now display the families in the grid order set in the database (It's another sort, but this)
     let unorderedFamilies = [...sortedFamilies];

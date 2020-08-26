@@ -1,4 +1,5 @@
 export function formatDate(date, yearOnly = false) {
+  if (date == null) return;
   //Remove time
   var dateOnly = date.split("T")[0];
 

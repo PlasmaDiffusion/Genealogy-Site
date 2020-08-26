@@ -66,7 +66,9 @@ class FamilyDetails extends Component {
 
         let sorter = new Sorter();
 
-        this.setState({ children: sorter.sortChildren(this.state.children) });
+        this.setState({
+          children: sorter.sortChildrenByBirthdates(this.state.children),
+        });
       })
       .catch(function (error) {
         console.log(error);
@@ -151,17 +153,42 @@ class FamilyDetails extends Component {
               <br></br>
               <br></br>
             </div>
-            {/*children row*/}
+            {/*children row 1*/}
+
             <div class="row">
-              {this.state.children.map((child) => (
-                <Child //Iterate through child data here
-                  person={child}
-                  baseId={this.state.baseId}
-                  size={
-                    this.state.children.length > 2 ? "10" : "4"
-                  } /*Different widths based on the amount of children*/
-                />
-              ))}
+              {this.state.children.map((child, i) =>
+                i < this.state.children.length / 2 ||
+                this.state.children.length <= 5 ? (
+                  <Child //Iterate through child data here
+                    person={child}
+                    baseId={this.state.baseId}
+                    size={
+                      this.state.children.length > 2 ? "10" : "4"
+                    } /*Different widths based on the amount of children*/
+                  />
+                ) : (
+                  ""
+                )
+              )}
+            </div>
+
+            {/*children row 2*/}
+
+            <div class="row">
+              {this.state.children.map((child, i) =>
+                i >= this.state.children.length / 2 &&
+                this.state.children.length > 5 ? (
+                  <Child //Iterate through child data here
+                    person={child}
+                    baseId={this.state.baseId}
+                    size={
+                      this.state.children.length > 2 ? "10" : "4"
+                    } /*Different widths based on the amount of children*/
+                  />
+                ) : (
+                  ""
+                )
+              )}
             </div>
           </div>
           <br></br>

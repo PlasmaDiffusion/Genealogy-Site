@@ -10,6 +10,8 @@ import PersonForm from "./personForm";
 import FamilyGroupForm from "./familyGroupForm";
 
 import axios from "axios";
+import Sorter from "./classes/sorter.js";
+import { formatDate } from "../formatDate.js";
 
 //The first admin database component shown. Show a form to add families, but also display them along with links to edit them.
 class FamilyAdmin extends Component {
@@ -36,10 +38,11 @@ class FamilyAdmin extends Component {
       .get(getServerUrl() + "/read/family")
       .then((response) => {
         console.log("Family Response: ", response.data);
-        const nullChecker = new NullChecker();
+        let nullChecker = new NullChecker();
         nullChecker.familyNullCheck(response.data);
+        let sorter = new Sorter();
         this.setState({
-          families: response.data,
+          families: sorter.sortFamiliesByNameAndMarriage(response.data),
           viewingTables: new Array(response.data.length),
         });
       })
@@ -51,7 +54,10 @@ class FamilyAdmin extends Component {
       .get(getServerUrl() + "/read/person")
       .then((response) => {
         console.log("Person Response: ", response.data);
-        this.setState({ persons: response.data });
+
+        let sorter = new Sorter();
+
+        this.setState({ persons: sorter.sortPeopleByName(response.data) });
       })
       .catch(function (error) {
         console.log(error);
@@ -107,7 +113,7 @@ class FamilyAdmin extends Component {
               thisObj.revealFamily(i + thisObj.state.families.length);
             }}
           >
-            {currentPerson.name}
+            {currentPerson.name} ({formatDate(currentPerson.birthdate, true)})
           </button>
           <Person //Iterate through child data here
             name={currentPerson.name}

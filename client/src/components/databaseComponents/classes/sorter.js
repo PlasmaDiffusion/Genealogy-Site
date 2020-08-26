@@ -3,7 +3,7 @@ class Sorter {
   constructor() {}
 
   //Sort children by birthdate
-  sortChildren(children) {
+  sortChildrenByBirthdates(children) {
     //Array that will become 2d and store not only game
     var birthdates = [];
 
@@ -38,12 +38,23 @@ class Sorter {
   }
 
   //Sort families by their names (Assume it's a name + a year)
-  sortFamilies(families) {
+  sortFamiliesByNameAndMarriage(families) {
     var familyNames = [];
 
     //Get all names (and store the index too)
     families.forEach((family, i) => {
-      if (family.name) familyNames.push([family.name, i]);
+      if (family.name) {
+        //Check for numbers that a date would have
+        if (!family.name.includes("1") && !family.name.includes("2")) {
+          //If no numbers for a date are found, try to add on the year automatically
+          if (family.marriageDate) {
+            family.name += " " + family.marriageDate.split("-")[0];
+          }
+        }
+
+        //Add the family to the new array to be sorted
+        familyNames.push([family.name, i]);
+      }
     });
 
     familyNames.sort();
@@ -57,6 +68,27 @@ class Sorter {
 
     //Now return a sorted child array
     return newFamilyArray;
+  }
+
+  sortPeopleByName(people) {
+    var peopleNames = [];
+
+    //Get all names (and store the index too)
+    people.forEach((person, i) => {
+      peopleNames.push([person.name, i]);
+    });
+
+    peopleNames.sort();
+
+    var newPersonArray = [];
+
+    //Match the people with the sorted person names (Using the previously stored index to match them)
+    peopleNames.forEach((name, i) => {
+      newPersonArray[i] = people[name[1]];
+    });
+
+    //Now return a sorted person array
+    return newPersonArray;
   }
 }
 
