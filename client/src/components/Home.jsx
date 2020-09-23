@@ -57,7 +57,7 @@ export default withOktaAuth(
             <div
               style={{ backgroundColor: "lightblue", padding: 10, margin: 0 }}
             >
-              <Link to=""> Home </Link>
+              <a href="/"> Home </a>
               <br></br>
               <hr />
             </div>
