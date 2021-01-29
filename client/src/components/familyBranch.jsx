@@ -29,7 +29,7 @@ class FamilyBranch extends Component {
     axios
       .get(getServerUrl() + "/read/family/" + this.props.familyId)
       .then((response) => {
-        console.log("Family Response: ", response.data);
+        //console.log("Family Response: ", response.data);
 
         //This component will break if it doesn't handle null data
         const nullChecker = new NullChecker();

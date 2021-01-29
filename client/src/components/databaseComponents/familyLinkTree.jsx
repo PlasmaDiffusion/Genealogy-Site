@@ -31,12 +31,12 @@ class FamilyLinkTree extends Component {
       .get(getServerUrl() + "/read/familyGroup")
       .then((response) => {
         //Collect families here
-        console.log("Family Response: ", response.data);
+        //console.log("Family Response: ", response.data);
         if (this.props.onHomePage)
           this.setState({ familyNames: response.data.names });
         this.setState({ familyLinkOrder: response.data.linkOrder });
-        console.log("Fam", this.state.familyNames);
-        console.log("Link order", this.state.familyLinkOrder);
+        //console.log("Fam", this.state.familyNames);
+        //console.log("Link order", this.state.familyLinkOrder);
 
         //Read all families of a particular name
         if (!this.props.onHomePage) {
@@ -46,7 +46,7 @@ class FamilyLinkTree extends Component {
             specificFamilyName: nameToSearchFor + " Family Tree",
           });
 
-          console.log("searching for ", nameToSearchFor);
+          //console.log("searching for ", nameToSearchFor);
 
           axios
             .get(getServerUrl() + "/read/familyByName/" + nameToSearchFor)
@@ -66,7 +66,7 @@ class FamilyLinkTree extends Component {
 
   //Call this function once a list of families from the server has been obtained.
   organizeSpecificFamilies(response) {
-    console.log("Family Response By Name: ", response.data);
+    //console.log("Family Response By Name: ", response.data);
 
     //Sort families by their name
     let sorter = new Sorter();
@@ -91,11 +91,11 @@ class FamilyLinkTree extends Component {
       families: [...orderedFamilies],
     });
 
-    console.log("Fam", this.state.families);
+    //console.log("Fam", this.state.families);
   }
 
-  //Either return the family of the particular index or return nothing if it doesn't exist
-  displayFamily(i) {
+  //Either return the family of the particular index or return nothing if it doesn't exist (Either an empty grid or nothing will be returned)
+  displayFamily(i, mobileRender) {
     return this.state.familyNames[i] || this.state.families[i] ? (
       this.props.onHomePage ? (
         <Family name={this.state.familyNames[i]} key={i} onHomePage={true} />
@@ -109,24 +109,33 @@ class FamilyLinkTree extends Component {
         />
       )
     ) : (
-      <h2 style={{ visibility: "hidden" }}>|</h2>
+      <h2 style={{ visibility: "hidden", display: (mobileRender ? "none" : "block") }}>|</h2>
     );
   }
 
-  //Get a column of a single input field
-  getTreeColumn(index) {
-    return <div class="col-sm-2">{this.displayFamily(index)}</div>;
+  //Get a single family
+  getTreeColumn(index, mobileRender) {
+    if (mobileRender)
+    {return <div class="row">{this.displayFamily(index, mobileRender)}
+    </div>}
+    else
+    return <div class="col-sm-2">{this.displayFamily(index, mobileRender)}</div>;
   }
 
-  //Get a row of several input fields
-  getTreeRow(index) {
+  //Get a row of several families
+  getTreeRow(index, mobileRender) {
     //Simulate a for loop
     let colArray = [];
     for (let i = 0; i < this.cols; i++) colArray.push("");
 
+    if (mobileRender)
+    return (
+      colArray.map((val, i) => this.getTreeColumn(index + i, mobileRender))
+    );
+    else
     return (
       <div class="row">
-        {colArray.map((val, i) => this.getTreeColumn(index + i))}
+        {colArray.map((val, i) => this.getTreeColumn(index + i, mobileRender))}
       </div>
     );
   }
@@ -148,12 +157,21 @@ class FamilyLinkTree extends Component {
             src={process.env.PUBLIC_URL + "/images/bigTree.png"}
             class="img-fluid treeImg"
           ></img>
-          <div class="container position-absolute img-fluid treeLink">
-            {rowArray.map((val, index) => this.getTreeRow(index * this.cols))}
+          {/* Render family grid */}
+          <div class="container position-absolute img-fluid treeLink desktopOnly">
+            {rowArray.map((val, index) => this.getTreeRow(index * this.cols, false))}
+          </div>
+          {/* Render family as a list for mobile */}
+          <div class="container position-absolute img-fluid treeLink mobileOnly">
+            {rowArray.map((val, index) => this.getTreeRow(index * this.cols, true))}
           </div>
           {/*
               <h2 style={{ visibility: "hidden" }}> | </h2>
         */}
+        </div>
+        {/* Extra blue background when page is height is more on mobile */}
+        <div class="treeBg mobileOnly" >
+          <div style={{padding: "30%"}}></div>
         </div>
       </React.Fragment>
     );
@@ -163,7 +181,7 @@ class FamilyLinkTree extends Component {
 //Put links here to either a family tree page (when on the home page) or a link to a specific family
 const Family = (props) => (
   <React.Fragment>
-    <h2 class=" d-flex justify-content-center">
+    <h2 class=" d-flex justify-content-center familyLink">
       {props.onHomePage ? (
         <a href={"/familyTree/ ?name=" + props.name}>{props.name}</a>
       ) : (

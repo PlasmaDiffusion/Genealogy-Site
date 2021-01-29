@@ -38,7 +38,7 @@ class PersonEditor extends Component {
 
   //Connect to the databaes and get data here! ------------------------------
   componentDidMount() {
-    console.log("About to connect", window.location.search);
+    //console.log("About to connect", window.location.search);
 
     if (this.props.editing) {
       //Read in a specific person if editing
@@ -49,7 +49,7 @@ class PersonEditor extends Component {
       axios
         .get(getServerUrl() + "/read/person/" + id)
         .then((response) => {
-          console.log("Person Response: ", response.data);
+          //console.log("Person Response: ", response.data);
           this.setState({
             name: response.data.name,
             initialName: response.data.name,
@@ -83,7 +83,7 @@ class PersonEditor extends Component {
     axios
       .get(getServerUrl() + "/read/family/")
       .then((response) => {
-        console.log("Family Response: ", response.data);
+        //console.log("Family Response: ", response.data);
         this.setState({
           families: response.data,
         });
@@ -157,12 +157,12 @@ class PersonEditor extends Component {
   }
 
   onChangeBirthdateYearOnly(e) {
-    console.log("Birthdate yearonly");
+    //console.log("Birthdate yearonly");
     this.setState({ birthdateYearOnly: e.target.checked });
   }
 
   onChangeDeathdateYearOnly(e) {
-    console.log("Deathdate yearonly");
+    //console.log("Deathdate yearonly");
     this.setState({ deathdateYearOnly: e.target.checked });
   }
 
@@ -220,7 +220,7 @@ class PersonEditor extends Component {
   }
 
   addStartedFamilyInput() {
-    console.log("Adding child", this);
+    //console.log("Adding child", this);
     this.setState((prevState) => ({
       startedFamilies: [...prevState.startedFamilies, ""],
     }));
@@ -228,7 +228,7 @@ class PersonEditor extends Component {
 
   //Remove a specific child
   removeStartedFamilyInput(index) {
-    console.log("Children before removal", this.state.startedFamilies);
+    //console.log("Children before removal", this.state.startedFamilies);
 
     let newFamilyArray = [];
 
@@ -239,7 +239,7 @@ class PersonEditor extends Component {
       this.setState({
         startedFamilies: newFamilyArray,
       });
-    } else console.log("Invalid array index");
+    } //else console.log("Invalid array index");
   }
 
   render() {

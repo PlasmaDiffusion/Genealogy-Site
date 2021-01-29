@@ -16,12 +16,12 @@ class FamilyLink extends Component {
 
   //Read in data
   componentDidMount() {
-    console.log("About to connect to " + getServerUrl() + "/read/family");
+    //console.log("About to connect to " + getServerUrl() + "/read/family");
 
     axios
       .get(getServerUrl() + "/read/family")
       .then((response) => {
-        console.log("Family Response: ", response.data);
+        //console.log("Family Response: ", response.data);
         this.setState({ families: response.data });
       })
       .catch(function (error) {

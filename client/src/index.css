@@ -94,13 +94,45 @@ input[type="text"] {
   padding: 0px 10px;
 }
 
-/* On smaller screens, where height is less than 450px, change the style of the sidebar (less padding and a smaller font size) */
-@media screen and (max-height: 450px) {
+/* Viewport specific (Default as desktop)*/
+@media screen and (min-width: 577px) {
+  .mobileOnly {
+    display: none;
+  }
+  .desktopOnly {
+    display: block;
+  }
+}
+
+/* Phone screens */
+@media screen and (max-width: 576px) {
   .sidenav {
     padding-top: 15px;
   }
   .sidenav a {
     font-size: 18px;
+  }
+
+  /* Viewport specific*/
+  .mobileOnly {
+    display: block;
+  }
+  .desktopOnly {
+    display: none;
+  }
+
+  /* Link buttons */
+  .familyLink {
+    background-color: dodgerblue;
+    border-radius: 10px;
+    padding: 0.5rem;
+    margin: auto;
+    margin-top: 1rem;
+    box-shadow: 0 0 3pt 2pt dodgerblue;
+  }
+  .familyLink:hover {
+    background-color: rgb(158, 181, 255);
+    box-shadow: 0 0 3pt 2pt cornflowerblue;
   }
 }
 /* Scrollbar of the sidebar */

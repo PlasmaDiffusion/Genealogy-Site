@@ -26,7 +26,7 @@ class FamilyDetails extends Component {
 
   //Connect to database and read in information on a specific family
   componentDidMount() {
-    console.log("About to connect");
+    //console.log("About to connect");
 
     //Read in the family being edited
     var url = new URLSearchParams(window.location.search);
@@ -35,12 +35,12 @@ class FamilyDetails extends Component {
     this.setState({ familyId: id });
 
     if (baseId) this.setState({ baseId: baseId });
-    console.log("baseId", baseId, this.state.baseId);
+    //console.log("baseId", baseId, this.state.baseId);
 
     axios
       .get(getServerUrl() + "/read/family/" + id)
       .then((response) => {
-        console.log("Family Response: ", response.data);
+        //console.log("Family Response: ", response.data);
 
         //This component will break if it doesn't handle null data
         const nullChecker = new NullChecker();
@@ -193,11 +193,11 @@ class FamilyDetails extends Component {
           </div>
           <br></br>
           <br></br>
-          <h2 class="bg-primary text-white">Tree</h2>
+          {/*<h2 class="bg-primary text-white">Tree</h2>
           <FamilyBranch
             familyId={this.state.baseId}
             baseId={this.state.baseId}
-          />
+                />*/}
         </React.Fragment>
       );
     } else return;

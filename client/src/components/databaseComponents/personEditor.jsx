@@ -34,7 +34,7 @@ class PersonEditor extends Component {
 
   //Connect to the databaes and get data here! <------------------------------
   componentDidMount() {
-    console.log("About to connect", window.location.search);
+    //console.log("About to connect", window.location.search);
 
     var url = new URLSearchParams(window.location.search);
     var id = url.get("id");
@@ -43,7 +43,7 @@ class PersonEditor extends Component {
     axios
       .get(getClientUrl() + "/read/person/" + id)
       .then((response) => {
-        console.log("Person Response: ", response.data);
+        //console.log("Person Response: ", response.data);
         this.setState({
           name: response.data.name,
           initialName: response.data.name,
@@ -62,7 +62,7 @@ class PersonEditor extends Component {
     axios
       .get(getClientUrl() + "/read/family/")
       .then((response) => {
-        console.log("Family Response: ", response.data);
+        //console.log("Family Response: ", response.data);
         this.setState({
           families: response.data,
         });
@@ -76,7 +76,7 @@ class PersonEditor extends Component {
   onSubmitPerson(e) {
     e.preventDefault();
 
-    console.log(this.state.startedFamilies);
+    //console.log(this.state.startedFamilies);
 
     const updatedPerson = {
       name: this.state.name,
@@ -107,7 +107,7 @@ class PersonEditor extends Component {
         id: this.state.objectId,
       };
 
-      console.log("About to delete this id:", deleteData);
+      //console.log("About to delete this id:", deleteData);
 
       axios.post(getServerUrl() + "/delete/person", deleteData).then((res) => {
         alert(res.data);
@@ -179,7 +179,7 @@ class PersonEditor extends Component {
   }
 
   addStartedFamilyInput() {
-    console.log("Adding child", this);
+    //console.log("Adding child", this);
     this.setState((prevState) => ({
       startedFamilies: [...prevState.startedFamilies, ""],
     }));
@@ -187,7 +187,7 @@ class PersonEditor extends Component {
 
   //Remove a specific child
   removeStartedFamilyInput(index) {
-    console.log("Children before removal", this.state.startedFamilies);
+    //console.log("Children before removal", this.state.startedFamilies);
 
     let newFamilyArray = [];
 
@@ -198,7 +198,7 @@ class PersonEditor extends Component {
       this.setState({
         startedFamilies: newFamilyArray,
       });
-    } else console.log("Invalid array index");
+    } //else console.log("Invalid array index");
   }
 
   render() {
