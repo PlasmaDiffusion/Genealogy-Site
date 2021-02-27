@@ -1,7 +1,7 @@
 import React from "react";
 import axios from "axios";
 
-import { getServerUrl } from "./getUrl.js";
+import { getServerUrl } from "./components/getUrl";
 
 //Front end tests and events
 import { render, screen, act } from "@testing-library/react";
@@ -14,7 +14,15 @@ import { setupServer } from "msw/node";
 
 //Components to test
 import App from "./App";
+import Home from "./components/Home";
 
+describe("Home page", function () {
+  it("has a Home link", function () {
+    render(<Home />);
+
+    expect(screen.getByText("Home")).toBeInTheDocument();
+  });
+});
 /*
 //Mock request tests
 const server = setupServer(

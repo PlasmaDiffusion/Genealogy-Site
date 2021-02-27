@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node server.js",
     "heroku-postbuild": "cd client && npm install --only=dev && npm install && npm run build",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha --reporter list --exit"
   },
   "keywords": [],
   "author": "",
@@ -16,6 +16,7 @@
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
+    "mocha": "^8.3.0",
     "mongoose": "^5.9.23"
   }
 }

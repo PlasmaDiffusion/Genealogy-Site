@@ -33,24 +33,6 @@ export default withOktaAuth(
     }
 
     render() {
-      const button = this.props.authState.isAuthenticated ? (
-        <button
-          onClick={() => {
-            this.props.authService.logout();
-          }}
-        >
-          Logout
-        </button>
-      ) : (
-        <button
-          onClick={() => {
-            this.props.authService.login();
-          }}
-        >
-          Login
-        </button>
-      );
-
       return (
         <Router>
           <div>
