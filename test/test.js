@@ -10,9 +10,9 @@ const connection = mongoose.connection;
 before(function () {
   mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 });
-after(function () {
+after(async function () {
   console.log("Connection closed");
-  connection.close();
+  await connection.close();
 });
 
 //testRoutes.js will do the rest

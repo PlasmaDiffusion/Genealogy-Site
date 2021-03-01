@@ -11,7 +11,6 @@ describe("Getting a family by id", function () {
         //Check name from this specific familt
         assert.ok(response.body.name == "McNee", "Name is McNee?");
         assert.strictEqual(response.status, 200);
-        done();
       });
   });
 });
@@ -25,7 +24,6 @@ describe("Getting a person by id", function () {
         //Check if got a person with a specific names
         assert.ok(response.body.name == "John McNee", "Name is McNee?");
         assert.strictEqual(response.status, 200);
-        done();
       });
   });
 });
@@ -46,7 +44,6 @@ describe("Getting a family by name", function () {
         });
 
         assert.strictEqual(response.status, 200);
-        done();
       });
   });
 });
@@ -70,7 +67,6 @@ describe("Getting a family group for the homepage", function () {
 
         assert.strictEqual(response.status, 200);
         assert.ok(displayedFamilies > 0, "2 or more families for home page");
-        done();
       });
   });
 });
