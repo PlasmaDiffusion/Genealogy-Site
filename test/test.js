@@ -6,12 +6,11 @@ const uri =
   process.env.MONGO_PASS +
   "@cluster0-qjfez.mongodb.net/geneology?retryWrites=true&w=majority";
 
-before(function () {
-  mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
-});
+mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+
 after(function () {
-  console.log("Connection closed");
   mongoose.disconnect();
+  console.log("Connection closed");
 });
 
 //testRoutes.js will do the rest
