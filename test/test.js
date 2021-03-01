@@ -11,7 +11,7 @@ before(function () {
 });
 after(function () {
   console.log("Connection closed");
-  mongoose.connection.close();
+  mongoose.disconnect();
 });
 
 //testRoutes.js will do the rest
