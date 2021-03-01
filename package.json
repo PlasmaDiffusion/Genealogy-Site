@@ -17,6 +17,7 @@
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "mocha": "^8.3.0",
-    "mongoose": "^5.9.23"
+    "mongoose": "^5.9.23",
+    "supertest": "^6.1.3"
   }
 }

@@ -1,20 +1,18 @@
 var assert = require("assert");
+const mongoose = require("mongoose");
 
-var tests = 0;
+const uri =
+  "mongodb+srv://admin:" +
+  process.env.MONGO_PASS +
+  "@cluster0-qjfez.mongodb.net/geneology?retryWrites=true&w=majority";
+const connection = mongoose.connection;
 
-// Will run after every test in every file
-afterEach(function () {
-  tests++;
-  if (tests >= 8) {
-    //sequelize.close();
-    console.log("Sequlize connection closed");
-  }
+before(function () {
+  mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+});
+after(function () {
+  console.log("Connection closed");
+  connection.close();
 });
 
-//ShopItem read testing -----------------------------------------------------------------------------------
-describe("The shopItem model object using find", function () {
-  it("should not be null with id 1", async function () {
-    //const shopItem = await models.shopItem.findByPk(1);
-    //assert.notStrictEqual("undefined", shopItem);
-  });
-});
+//testRoutes.js will do the rest

@@ -34,7 +34,7 @@ routes.get("/read/familyGroup", async function (req, res) {
     if (err) {
       console.log(err);
     } else {
-      console.log(rootFamilies);
+      //console.log(rootFamilies);
       res.json(rootFamilies);
     }
   });
@@ -48,7 +48,7 @@ routes.get("/read/person/:id", function (req, res) {
       if (err) {
         console.log(err);
       } else {
-        console.log(persons);
+        //console.log(persons);
         res.json(persons);
       }
     });
@@ -63,10 +63,6 @@ routes.get("/read/family/:id", function (req, res) {
       populate: {
         path: "startedFamilies",
         model: "Family",
-        populate: {
-          path: "parentA",
-          model: "Person",
-        },
       },
     })
     .exec(function (err, family) {
@@ -74,7 +70,7 @@ routes.get("/read/family/:id", function (req, res) {
         console.log(err);
       } else {
         res.json(family);
-        console.log("Reading...", family);
+        //console.log("Reading...", family);
       }
     });
 });
@@ -88,10 +84,6 @@ routes.get("/read/familyByName/:name", function (req, res) {
       populate: {
         path: "startedFamilies",
         model: "Family",
-        populate: {
-          path: "parentA",
-          model: "Person",
-        },
       },
     })
     .exec(function (err, family) {
@@ -99,7 +91,7 @@ routes.get("/read/familyByName/:name", function (req, res) {
         console.log(err);
       } else {
         res.json(family);
-        console.log("Read in this from name", req.params.name, family);
+        //console.log("Read in this from name", req.params.name, family);
       }
     });
 });

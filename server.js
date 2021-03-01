@@ -8,6 +8,7 @@ const routes = express.Router();
 const path = require("path");
 const { findPeople, findFamilies } = require("./serverFunctions");
 
+//Schemas
 var Family = require("./family.js").family;
 exports.Family = Family;
 var Person = require("./family.js").person;
@@ -15,6 +16,7 @@ exports.Person = Person;
 var FamilyGroup = require("./family.js").FamilyGroup;
 exports.FamilyGroup = FamilyGroup;
 
+//Data to connect to the database
 const uri =
   "mongodb+srv://admin:" +
   process.env.MONGO_PASS +
@@ -53,3 +55,5 @@ app.use("/", require("./routes/delete"));
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname + "/client/build/index.html"));
 });
+
+exports.app = app;
