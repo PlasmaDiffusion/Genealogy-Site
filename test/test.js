@@ -8,8 +8,8 @@ const uri =
 
 mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
-after(function () {
-  mongoose.disconnect();
+after(async function () {
+  await mongoose.disconnect();
   console.log("Connection closed");
 });
 
