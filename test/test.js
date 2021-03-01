@@ -1,15 +1,9 @@
 var assert = require("assert");
-const mongoose = require("mongoose");
 
-const uri =
-  "mongodb+srv://admin:" +
-  process.env.MONGO_PASS +
-  "@cluster0-qjfez.mongodb.net/geneology?retryWrites=true&w=majority";
+const { connection } = require("../server");
 
-mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
-
-after(async function () {
-  await mongoose.disconnect();
+after(function () {
+  connection.close();
   console.log("Connection closed");
 });
 

@@ -42,8 +42,6 @@ app.use((req, res, next) => {
   next();
 });
 
-exports.routes = routes;
-
 app.use(cors());
 app.use(bodyParser.json());
 app.use("/", require("./routes/create"));
@@ -56,4 +54,6 @@ app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname + "/client/build/index.html"));
 });
 
+exports.routes = routes;
+exports.connection = connection;
 exports.app = app;
