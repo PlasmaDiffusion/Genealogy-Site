@@ -1,9 +1,9 @@
 var assert = require("assert");
 
-const { connection } = require("../server");
+const mongoose = require("mongoose");
 
-after(function () {
-  connection.close();
+after(async function () {
+  mongoose.disconnect();
   console.log("Connection closed");
 });
 

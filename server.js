@@ -55,5 +55,4 @@ app.get("*", (req, res) => {
 });
 
 exports.routes = routes;
-exports.connection = connection;
 exports.app = app;
