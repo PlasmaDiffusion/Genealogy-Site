@@ -3,7 +3,7 @@ const { app } = require("../server");
 var assert = require("assert");
 
 //Read family by id test
-describe("Getting a family by id", function () {
+describe("Getting a family by id", function (done) {
   it("should return a single family with a name", async function () {
     return request(app)
       .get("/read/family/60063e2868e4240017d43583")
