@@ -3,7 +3,22 @@ var assert = require("assert");
 
 const mongoose = require("mongoose");
 
-var tests = 0;
+//Data to connect to the database
+const uri =
+  "mongodb+srv://admin:" +
+  process.env.MONGO_PASS +
+  "@cluster0-qjfez.mongodb.net/geneology?retryWrites=true&w=majority";
+
+beforeEach(async () => {
+  await mongoose.connect(uri, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  });
+});
+
+afterEach(async () => {
+  await mongoose.connection.close();
+});
 
 after(async function () {
   mongoose.disconnect();
