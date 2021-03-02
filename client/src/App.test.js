@@ -1,5 +1,6 @@
 import React from "react";
 import axios from "axios";
+import { Route, BrowserRouter as Router } from "react-router-dom";
 
 import { getServerUrl } from "./components/getUrl";
 
@@ -15,25 +16,86 @@ import { setupServer } from "msw/node";
 //Components to test
 import App from "./App";
 import Home from "./components/Home";
+import FamilyLinkTree from "./components/databaseComponents/familyLinkTree";
+import FamilyDetails from "./components/familyDetails";
 
-describe("Home page", function () {
-  it("has a Home link", function () {
-    render(<Home />);
-
-    expect(screen.getByText("Home")).toBeInTheDocument();
-  });
-});
-/*
 //Mock request tests
 const server = setupServer(
-  rest.get("/read/categories/", (req, res, ctx) => {
+  //Homepage links to be displayed on a grid (has to be 5x5, so an array of 25)
+  rest.get("/read/familyGroup/", (req, res, ctx) => {
     return res(
-      ctx.json([
-        { id: 0, name: "All" },
-        { id: 1, name: "Food" },
-        { id: 2, name: "Office Supplies" },
-        { id: 3, name: "Test" },
-      ])
+      ctx.json({
+        names: [
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "McNee",
+          "",
+          "Robertson",
+          "",
+          "",
+          "",
+          "Hamilton",
+          "",
+          "",
+          null,
+          null,
+          null,
+          "Scott",
+          null,
+          "",
+          null,
+          "",
+          null,
+          "",
+        ],
+        linkOrder: [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          1,
+          null,
+          3,
+          null,
+          null,
+          null,
+          2,
+          null,
+          4,
+          null,
+          5,
+          null,
+          6,
+          null,
+          null,
+          null,
+          7,
+          null,
+          8,
+        ],
+      })
+    );
+  }),
+  //Family links
+  rest.get("/read/family/:id", (req, res, ctx) => {
+    return res(
+      ctx.json({
+        name: "A Family Name",
+        description: "A description",
+        parentA: {
+          name: "Some Person",
+        },
+        parentB: {
+          name: "Some Other Person",
+        },
+        children: [],
+      })
     );
   })
 );
@@ -42,77 +104,38 @@ beforeAll(() => server.listen());
 afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
 
-//Loading component
-describe("Loading component", function () {
-  it("renders a basic loading <p> message, and should not render a heading unless logged in", function () {
-    render(<Loading />);
+describe("Home page", function () {
+  it("has a Home link", function () {
+    render(<Home />);
 
-    expect(screen.getByText("Loading...")).toBeInTheDocument();
+    expect(screen.getByText("Home")).toBeInTheDocument();
+  });
 
-    expect(screen.queryByRole("heading")).toBeNull();
+  it("gets an array of families to link to", async function () {
+    render(<FamilyLinkTree onHomePage={true} />);
+    expect(await screen.findAllByRole("link")).toHaveLength(8);
   });
 });
 
-//Product
-describe("Product Page component", function () {
-  it("renders 3 items", async function () {
-    const products = [
-      { id: 1, name: "Apple" },
-      { id: 2, name: "Orange" },
-      { id: 3, name: "Banana" },
-    ];
+describe("Family details", function () {
+  it("should get family details and display 2 full names (3 <h2>s each)", async function () {
+    //Set up url with query containing id
+    const newUrl = "?id=6006327068e4240017d43574";
+    /*Object.defineProperty(window.location, "hash", {
+      writable: true,
+      value: newUrl,
+    });*/
 
-    //const promise = Promise.resolve({ data: { hits: products } });
+    /*render(
+      <Router>
+        <Route path="/family/%20?id=6006327068e4240017d43574">
+          <FamilyDetails />
+        </Route>
+      </Router>
+    );*/
 
-    //axios.get.mockImplementationOnce(() => promise);
+    render(<FamilyDetails />);
 
-    render(<ProductBanner product={products[0]} />);
-    render(<ProductBanner product={products[1]} />);
-    render(<ProductBanner product={products[2]} />);
-
-    //screen.debug();
-
-    //await act(() => promise);
-
-    expect(screen.getAllByRole("heading")).toHaveLength(3);
+    expect(await screen.findAllByRole("heading", { level: 2 })).toHaveLength(6);
   });
 });
-
-//Cart
-describe("Cart component", function () {
-  it("should have at least two items", async function () {
-    render(<Cart test={true} />);
-
-    expect(screen.getAllByRole("heading")).toHaveLength(2);
-  });
-});
-
-//Quantity buttons
-describe("Quanity button component", function () {
-  it("should have two buttons and show a quantity of 1, then a quantity of 2", async function () {
-    render(<QuantityButtons amount={1} max={3} onAmountChanged={() => {}} />);
-
-    expect(screen.getAllByRole("button")).toHaveLength(2);
-
-    expect(screen.getByText("1")).toBeInTheDocument();
-
-    userEvent.click(screen.getByText("+"));
-
-    expect(await screen.findByText("2")).toBeInTheDocument();
-  });
-});
-
-//Search bar
-describe("Searchbar", function () {
-  it("should read in multiple categories", async function () {
-    render(<SearchBar />);
-
-    expect(await screen.findByText("Food")).toBeInTheDocument();
-    expect(await screen.findAllByText("All")).toHaveLength(2);
-    expect(await screen.findByText("Office Supplies")).toBeInTheDocument();
-    expect(await screen.findByText("Test")).toBeInTheDocument();
-
-    screen.debug();
-  });
-});
-*/

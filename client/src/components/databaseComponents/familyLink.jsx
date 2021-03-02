@@ -3,7 +3,7 @@ import { getClientUrl, getServerUrl } from "../getUrl.js";
 
 import axios from "axios";
 
-//Read in families, and show non sub families as links on the sidebar.
+//Read in families, and show non sub families as links on the sidebar. (This is used in the admin pages. FamilyLinkTree is used on the home pages.)
 class FamilyLink extends Component {
   constructor(props) {
     super(props);

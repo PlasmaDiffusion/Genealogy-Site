@@ -116,10 +116,10 @@ class FamilyLinkTree extends Component {
   //Get a single family
   getTreeColumn(index, mobileRender) {
     if (mobileRender)
-    {return <div class="row">{this.displayFamily(index, mobileRender)}
+    {return <div className="row">{this.displayFamily(index, mobileRender)}
     </div>}
     else
-    return <div class="col-sm-2">{this.displayFamily(index, mobileRender)}</div>;
+    return <div className="col-sm-2">{this.displayFamily(index, mobileRender)}</div>;
   }
 
   //Get a row of several families
@@ -134,7 +134,7 @@ class FamilyLinkTree extends Component {
     );
     else
     return (
-      <div class="row">
+      <div className="row">
         {colArray.map((val, i) => this.getTreeColumn(index + i, mobileRender))}
       </div>
     );
@@ -148,21 +148,21 @@ class FamilyLinkTree extends Component {
 
     return (
       <React.Fragment>
-        <h1 class="treeBg d-flex justify-content-center">
+        <h1 className="treeBg d-flex justify-content-center">
           {this.state.specificFamilyName}
         </h1>
-        <div class="treeBg">
-          {/*<h1 class="d-flex justify-content-center">Creating Family Trees</h1>*/}
+        <div className="treeBg">
+          {/*<h1 className="d-flex justify-content-center">Creating Family Trees</h1>*/}
           <img
             src={process.env.PUBLIC_URL + "/images/bigTree.png"}
-            class="img-fluid treeImg"
+            className="img-fluid treeImg"
           ></img>
           {/* Render family grid */}
-          <div class="container position-absolute img-fluid treeLink desktopOnly">
+          <div className="container position-absolute img-fluid treeLink desktopOnly">
             {rowArray.map((val, index) => this.getTreeRow(index * this.cols, false))}
           </div>
           {/* Render family as a list for mobile */}
-          <div class="container position-absolute img-fluid treeLink mobileOnly">
+          <div className="container position-absolute img-fluid treeLink mobileOnly">
             {rowArray.map((val, index) => this.getTreeRow(index * this.cols, true))}
           </div>
           {/*
@@ -170,7 +170,7 @@ class FamilyLinkTree extends Component {
         */}
         </div>
         {/* Extra blue background when page is height is more on mobile */}
-        <div class="treeBg mobileOnly" >
+        <div className="treeBg mobileOnly" >
           <div style={{padding: "30%"}}></div>
         </div>
       </React.Fragment>
@@ -181,7 +181,7 @@ class FamilyLinkTree extends Component {
 //Put links here to either a family tree page (when on the home page) or a link to a specific family
 const Family = (props) => (
   <React.Fragment>
-    <h2 class=" d-flex justify-content-center familyLink">
+    <h2 className=" d-flex justify-content-center familyLink">
       {props.onHomePage ? (
         <a href={"/familyTree/ ?name=" + props.name}>{props.name}</a>
       ) : (
