@@ -25,6 +25,7 @@ import FamilyEditor from "./databaseComponents/familyEditor";
 import FamilyDetails from "./familyDetails";
 import Login from "./auth/Login";
 import Logout from "./auth/Logout";
+import {getClientUrl} from "./getUrl";
 
 export default withOktaAuth(
   class Home extends Component {
@@ -38,9 +39,9 @@ export default withOktaAuth(
           <div>
             <div className="navbar"
             >
-              <a href="/"> Home </a>
+              <a href="/" style={{visibility: window.location.href != getClientUrl()+"/" ? "visible" : "hidden" }}>
+                Home </a>
               <br></br>
-              <hr />
             </div>
 
             {/*
