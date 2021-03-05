@@ -1,4 +1,4 @@
-//Use local host in development
+//Use local host in development and the actual site url in deployment
 export function getClientUrl() {
   return process.env.NODE_ENV == "development"
     ? "http://localhost:3000"

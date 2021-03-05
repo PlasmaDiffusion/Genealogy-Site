@@ -8,6 +8,7 @@ import FamilyLink from "./databaseComponents/familyLink";
 import FamilyEditor from "./databaseComponents/familyEditor";
 import PersonEditor from "./databaseComponents/personEditor";
 
+//Uss OKTA for logging in. If you're an admin, you can log in. If not, you can't access the admin pages.
 const AppWithRouterAccess = () => {
   const history = useHistory();
   const onAuthRequired = () => {

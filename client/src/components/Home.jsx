@@ -37,6 +37,7 @@ export default withOktaAuth(
       return (
         <Router>
           <div>
+            {/* Simple navbar back to the home page. The link will be hidden when on the actual home page */}
             <div className="navbar"
             >
               <a href="/" style={{visibility: window.location.href != getClientUrl()+"/" ? "visible" : "hidden" }}>
@@ -44,14 +45,9 @@ export default withOktaAuth(
               <br></br>
             </div>
 
-            {/*
-            A <Switch> looks through all its children <Route>
-            elements and renders the first one whose path
-            matches the current URL. Use a <Switch> any time
-            you have multiple routes, but you want only one
-            of them to render at a time
-          */}
+
             <Switch>
+              {/* Stuff the average user will see */}
               <Route exact path="/">
                 <FamilyLinkTree onHomePage={true} />
               </Route>
@@ -65,6 +61,7 @@ export default withOktaAuth(
                 <p>You have been logged out.</p>
               </Route>
 
+              {/* Stuff the admins will see */}
               <SecureRoute path="/admin" component={FamilyAdmin} />
               <SecureRoute path="/logout" component={Logout} />
               <SecureRoute path="/edit/person/:id" component={PersonEditor} />

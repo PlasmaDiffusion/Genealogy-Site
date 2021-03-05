@@ -1,3 +1,4 @@
+//Formats dates to be displayed in a more user friendly way.
 export function formatDate(date, yearOnly = false) {
   if (date == null) return;
   //Remove time

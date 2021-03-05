@@ -7,7 +7,7 @@ import FamilyLink from "./familyLink";
 
 import axios from "axios";
 
-//A form that has a grid of family names to show on the family tree.
+//A form that has a grid of family names to show on the family tree (From the big tree on the home page).
 class FamilyGroupForm extends Component {
   constructor(props) {
     super(props);
