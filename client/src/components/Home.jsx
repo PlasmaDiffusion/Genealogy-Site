@@ -19,7 +19,7 @@ import {
 
 import FamilyAdmin from "./databaseComponents/familyAdmin";
 import FamilyLink from "./databaseComponents/familyLink";
-import FamilyLinkTree from "./databaseComponents/familyLinkTree";
+import FamilyLinkTree from "./familyLinkTree";
 import PersonEditor from "./databaseComponents/personEditor";
 import FamilyEditor from "./databaseComponents/familyEditor";
 import FamilyDetails from "./familyDetails";
@@ -36,8 +36,7 @@ export default withOktaAuth(
       return (
         <Router>
           <div>
-            <div
-              style={{ backgroundColor: "lightblue", padding: 10, margin: 0 }}
+            <div className="navbar"
             >
               <a href="/"> Home </a>
               <br></br>

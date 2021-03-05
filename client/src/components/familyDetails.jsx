@@ -6,7 +6,7 @@ import { getClientUrl, getServerUrl } from "./getUrl.js";
 import { formatDate } from "./formatDate.js";
 import FamilyBranch from "./familyBranch";
 
-//Display parents and children, but not a complex tree
+//Display parents and children of a given family. Includes details like birth and death date/location.
 class FamilyDetails extends Component {
   constructor(props) {
     super(props);
@@ -100,7 +100,7 @@ class FamilyDetails extends Component {
       return (
         <React.Fragment>
           <div class="container">
-            <h1 class="d-flex justify-content-center">
+            <h1 class="d-flex justify-content-center space-out">
               The {this.state.name} Family
             </h1>
             <p class="d-flex justify-content-center">
@@ -110,7 +110,7 @@ class FamilyDetails extends Component {
             <div class="row border-bottom">
               <Parent person={this.state.parentA} />
               <div class="col-lg">
-                <div class="container">
+                <div class="container space-out-mobile">
                   <div class="row">
                     <div class="col-sm d-flex justify-content-center">
                       <h3> &larr; Married &rarr;</h3>
@@ -142,8 +142,8 @@ class FamilyDetails extends Component {
               </div>
               <Parent person={this.state.parentB} />
             </div>
-            {/*divider row */}
-            <div class="row">
+            {/*divider row into Children */}
+            <div class="row space-out" style={{marginBottom: "2rem"}}>
               <div class="col-lg">
                 <h4 class="col-lg d-flex justify-content-center">
                   {this.state.children.length > 0 ? "Children" : ""}
@@ -193,11 +193,6 @@ class FamilyDetails extends Component {
           </div>
           <br></br>
           <br></br>
-          {/*<h2 class="bg-primary text-white">Tree</h2>
-          <FamilyBranch
-            familyId={this.state.baseId}
-            baseId={this.state.baseId}
-                />*/}
         </React.Fragment>
       );
     } else return;
@@ -302,6 +297,7 @@ const Child = (props) => {
           </React.Fragment>
         ))}
       </p>
+      <p className="border-bottom mobileOnly"></p>
     </div>
   );
 };

@@ -54,7 +54,7 @@ class FamilyForm extends Component {
 
   //Connect to the database and get data here! ------------------------------
   componentDidMount() {
-    console.log("About to connect");
+    //console.log("About to connect");
 
     //Unless a general form for adding, load in data for editing an existing family
     if (this.props.editing) {
@@ -65,7 +65,7 @@ class FamilyForm extends Component {
       axios
         .get(getServerUrl() + "/read/family/" + id)
         .then((response) => {
-          console.log("Family Response: ", response.data);
+          //console.log("Family Response: ", response.data);
 
           //This component will break if it doesn't handle null data
           const nullChecker = new NullChecker();
@@ -102,7 +102,7 @@ class FamilyForm extends Component {
             children_Birthdates: [...children_Birthdates],
           });
 
-          console.log("Children:", this.state.children);
+          //console.log("Children:", this.state.children);
         })
         .catch(function (error) {
           console.log(error);
@@ -117,7 +117,7 @@ class FamilyForm extends Component {
         this.setState({ persons: response.data });
       })
       .catch(function (error) {
-        console.log(error);
+        //console.log(error);
       });
   }
 
@@ -152,7 +152,7 @@ class FamilyForm extends Component {
     )
       return;
 
-    console.log("Sending JSON data:", familyToSubmit.children);
+    //console.log("Sending JSON data:", familyToSubmit.children);
 
     if (this.props.editing) {
       //Edit a family or...
@@ -162,14 +162,14 @@ class FamilyForm extends Component {
           familyToSubmit
         )
         .then((res) => {
-          console.log(res.data);
+          //console.log(res.data);
           alert(res.data);
           window.location.replace(getClientUrl() + "/admin");
         });
     } //Add a new family
     else {
       axios.post(getServerUrl() + "/add/family", familyToSubmit).then((res) => {
-        console.log(res.data);
+        //console.log(res.data);
         alert(res.data);
         window.location.replace(getClientUrl() + "/admin");
       });
@@ -216,7 +216,7 @@ class FamilyForm extends Component {
       this.setState({ parentA: e.target.value });
     }
 
-    console.log(this.state.parentA, this.state.parentA_Birthdate);
+    //console.log(this.state.parentA, this.state.parentA_Birthdate);
   }
 
   onChangeParentB(e) {
@@ -279,6 +279,7 @@ class FamilyForm extends Component {
             value={currentChild.name}
             onChange={obj.onChangeChild}
             list={i}
+            role="childInput"
           />
           <button
             type="button"
@@ -295,7 +296,7 @@ class FamilyForm extends Component {
   }
 
   addChildInput() {
-    console.log("Adding child", this);
+    //console.log("Adding child", this);
     this.setState((prevState) => ({
       children: [...prevState.children, ""],
     }));
@@ -303,8 +304,8 @@ class FamilyForm extends Component {
 
   //Remove a specific child
   removeChildInput(index) {
-    console.log("Removing child", index);
-    console.log("Children before removal", this.state.children);
+    //console.log("Removing child", index);
+    //console.log("Children before removal", this.state.children);
 
     let newChildrenArray = [];
 
@@ -340,6 +341,7 @@ class FamilyForm extends Component {
               value={this.state.familyName}
               onChange={this.onChangeFamilyName}
               required
+              role="familyNameInput"
             />
           </div>
 
@@ -438,6 +440,7 @@ class FamilyForm extends Component {
             type="button"
             onClick={this.addChildInput}
             class="btn btn-secondary"
+            role="addChild"
           >
             + Child
           </button>

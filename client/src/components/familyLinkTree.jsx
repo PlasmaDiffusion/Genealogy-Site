@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { getClientUrl, getServerUrl } from "../getUrl.js";
-import Sorter from "./classes/sorter.js";
+import { getClientUrl, getServerUrl } from "./getUrl.js";
+import Sorter from "./databaseComponents/classes/sorter.js";
 import axios from "axios";
 
 //On the home page show family group links. After you click a group, only show families containing that group name.
@@ -148,8 +148,8 @@ class FamilyLinkTree extends Component {
 
     return (
       <React.Fragment>
-        <h1 className="treeBg d-flex justify-content-center">
-          {this.state.specificFamilyName}
+        <h1 className="treeBg d-flex justify-content-center smallFont-mobile">
+          {this.state.specificFamilyName ? this.state.specificFamilyName : "Pick A Family"}
         </h1>
         <div className="treeBg">
           {/*<h1 className="d-flex justify-content-center">Creating Family Trees</h1>*/}

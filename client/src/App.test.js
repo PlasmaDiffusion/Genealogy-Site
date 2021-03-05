@@ -5,7 +5,7 @@ import { Route, BrowserRouter as Router } from "react-router-dom";
 import { getServerUrl } from "./components/getUrl";
 
 //Front end tests and events
-import { render, screen, act } from "@testing-library/react";
+import { render, screen, act, fireEvent } from "@testing-library/react";
 import "@testing-library/jest-dom/extend-expect";
 import userEvent from "@testing-library/user-event";
 
@@ -16,8 +16,9 @@ import { setupServer } from "msw/node";
 //Components to test
 import App from "./App";
 import Home from "./components/Home";
-import FamilyLinkTree from "./components/databaseComponents/familyLinkTree";
+import FamilyLinkTree from "./components/familyLinkTree";
 import FamilyDetails from "./components/familyDetails";
+import FamilyForm from "./components/databaseComponents/familyForm";
 
 //Mock request tests
 const server = setupServer(
@@ -104,7 +105,7 @@ beforeAll(() => server.listen());
 afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
 
-describe("Home page", function () {
+describe("Home Page", function () {
   it("has a Home link", function () {
     render(<Home />);
 
@@ -117,25 +118,34 @@ describe("Home page", function () {
   });
 });
 
-describe("Family details", function () {
+describe("Family Details", function () {
   it("should get family details and display 2 full names (3 <h2>s each)", async function () {
     //Set up url with query containing id
-    const newUrl = "?id=6006327068e4240017d43574";
-    /*Object.defineProperty(window.location, "hash", {
-      writable: true,
-      value: newUrl,
-    });*/
-
-    /*render(
-      <Router>
-        <Route path="/family/%20?id=6006327068e4240017d43574">
-          <FamilyDetails />
-        </Route>
-      </Router>
-    );*/
+    window.location.replace("/" + "?id=6006327068e4240017d43574");
 
     render(<FamilyDetails />);
 
     expect(await screen.findAllByRole("heading", { level: 2 })).toHaveLength(6);
+  });
+});
+
+describe("Family Form", function () {
+  it("dynamically adds more <input> fields for children", async function () {
+    render(<FamilyForm />);
+    expect(screen.getByText("+ Child")).toBeInTheDocument();
+
+    //Call add button and check for more data list input fields
+    await userEvent.click(screen.getByRole("addChild"));
+    await userEvent.click(screen.getByRole("addChild"));
+
+    expect(await screen.findAllByText("Child:")).toHaveLength(2);
+  });
+
+  it("takes in input and calls an on change event", async function () {
+    render(<FamilyForm />);
+
+    var input = screen.getByRole("familyNameInput");
+    fireEvent.change(input, { target: { value: "Family" } });
+    expect(input.value).toBe("Family");
   });
 });

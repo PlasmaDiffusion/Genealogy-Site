@@ -94,6 +94,22 @@ input[type="text"] {
   padding: 0px 10px;
 }
 
+/* Home bar at the top */
+.navbar {
+  background-color: lightblue;
+  padding: 10;
+  margin: 0;
+  border-bottom: 1px solid skyblue;
+}
+
+.navbar a {
+  font-size: 1.5rem;
+}
+
+.space-out {
+  margin: 5rem;
+}
+
 /* Viewport specific (Default as desktop)*/
 @media screen and (min-width: 577px) {
   .mobileOnly {
@@ -113,9 +129,10 @@ input[type="text"] {
     font-size: 18px;
   }
 
-  /* Viewport specific*/
+  /* Viewport specific menus*/
   .mobileOnly {
     display: block;
+    top: 100px;
   }
   .desktopOnly {
     display: none;
@@ -133,6 +150,20 @@ input[type="text"] {
   .familyLink:hover {
     background-color: rgb(158, 181, 255);
     box-shadow: 0 0 3pt 2pt cornflowerblue;
+  }
+
+  .space-out-mobile {
+    margin: 5rem;
+  }
+
+  .smallFont-mobile {
+    font-size: 1.5rem;
+  }
+
+  /*Make the tree just a bit bigger*/
+  .treeImg {
+    width: 100%;
+    height: 100%;
   }
 }
 /* Scrollbar of the sidebar */

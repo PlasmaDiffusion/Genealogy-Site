@@ -6,7 +6,7 @@ import FamilyForm from "./familyForm";
 
 import axios from "axios";
 
-//Show a form to add families, but also
+//Render a form to add families and a delete button. (The FamilyForm component has the actual form interaction)
 class FamilyEditor extends Component {
   constructor(props) {
     super(props);
