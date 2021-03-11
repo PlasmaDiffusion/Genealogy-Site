@@ -10,7 +10,6 @@ import {
 } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import Home from "./components/Home";
-import "./App.css";
 
 import {
   Security,

@@ -17,6 +17,7 @@ import {
   withOktaAuth,
 } from "@okta/okta-react";
 
+import Navbar from "./navbar";
 import FamilyAdmin from "./databaseComponents/familyAdmin";
 import FamilyLink from "./databaseComponents/familyLink";
 import FamilyLinkTree from "./familyLinkTree";
@@ -37,21 +38,18 @@ export default withOktaAuth(
       return (
         <Router>
           <div>
-            {/* Simple navbar back to the home page. The link will be hidden when on the actual home page */}
-            <div className="navbar"
-            >
-              <a href="/" style={{visibility: window.location.href != getClientUrl()+"/" ? "visible" : "hidden" }}>
-                Home </a>
-              <br></br>
-            </div>
+            
+          <Navbar />
 
 
             <Switch>
               {/* Stuff the average user will see */}
               <Route exact path="/">
+                
                 <FamilyLinkTree onHomePage={true} />
               </Route>
               <Route path="/familyTree/:name">
+
                 <FamilyLinkTree onHomePage={false} />
               </Route>
               <Route path="/family/:id">

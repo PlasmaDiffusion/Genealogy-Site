@@ -7,7 +7,7 @@ class NullChecker {
     var obj = this;
 
     responseData.map(function (currentFamily, i) {
-      console.log("Checking for null", currentFamily);
+      //console.log("Checking for null", currentFamily);
       if (currentFamily.parentA == null) {
         currentFamily.parentA = {
           name: "(Deleted)",

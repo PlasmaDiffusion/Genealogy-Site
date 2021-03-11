@@ -80,7 +80,8 @@ class FamilyDetails extends Component {
     var obj = this;
     return this.state.children.map(function (currentChild, i) {
       return (
-        <div className="form-group">
+        <div className="form-group"  key={i}
+        >
           <label>Child: </label>
           <input
             type="text"
@@ -102,12 +103,19 @@ class FamilyDetails extends Component {
           <div class="container">
             <h1 class="d-flex justify-content-center space-out">
               The {this.state.name} Family
+              {/*<br></br>
+              {this.state.marriageDate
+                        ? "(" + formatDate(
+                            this.state.marriageDate,
+                            true
+                          ) + ")"
+                        : ""}*/}
             </h1>
             <p class="d-flex justify-content-center">
               <i>{this.state.description}</i>
             </p>
             {/*parent row*/}
-            <div class="row border-bottom">
+            <div class="row border-bottom pb-5">
               <Parent person={this.state.parentA} />
               <div class="col-lg">
                 <div class="container space-out-mobile">

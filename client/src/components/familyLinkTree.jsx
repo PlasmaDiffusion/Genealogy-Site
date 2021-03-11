@@ -9,10 +9,10 @@ class FamilyLinkTree extends Component {
     super(props);
     this.state = {
       familyNames: [],
-      familyLinkOrder: [],
+      familyLinkOrder: [], //Order families are displayed on the grid
       families: [],
-      rootFamilyId: "", //Root family that all sub families should belong to
-      specificFamilyName: "",
+      rootFamilyId: "", //Root family would be the McNee family. Sub families would be McNee 1896, McNee 1900, etc.
+      rootFamilyName: "",
       firstFamilyId: "",
     };
 
@@ -31,19 +31,19 @@ class FamilyLinkTree extends Component {
       .get(getServerUrl() + "/read/familyGroup")
       .then((response) => {
         //Collect families here
-        //console.log("Family Response: ", response.data);
         if (this.props.onHomePage)
           this.setState({ familyNames: response.data.names });
+        
         this.setState({ familyLinkOrder: response.data.linkOrder });
-        //console.log("Fam", this.state.familyNames);
-        //console.log("Link order", this.state.familyLinkOrder);
 
         //Read all families of a particular name
         if (!this.props.onHomePage) {
+
+          //Get the family name we're searching for.
           let url = new URLSearchParams(window.location.search);
-          let nameToSearchFor = url.get("name");
+          let nameToSearchFor = url.get("rootName");
           this.setState({
-            specificFamilyName: nameToSearchFor + " Family Tree",
+            rootFamilyName: nameToSearchFor,
           });
 
           //console.log("searching for ", nameToSearchFor);
@@ -66,7 +66,6 @@ class FamilyLinkTree extends Component {
 
   //Call this function once a list of families from the server has been obtained.
   organizeSpecificFamilies(response) {
-    //console.log("Family Response By Name: ", response.data);
 
     //Sort families by their name
     let sorter = new Sorter();
@@ -98,14 +97,15 @@ class FamilyLinkTree extends Component {
   displayFamily(i, mobileRender) {
     return this.state.familyNames[i] || this.state.families[i] ? (
       this.props.onHomePage ? (
-        <Family name={this.state.familyNames[i]} key={i} onHomePage={true} />
+        <FamilyLink name={this.state.familyNames[i]} key={i} onHomePage={true} />
       ) : (
-        <Family
+        <FamilyLink
           name={this.state.families[i].name}
           key={i}
           onHomePage={false}
           _id={this.state.families[i]._id}
           baseId={this.state.firstFamilyId}
+          rootName={this.state.rootFamilyName}
         />
       )
     ) : (
@@ -148,8 +148,8 @@ class FamilyLinkTree extends Component {
 
     return (
       <React.Fragment>
-        <h1 className="treeBg d-flex justify-content-center smallFont-mobile">
-          {this.state.specificFamilyName ? this.state.specificFamilyName : "Pick A Family"}
+        <h1 className="treeBg treeTitle smallFont-mobile">
+          {this.state.rootFamilyName ? this.state.rootFamilyName + " Family Tree" : "Pick A Family"}
         </h1>
         <div className="treeBg">
           {/*<h1 className="d-flex justify-content-center">Creating Family Trees</h1>*/}
@@ -179,14 +179,14 @@ class FamilyLinkTree extends Component {
 }
 
 //Put links here to either a family tree page (when on the home page) or a link to a specific family
-const Family = (props) => (
+const FamilyLink = (props) => (
   <React.Fragment>
     <h2 className=" d-flex justify-content-center familyLink">
       {props.onHomePage ? (
-        <a href={"/familyTree/ ?name=" + props.name}>{props.name}</a>
+        <a href={"/familyTree/ ?rootName=" + props.name}>{props.name}</a>
       ) : (
-        <a href={"/family/ ?id=" + props._id + "&baseId=" + props.baseId}>
-          {props.name}
+        <a href={"/family/ ?id=" + props._id  + "&subFamilyName=" + props.name + "&rootName="+ props.rootName}>
+          {props.name /* + "&baseId=" + props.baseId */}
         </a>
       )}
     </h2>

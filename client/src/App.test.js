@@ -19,6 +19,7 @@ import Home from "./components/Home";
 import FamilyLinkTree from "./components/familyLinkTree";
 import FamilyDetails from "./components/familyDetails";
 import FamilyForm from "./components/databaseComponents/familyForm";
+import Navbar from "./components/navbar";
 
 //Mock request tests
 const server = setupServer(
@@ -115,6 +116,13 @@ describe("Home Page", function () {
   it("gets an array of families to link to", async function () {
     render(<FamilyLinkTree onHomePage={true} />);
     expect(await screen.findAllByRole("link")).toHaveLength(8);
+  });
+});
+
+describe("Navbar", function () {
+  it("should have 3 <a> links when displaying details of a family", async function () {
+    render(<Navbar testing={true} />);
+    expect(await screen.findAllByRole("link")).toHaveLength(3);
   });
 });
 

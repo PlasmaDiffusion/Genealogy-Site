@@ -6,7 +6,7 @@ import { formatDate } from "./formatDate.js";
 export const Parent = (props) => {
     return (
       <div class="col-lg">
-        <div class="col-lg p-3 mb-2 bg-primary text-white">
+        <div class="col-lg p-3 green text-white">
           <h2>{props.person.name.split(" ")[0]}</h2>
           <h2>
             {props.person.name.split(" ")[1] ? (
@@ -23,6 +23,7 @@ export const Parent = (props) => {
             )}
           </h2>
         </div>
+        <div className="border">
         <p>
           <i>{props.person.description}</i>
         </p>
@@ -46,6 +47,7 @@ export const Parent = (props) => {
           </b>
           {props.person.deathLocation ? props.person.deathLocation : ""}
         </p>
+        </div>
       </div>
     );
   };
@@ -54,9 +56,10 @@ export const Parent = (props) => {
 export  const Child = (props) => {
     return (
       <div class="col-lg">
-        <p class={"col-sm-" + props.size + " p-1 mb-2 bg-info text-white"}>
+        <p class={"p-1 mb-0 darkGreen text-white "}>
           {props.person.name}
         </p>
+        <div className="border mb-3">
         <p>
           <i>{props.person.description}</i>
         </p>
@@ -96,7 +99,7 @@ export  const Child = (props) => {
             </React.Fragment>
           ))}
         </p>
-        <p className="border-bottom mobileOnly"></p>
+        </div>
       </div>
     );
   };
