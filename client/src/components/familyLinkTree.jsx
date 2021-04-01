@@ -151,6 +151,7 @@ class FamilyLinkTree extends Component {
         <h1 className="treeBg treeTitle smallFont-mobile">
           {this.state.rootFamilyName ? this.state.rootFamilyName + " Family Tree" : "Pick A Family"}
         </h1>
+        <div className="loading" style={{display: this.state.familyNames.length > 0 || !this.props.onHomePage ? "none" : "block"}}>Loading families...</div>
         <div className="treeBg">
           {/*<h1 className="d-flex justify-content-center">Creating Family Trees</h1>*/}
           <img
@@ -173,6 +174,7 @@ class FamilyLinkTree extends Component {
         <div className="treeBg mobileOnly" >
           <div style={{padding: "30%"}}></div>
         </div>
+        
       </React.Fragment>
     );
   }

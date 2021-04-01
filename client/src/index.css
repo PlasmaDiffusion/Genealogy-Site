@@ -66,7 +66,8 @@ code {
   top: 40%;
   z-index: 1;
 }
-.treeLink a {
+.treeLink a,
+.loading {
   border-radius: 4px;
   background-color: rgb(5, 206, 120);
   color: white;
@@ -96,6 +97,15 @@ code {
 /*Make grid input less spaced out*/
 .margin-n {
   margin-right: -15%;
+}
+
+.loading {
+  position: fixed;
+  z-index: 2;
+  width: 15%;
+  margin: auto;
+  margin-top: 5%;
+  margin-left: 30%;
 }
 
 /* Admin page elements ---------------------------------------------------------------------------------------------------- */
@@ -187,8 +197,14 @@ input[type="text"] {
     font-size: 1.5rem;
   }
 
-  .treeLink a {
+  .treeLink a,
+  .loading {
     background-color: rgb(29, 165, 106);
+  }
+
+  .loading {
+    width: 20%;
+    margin-left: 35%;
   }
 
   /*Make the tree just a bit bigger*/

@@ -9,7 +9,7 @@ import {
   useHistory,
 } from "react-router-dom";
 import { Helmet } from "react-helmet";
-import Home from "./components/Home";
+import Home from "./components/home";
 
 import {
   Security,
