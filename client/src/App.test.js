@@ -15,7 +15,7 @@ import { setupServer } from "msw/node";
 
 //Components to test
 import App from "./App";
-import Home from "./components/Home";
+import Home from "./components/home";
 import FamilyLinkTree from "./components/familyLinkTree";
 import FamilyDetails from "./components/familyDetails";
 import FamilyForm from "./components/databaseComponents/familyForm";
