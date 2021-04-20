@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Redirect } from "react-router-dom";
-import LoginForm from "./LoginForm";
+import LoginForm from "./loginForm";
 import { withOktaAuth } from "@okta/okta-react";
 
 export default withOktaAuth(

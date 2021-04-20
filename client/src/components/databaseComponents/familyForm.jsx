@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import NullChecker from "./classes/nullChecker.js";
 import { getClientUrl, getServerUrl } from "../getUrl.js";
 import Family from "./family";
-import FamilyLink from "./familyLink";
 
 import axios from "axios";
 
@@ -321,7 +320,7 @@ class FamilyForm extends Component {
 
   render() {
     return (
-      <div>
+      <div className="container">
         {/*Submit family form*/}
 
         <h1>

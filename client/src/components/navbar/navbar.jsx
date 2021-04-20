@@ -1,5 +1,7 @@
 import React, { useEffect , useState } from 'react';
 
+import "./navbar.scss";
+
 function Navbar(props){
 
     //Link and name objects

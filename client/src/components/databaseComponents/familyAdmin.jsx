@@ -4,10 +4,10 @@ import NullChecker from "./classes/nullChecker.js";
 import { getClientUrl, getServerUrl } from "../getUrl.js";
 import Family from "./family";
 import Person from "./person";
-import FamilyLink from "./familyLink";
 import FamilyForm from "./familyForm";
 import PersonForm from "./personForm";
 import FamilyGroupForm from "./familyGroupForm";
+import "./familyAdmin.scss";
 
 import axios from "axios";
 import Sorter from "./classes/sorter.js";
@@ -136,7 +136,6 @@ class FamilyAdmin extends Component {
   render() {
     return (
       <div>
-        <FamilyLink editing={true} />
         <div class="container">
           <p class="alert alert-warning">
             Add people on the left. Every person must have a name and birthdate.

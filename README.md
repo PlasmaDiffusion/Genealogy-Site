@@ -13,6 +13,10 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 See the test folder for back end tests, and client/App.test.js for front end tests.
 
+## Sass Modules
+
+Look for scss files in component folders. There's also the global index.scss file with a few definitions.
+
 ## Available Scripts
 
 In the project directory, you can run:

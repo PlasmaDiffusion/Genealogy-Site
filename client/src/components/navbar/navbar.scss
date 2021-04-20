@@ -1,0 +1,22 @@
+@import "../../variables.scss";
+
+// Navigation bar at the top
+.navbar {
+  background-color: $bgColour;
+  padding: 10;
+  margin: 0;
+  border-bottom: 1px solid $altColour;
+  display: block !important;
+}
+
+// Navbar links
+.navbar a {
+  font-size: 1.5rem;
+  color: white;
+}
+
+.navbar a:hover {
+  font-size: 1.5rem;
+  color: gainsboro;
+  text-decoration: none;
+}

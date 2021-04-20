@@ -1,0 +1,80 @@
+@import "variables.scss";
+
+//This project uses SCSS moudles. Common classes are in this global SCSS file, but most of the specific stuff can be found in component folders.
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+
+//Common classes for all screen sizes -----------------------------------------------------------------------------
+.green {
+  background-color: $bgColour;
+}
+.darkGreen {
+  background-color: rgb(3, 145, 83);
+}
+
+.space-out {
+  margin: 5rem;
+}
+
+//Media queries for displaying or spacing out stuff ------------------------------------------------ 
+
+/* Viewport specific (Default as desktop)*/
+@media screen and (min-width: 769px) {
+  .mobileOnly {
+    display: none;
+  }
+  .desktopOnly {
+    display: block;
+  }
+}
+
+/* Phone screens */
+@media screen and (max-width: 768px) {
+  /* Viewport specific menus*/
+  .mobileOnly {
+    display: block;
+    top: 100px;
+  }
+  .desktopOnly {
+    display: none;
+  }
+
+  .space-out-mobile {
+    margin: 5rem;
+  }
+
+  .smallFont-mobile {
+    font-size: 1.5rem;
+  }
+}
+
+//Rounded Scrollbar -------------------------------------------------------------------
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+// Track
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+// Handle
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+// Handle on hover
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}

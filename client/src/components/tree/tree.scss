@@ -1,0 +1,100 @@
+@import "../../variables.scss";
+
+/*Home page background*/
+.treeImg {
+  top: -5%;
+  z-index: 0;
+  width: 70%;
+  height: 70%;
+  filter: saturate(0.5);
+  /*background-color: lightblue;*/
+}
+
+.treeLink {
+  left: 0%;
+  top: 40%;
+  z-index: 1;
+}
+.treeLink a,
+.loading {
+  border-radius: 4px;
+  background-color: $bgColour;
+  color: white;
+  border: rgb(5, 185, 107) solid 2px;
+  padding: 0.5rem;
+}
+
+/* visited family tree link */
+.treeLink a:visited {
+  color: white;
+}
+
+.treeLink a:hover {
+  text-decoration: none;
+  color: white;
+  background-color: rgb(6, 238, 138);
+}
+
+.treeBg {
+  /*background-color: lightblue;*/
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.loading {
+  position: fixed;
+  z-index: 2;
+  width: 15%;
+  margin: auto;
+  margin-top: 5%;
+  margin-left: 30%;
+}
+
+/* Viewport specific (Default as desktop)*/
+@media screen and (min-width: 769px) {
+  .treeTitle {
+    margin-left: -10rem;
+    text-align: center;
+  }
+}
+
+/* Phone screens */
+@media screen and (max-width: 768px) {
+  /* Link buttons */
+  .familyLink {
+    border-radius: 10px;
+    margin: auto;
+    margin-top: 1rem;
+  }
+
+  .treeLink a,
+  .loading {
+    background-color: rgb(29, 165, 106);
+  }
+
+  .loading {
+    width: 20%;
+    margin-left: 35%;
+  }
+
+  /*Make the tree just a bit bigger*/
+  .treeImg {
+    width: 100%;
+    height: 100%;
+    filter: saturate(0.25);
+  }
+
+  .treeTitle {
+    display: flex;
+    justify-content: center;
+  }
+}
+
+/*Links look a tad too big on small screens*/
+@media only screen and (max-width: 800px) {
+  a {
+    font-size: 24px;
+  }
+}

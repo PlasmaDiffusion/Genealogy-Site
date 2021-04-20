@@ -10,10 +10,12 @@ const Family = (props) => {
     <React.Fragment>
       <Collapse isOpened={props.viewingTable}>
         <th>
-          {props.family.name} {props.family.subFamily ? "(Sub Family)" : ""}
+          <h1>{props.family.name}</h1> {props.family.subFamily ? "(Sub Family)" : ""}
         </th>
         <th>
-          <i>{props.family.description}</i>
+            <h3>
+              <a href={"/edit/family/ ?id=" + props.family._id}>Edit Family</a>
+            </h3>
         </th>
         <tr>
           <td>
@@ -72,11 +74,6 @@ const Family = (props) => {
         </Collapse>
 
         {/*<Collapse isOpened={props.showChildren}>*/}
-        <tr>
-          <h3>
-            <a href={"/edit/family/ ?id=" + props.family._id}>Edit Family</a>
-          </h3>
-        </tr>
         {/*</Collapse>*/}
       </Collapse>
     </React.Fragment>
