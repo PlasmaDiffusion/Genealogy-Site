@@ -8,9 +8,8 @@ export function readFamilyFromUrl() {
   var url = new URLSearchParams(window.location.search);
   var id = url.get("id");
   var baseId = url.get("baseId");
-  this.setState({ familyId: id });
 
-  var familyData = { id: id };
+  var familyData = { familyId: id };
 
   if (baseId) familyData.basedId = baseId;
 

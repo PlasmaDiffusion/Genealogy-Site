@@ -25,55 +25,29 @@ class FamilyDetails extends Component {
     this.getFamily = this.getFamily.bind(this);
   }
 
-  //Connect to database and read in information on a specific family. This should only be mounted once.
+  //Connect to database and read in information on a specific family. This should only occur once.
   componentDidMount() {
-    //console.log("About to connect");
 
-    //Read in the family being edited
-    var url = new URLSearchParams(window.location.search);
-    var id = url.get("id");
-    var baseId = url.get("baseId");
-    this.setState({ familyId: id });
+    //See familyAPI.js to get this data using axios
+    readFamilyFromUrl().then((res)=>
+    {
 
-    if (baseId) this.setState({ baseId: baseId });
-    //console.log("baseId", baseId, this.state.baseId);
 
-    axios
-      .get(getServerUrl() + "/read/family/" + id)
-      .then((response) => {
-        //console.log("Family Response: ", response.data);
-
-        //This component will break if it doesn't handle null data
-        const nullChecker = new NullChecker();
-        nullChecker.familyNullCheck([response.data]);
-        //Set family data to fill in on the form
-        this.setState({
-          name: response.data.name,
-          description: response.data.description,
-          children: response.data.children,
-          parentA: response.data.parentA,
-          parentB: response.data.parentB,
-          marriageDate: response.data.marriageDate,
-          marriageDateYearOnly: response.data.marriageDateYearOnly,
-          marriageLocation: [],
-        });
-
-        //Make marriage Location 3 lines
-        if (response.data.marriageLocation) {
-          this.setState({
-            marriageLocation: response.data.marriageLocation.split(" "),
-          });
-        }
-
-        let sorter = new Sorter();
-
-        this.setState({
-          children: sorter.sortChildrenByBirthdates(this.state.children),
-        });
-      })
-      .catch(function (error) {
-        console.log(error);
+      this.setState({
+        familyId: res.id,
+        basedId: res.baseId,
+        name: res.name,
+        description: res.description,
+        children: res.children,
+        parentA: res.parentA,
+        parentB: res.parentB,
+        marriageDate: res.marriageDate,
+        marriageDateYearOnly: res.marriageDateYearOnly,
+        marriageLocation: res.marriageLocation,
       });
+    }
+    )
+
   }
 
   //Dynamic list of children to display at the bottom
