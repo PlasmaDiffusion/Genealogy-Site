@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from "react";
 import { Link } from "react-router-dom";
-import NullChecker from "./classes/nullChecker.js";
-import { getClientUrl, getServerUrl } from "../getUrl.js";
+import NullChecker from "../../js/nullChecker.js";
+import { getClientUrl, getServerUrl } from "../../js/getUrl.js";
 import FamilyForm from "./familyForm";
 
 import axios from "axios";

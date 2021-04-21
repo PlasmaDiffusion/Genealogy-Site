@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 
 import axios from "axios";
-import { getClientUrl, getServerUrl } from "../getUrl.js";
+import { getClientUrl, getServerUrl } from "../../js/getUrl.js";
 import PersonForm from "./personForm";
 
 class PersonEditor extends Component {

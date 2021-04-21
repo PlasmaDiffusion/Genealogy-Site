@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Person from "./person";
 import { Collapse } from "react-collapse";
-import { formatDate } from "../formatDate";
+import { formatDate } from "../../js/formatDate";
 
 //Render family for a table
 

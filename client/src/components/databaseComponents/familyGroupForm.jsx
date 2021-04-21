@@ -1,7 +1,6 @@
 import React, { Component, Fragment } from "react";
 import { Link } from "react-router-dom";
-import NullChecker from "./classes/nullChecker.js";
-import { getClientUrl, getServerUrl } from "../getUrl.js";
+import { getClientUrl, getServerUrl } from "../../js/getUrl.js";
 import Family from "./family";
 import FamilyLink from "./familyLink";
 

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { getClientUrl, getServerUrl } from "../getUrl.js";
+import { getClientUrl, getServerUrl } from "../../js/getUrl.js";
 
 import axios from "axios";
 
@@ -16,8 +16,6 @@ class FamilyLink extends Component {
 
   //Read in data
   componentDidMount() {
-    //console.log("About to connect to " + getServerUrl() + "/read/family");
-
     axios
       .get(getServerUrl() + "/read/family")
       .then((response) => {

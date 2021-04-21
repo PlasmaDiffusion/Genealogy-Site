@@ -1,7 +1,6 @@
 import React, { Component, Fragment } from "react";
 import { Link } from "react-router-dom";
-import NullChecker from "./classes/nullChecker.js";
-import { getClientUrl, getServerUrl } from "../getUrl.js";
+import { getClientUrl, getServerUrl } from "../../js/getUrl.js";
 import Family from "./family";
 import Person from "./person";
 import FamilyForm from "./familyForm";
@@ -10,8 +9,9 @@ import FamilyGroupForm from "./familyGroupForm";
 import "./familyAdmin.scss";
 
 import axios from "axios";
-import Sorter from "./classes/sorter.js";
-import { formatDate } from "../formatDate.js";
+import Sorter from "../../js/sorter.js";
+import NullChecker from "../../js/nullChecker.js";
+import { formatDate } from "../../js/formatDate.js";
 
 //The first admin database component shown. Show a form to add families, but also display them along with links to edit them.
 class FamilyAdmin extends Component {

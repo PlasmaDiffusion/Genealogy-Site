@@ -14,6 +14,7 @@ routes.get("/read/person", (req, res) => {
       }
     });
 });
+
 routes.get("/read/family", (req, res) => {
   //console.log("Reading in all families");
   Family.find()
@@ -28,6 +29,7 @@ routes.get("/read/family", (req, res) => {
       }
     });
 });
+
 //Read root families for the homepage
 routes.get("/read/familyGroup", async function (req, res) {
   FamilyGroup.findOne().exec(function (err, rootFamilies) {
@@ -39,6 +41,7 @@ routes.get("/read/familyGroup", async function (req, res) {
     }
   });
 });
+
 //Get a person (read in json data)
 routes.get("/read/person/:id", function (req, res) {
   //console.log(req.params.id);
@@ -53,6 +56,7 @@ routes.get("/read/person/:id", function (req, res) {
       }
     });
 });
+
 //Get a family (read in json data)
 routes.get("/read/family/:id", function (req, res) {
   Family.findById(req.params.id)
@@ -74,6 +78,7 @@ routes.get("/read/family/:id", function (req, res) {
       }
     });
 });
+
 //Get all families containing a particular name
 routes.get("/read/familyByName/:name", function (req, res) {
   Family.find({ name: { $regex: req.params.name, $options: "i" } })

@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import axios from "axios";
-import NullChecker from "./databaseComponents/classes/nullChecker.js";
-import Sorter from "./databaseComponents/classes/sorter.js";
-import { getClientUrl, getServerUrl } from "./getUrl.js";
-import { formatDate } from "./formatDate.js";
+import NullChecker from "../js/nullChecker.js";
+import Sorter from "../js/sorter.js";
+import { getClientUrl, getServerUrl } from "../js/getUrl.js";
+import { formatDate } from "../js/formatDate.js";
 import {Parent, Child} from "./personDetails";
 
 //Display parents and children of a given family. Includes details like birth and death date/location.
