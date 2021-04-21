@@ -12,7 +12,6 @@ import { rest } from "msw";
 import { setupServer } from "msw/node";
 
 //Components to test
-import App from "./App";
 import Home from "./components/home";
 import FamilyLinkTree from "./components/tree/familyLinkTree.jsx";
 import FamilyDetails from "./components/familyDetails.jsx";
