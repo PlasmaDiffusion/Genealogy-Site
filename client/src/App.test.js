@@ -2,8 +2,6 @@ import React from "react";
 import axios from "axios";
 import { Route, BrowserRouter as Router } from "react-router-dom";
 
-import { getServerUrl } from "./components/getUrl";
-
 //Front end tests and events
 import { render, screen, act, fireEvent } from "@testing-library/react";
 import "@testing-library/jest-dom/extend-expect";
@@ -16,10 +14,10 @@ import { setupServer } from "msw/node";
 //Components to test
 import App from "./App";
 import Home from "./components/home";
-import FamilyLinkTree from "./components/familyLinkTree";
-import FamilyDetails from "./components/familyDetails";
-import FamilyForm from "./components/databaseComponents/familyForm";
-import Navbar from "./components/navbar";
+import FamilyLinkTree from "./components/tree/familyLinkTree.jsx";
+import FamilyDetails from "./components/familyDetails.jsx";
+import FamilyForm from "./components/databaseComponents/familyForm.jsx";
+import Navbar from "./components/navbar/navbar.jsx";
 
 //Mock request tests
 const server = setupServer(

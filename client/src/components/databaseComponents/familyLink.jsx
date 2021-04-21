@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { getClientUrl, getServerUrl } from "../../js/getUrl.js";
+import { getClientUrl, getServerUrl } from "../../services/getUrl.js";
 
 import axios from "axios";
 

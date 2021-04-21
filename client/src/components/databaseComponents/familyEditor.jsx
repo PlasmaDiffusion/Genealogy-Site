@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from "react";
 import { Link } from "react-router-dom";
-import NullChecker from "../../js/nullChecker.js";
-import { getClientUrl, getServerUrl } from "../../js/getUrl.js";
+import NullChecker from "../../services/nullChecker.js";
+import { getClientUrl, getServerUrl } from "../../services/getUrl.js";
 import FamilyForm from "./familyForm";
 
 import axios from "axios";
@@ -91,7 +91,7 @@ class FamilyEditor extends Component {
   onSubmitFamily(e) {
     e.preventDefault();
 
-    //Json
+    //serviceson
     const updatedFamily = {
       name: this.state.name,
       description: this.state.description,

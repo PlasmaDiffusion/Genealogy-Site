@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from "react";
 import { Link } from "react-router-dom";
-import NullChecker from "../../js/nullChecker.js";
-import { getClientUrl, getServerUrl } from "../../js/getUrl.js";
+import NullChecker from "../../services/nullChecker.js";
+import { getClientUrl, getServerUrl } from "../../services/getUrl.js";
 import Family from "./family";
 
 import axios from "axios";
@@ -124,7 +124,7 @@ class FamilyForm extends Component {
   onSubmitFamily(e) {
     e.preventDefault();
 
-    //Json
+    //serviceson
     const familyToSubmit = {
       name: this.state.familyName,
       description: this.state.familyDescription,

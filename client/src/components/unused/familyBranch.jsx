@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import axios from "axios";
-import { getClientUrl, getServerUrl } from "./getUrl.js";
+import { getClientUrl, getServerUrl } from "../../services/getUrl.js";
 import { formatDate } from "./formatDate.js";
-import NullChecker from "./databaseComponents/classes/nullChecker.js";
+import NullChecker from "../../services/nullChecker.js";
 
 //Each component is a branch on a tree. It shows the family, then the parents, then the children all in their own lists. It can create more components recursively.
 class FamilyBranch extends Component {

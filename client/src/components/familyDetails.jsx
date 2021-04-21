@@ -1,10 +1,11 @@
 import React, { Component } from "react";
 import axios from "axios";
-import NullChecker from "../js/nullChecker.js";
-import Sorter from "../js/sorter.js";
-import { getClientUrl, getServerUrl } from "../js/getUrl.js";
-import { formatDate } from "../js/formatDate.js";
+import NullChecker from "../services/nullChecker.js";
+import Sorter from "../services/sorter.js";
+import { getClientUrl, getServerUrl } from "../services/getUrl.js";
+import { formatDate } from "../services/formatDate.js";
 import {Parent, Child} from "./personDetails";
+import {readFamilyFromUrl} from "../services/familyAPI";
 
 //Display parents and children of a given family. Includes details like birth and death date/location.
 class FamilyDetails extends Component {
@@ -24,7 +25,7 @@ class FamilyDetails extends Component {
     this.getFamily = this.getFamily.bind(this);
   }
 
-  //Connect to database and read in information on a specific family
+  //Connect to database and read in information on a specific family. This should only be mounted once.
   componentDidMount() {
     //console.log("About to connect");
 

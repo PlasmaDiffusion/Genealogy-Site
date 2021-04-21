@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { getClientUrl, getServerUrl } from "../../js/getUrl.js";
-import Sorter from "../../js/sorter.js";
+import { getClientUrl, getServerUrl } from "../../services/getUrl.js";
+import Sorter from "../../services/sorter.js";
 import axios from "axios";
 import "./tree.scss";
 

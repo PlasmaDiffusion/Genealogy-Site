@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from "react";
 import { Link } from "react-router-dom";
-import { getClientUrl, getServerUrl } from "../../js/getUrl.js";
+import { getClientUrl, getServerUrl } from "../../services/getUrl.js";
 import Family from "./family";
 import FamilyLink from "./familyLink";
 
@@ -61,7 +61,7 @@ class FamilyGroupForm extends Component {
   onSubmitFamilyGroup(e) {
     e.preventDefault();
 
-    //Json to submit (Either grid of names or grid of link order)
+    //serviceson to submit (Either grid of names or grid of link order)
     var familyGroupToSubmit = null;
 
     if (this.props.modifyingHomePage)
