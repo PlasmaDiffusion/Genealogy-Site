@@ -17,14 +17,14 @@ import {
   withOktaAuth,
 } from "@okta/okta-react";
 
-import Navbar from "./navbar/navbar";
-import FamilyAdmin from "./databaseComponents/familyAdmin";
+import Navbar from "../navbar/navbar";
+import FamilyAdmin from "../databaseComponents/familyAdmin";
 import FamilyLinkTree from "./tree/familyLinkTree";
-import PersonEditor from "./databaseComponents/personEditor";
-import FamilyEditor from "./databaseComponents/familyEditor";
-import FamilyDetails from "./familyDetails";
-import Login from "./auth/login";
-import Logout from "./auth/logout";
+import PersonEditor from "../databaseComponents/personEditing/personEditor";
+import FamilyEditor from "../databaseComponents/familyEditing/familyEditor";
+import FamilyDetails from "./familyViewing/familyDetails";
+import Login from "../auth/login";
+import Logout from "../auth/logout";
 
 export default withOktaAuth(
   class Home extends Component {

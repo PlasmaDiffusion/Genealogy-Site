@@ -1,12 +1,9 @@
 import React, { Component, Fragment } from "react";
-import { Link } from "react-router-dom";
-import NullChecker from "../../services/nullChecker.js";
-import { getClientUrl, getServerUrl } from "../../services/getUrl.js";
-import Family from "./family";
+import NullChecker from "../../../services/nullChecker.js";
+import { getClientUrl, getServerUrl } from "../../../services/getUrl.js";
 
 import axios from "axios";
 
-//BUG: Submiting a family update without touching the children, removes all children.
 //A form that can be used to add new familys or to edit existing ones (Pass in editing = true or false as a prop)
 class FamilyForm extends Component {
   constructor(props) {
@@ -358,7 +355,7 @@ class FamilyForm extends Component {
             className="form-group"
             data-toggle="tooltip"
             data-placement="right"
-            title="A sub family won't show up on the sidebar. It can only be accessed from family trees."
+            title="A sub family won't show up on the (currently unused) sidebar. Ignore this box unless the side bar gets reimplemented."
           >
             <label>Sub Family: &nbsp; </label>{" "}
             <input

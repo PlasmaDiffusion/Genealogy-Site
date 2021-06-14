@@ -1,5 +1,5 @@
 import React from "react";
-import { formatDate } from "../services/formatDate.js";
+import { formatDate } from "../../../services/formatDate.js";
 
 
 //Parent "card". Reads in first name, middle name and last name and adds spaces if none are there. Dates are read in but ignore specific time

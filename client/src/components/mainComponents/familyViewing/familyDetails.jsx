@@ -1,11 +1,7 @@
 import React, { Component } from "react";
-import axios from "axios";
-import NullChecker from "../services/nullChecker.js";
-import Sorter from "../services/sorter.js";
-import { getClientUrl, getServerUrl } from "../services/getUrl.js";
-import { formatDate } from "../services/formatDate.js";
+import { formatDate } from "../../../services/formatDate.js";
 import {Parent, Child} from "./personDetails";
-import {readFamilyFromUrl} from "../services/familyAPI";
+import {readFamilyFromUrl} from "../../../services/familyAPI";
 
 //Display parents and children of a given family. Includes details like birth and death date/location.
 class FamilyDetails extends Component {

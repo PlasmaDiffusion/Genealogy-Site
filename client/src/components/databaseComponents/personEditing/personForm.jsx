@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 
 import axios from "axios";
-import { getClientUrl, getServerUrl } from "../../services/getUrl.js";
+import { getClientUrl, getServerUrl } from "../../../services/getUrl.js";
 
 class PersonEditor extends Component {
   constructor(props) {

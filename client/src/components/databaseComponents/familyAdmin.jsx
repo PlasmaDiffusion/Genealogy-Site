@@ -1,11 +1,10 @@
 import React, { Component, Fragment } from "react";
-import { Link } from "react-router-dom";
-import { getClientUrl, getServerUrl } from "../../services/getUrl.js";
-import Family from "./family";
-import Person from "./person";
-import FamilyForm from "./familyForm";
-import PersonForm from "./personForm";
-import FamilyGroupForm from "./familyGroupForm";
+import { getServerUrl } from "../../services/getUrl.js";
+import Family from "./familyEditing/familyTable";
+import Person from "./personEditing/personTable";
+import FamilyForm from "./familyEditing/familyForm";
+import PersonForm from "./personEditing/personForm";
+import FamilyGroupForm from "./familyEditing/familyGroupForm";
 import "./familyAdmin.scss";
 
 import axios from "axios";

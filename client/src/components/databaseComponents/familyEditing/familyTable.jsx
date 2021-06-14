@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-import Person from "./person";
+import Person from "../personEditing/personTable";
 import { Collapse } from "react-collapse";
-import { formatDate } from "../../services/formatDate";
+import { formatDate } from "../../../services/formatDate";
 
-//Render family for a table
+//Render family for a table on the admin page
 
 const Family = (props) => {
   return (

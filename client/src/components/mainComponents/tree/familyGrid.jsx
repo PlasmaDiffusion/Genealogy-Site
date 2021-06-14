@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
+//FamilyLinkTree will render this by passing in several props
 function FamilyGrid(props)
 {
     

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { getClientUrl, getServerUrl } from "../../services/getUrl.js";
-import Sorter from "../../services/sorter.js";
+import { getClientUrl, getServerUrl } from "../../../services/getUrl.js";
+import Sorter from "../../../services/sorter.js";
 import axios from "axios";
 import "./tree.scss";
 import FamilyGrid from "./familyGrid";
@@ -18,7 +18,6 @@ class FamilyLinkTree extends Component {
     };
   }
 
-  //Read in data
   componentDidMount() {
     //Read in family groups if on the home page (Basically just names of families to search for)
 
@@ -50,12 +49,12 @@ class FamilyLinkTree extends Component {
               this.organizeSpecificFamilies(response);
             })
             .catch(function (error) {
-              console.log(error);
+              //console.log(error);
             });
         }
       })
       .catch(function (error) {
-        console.log(error);
+        //console.log(error);
       });
   }
 

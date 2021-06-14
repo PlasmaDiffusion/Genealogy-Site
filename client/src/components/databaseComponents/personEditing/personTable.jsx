@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Collapse } from "react-collapse";
-import { formatDate } from "../../services/formatDate";
+import { formatDate } from "../../../services/formatDate";
 
 //Render person to appear in family table
 const Person = (props) => {

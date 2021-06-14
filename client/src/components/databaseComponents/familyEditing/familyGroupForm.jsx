@@ -1,8 +1,5 @@
 import React, { Component, Fragment } from "react";
-import { Link } from "react-router-dom";
-import { getClientUrl, getServerUrl } from "../../services/getUrl.js";
-import Family from "./family";
-import FamilyLink from "./familyLink";
+import { getClientUrl, getServerUrl } from "../../../services/getUrl.js";
 
 import axios from "axios";
 
