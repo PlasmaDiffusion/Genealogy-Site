@@ -5,19 +5,21 @@ Admins can log in and edit forms.
 
 It uses React at the front end and NodeJS/Express at the back end with MongoDB.
 
-See the client folder for the front end, and the outer folders for the back end.
+See the client folder for the front end with React, and server folder for the back end with NodeJS.
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Tests
+## Unit Tests
 
-See the test folder for back end tests, and client/App.test.js for front end tests.
+See the server/test folder for back end tests, and any .test.js files next to JSX components for front end tests.
 
 ## Sass Modules
 
 Look for scss files in component folders. There's also the global index.scss file with a few definitions.
 
 ## Available Scripts
+
+(Scripts for React, but npm start and npm test apply for the server as well)
 
 In the project directory, you can run:
 

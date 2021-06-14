@@ -3,6 +3,7 @@ var assert = require("assert");
 
 const mongoose = require("mongoose");
 
+//Make mongoose disconnect after all tests
 after(function () {
   mongoose.disconnect();
   console.log("Connection closed");
