@@ -147,7 +147,7 @@ class FamilyAdmin extends Component {
   render() {
     return <React.Fragment>
       <Profile onAuthenticated={this.enableAdmin} />
-      {this.state.enabled ? <LogoutButton /> : ""}
+      <LogoutButton />
       <div>
         {this.state.enabled ? (
           <div>

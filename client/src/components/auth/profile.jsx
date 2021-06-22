@@ -10,7 +10,8 @@ function Profile(props) {
 
   useEffect(() => {
     //Call a parent function to enable admin stuff, if it was set
-    if (props.onAuthenticated) props.onAuthenticated();
+    if (props.onAuthenticated && (user.email == process.env.REACT_APP_ADMIN1 || user.email == process.env.REACT_APP_ADMIN2))
+      props.onAuthenticated();
 
   }, [])
 
@@ -18,9 +19,6 @@ function Profile(props) {
 
   //Check if not logged in
   if (!user) return <div>Not logged in</div>
-
-  if (user.email != process.env.REACT_APP_ADMIN1 && user.email != process.env.REACT_APP_ADMIN2)
-    return <p className="user">Not logged in as an admin. ({name})</p>
   else {
 
 
