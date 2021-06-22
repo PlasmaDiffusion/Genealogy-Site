@@ -3,6 +3,7 @@ import NullChecker from "../../../services/nullChecker.js";
 import { getClientUrl, getServerUrl } from "../../../services/getUrl.js";
 
 import axios from "axios";
+import PersonForm from "../personEditing/personForm.jsx";
 
 //A form that can be used to add new familys or to edit existing ones (Pass in editing = true or false as a prop)
 class FamilyForm extends Component {
@@ -17,23 +18,18 @@ class FamilyForm extends Component {
       familyName: "",
       initialName: "",
       familyDescription: "",
-      subFamily: false,
       marriageDate: "",
       marriageDateYearOnly: false,
       marriageLocation: "",
-      parentA: "", //For searching
-      parentA_Birthdate: "", //For searching
-      parentB: "", //For searching
-      parentB_Birthdate: "", //For searching
+      parentA: {},
+      parentB: {},
       children: [],
-      children_Birthdates: [],
     };
 
     this.onChangeParentA = this.onChangeParentA.bind(this);
     this.onChangeParentB = this.onChangeParentB.bind(this);
     this.onChangeFamilyName = this.onChangeFamilyName.bind(this);
     this.onChangeFamilyDescription = this.onChangeFamilyDescription.bind(this);
-    this.onChangeSubFamily = this.onChangeSubFamily.bind(this);
     this.onChangeMarriageDate = this.onChangeMarriageDate.bind(this);
     this.onChangeMarriageDateYearOnly = this.onChangeMarriageDateYearOnly.bind(
       this
@@ -46,6 +42,7 @@ class FamilyForm extends Component {
     this.childInputList = this.childInputList.bind(this);
     this.addChildInput = this.addChildInput.bind(this);
     this.removeChildInput = this.removeChildInput.bind(this);
+    this.updatePersonData = this.updatePersonData.bind(this);
   }
 
   //Connect to the database and get data here! ------------------------------
@@ -71,7 +68,7 @@ class FamilyForm extends Component {
             familyName: response.data.name,
             initialName: response.data.name,
             familyDescription: response.data.description,
-            subFamily: response.data.subFamily,
+            subFamily: false,
             parentA: response.data.parentA.name,
             parentA_Birthdate: response.data.parentA.birthdate,
             parentB: response.data.parentB.name,
@@ -125,7 +122,6 @@ class FamilyForm extends Component {
     const familyToSubmit = {
       name: this.state.familyName,
       description: this.state.familyDescription,
-      subFamily: this.state.subFamily,
       parentA: this.state.parentA,
       parentA_Birthdate: this.state.parentA_Birthdate,
       parentB: this.state.parentB,
@@ -180,9 +176,6 @@ class FamilyForm extends Component {
     this.setState({ familyDescription: e.target.value });
   }
 
-  onChangeSubFamily(e) {
-    this.setState({ subFamily: e.target.checked });
-  }
 
   //Give a selection of people
   personDropdown() {
@@ -268,15 +261,8 @@ class FamilyForm extends Component {
     return this.state.children.map(function (currentChild, i) {
       return (
         <div className="form-group">
-          <label>Child: </label>
-          <input
-            type="text"
-            className="form-control"
-            value={currentChild.name}
-            onChange={obj.onChangeChild}
-            list={i}
-            role="childInput"
-          />
+          <PersonForm editing={false} personTitle={"Child " + i} onFormUpdated={obj.updatePersonData} />
+
           <button
             type="button"
             className="btn btn-danger"
@@ -285,7 +271,6 @@ class FamilyForm extends Component {
           >
             X
           </button>
-          <datalist id={i}>{obj.personDropdown()}</datalist>
         </div>
       );
     });
@@ -313,6 +298,13 @@ class FamilyForm extends Component {
         children: newChildrenArray,
       });
     } else console.log("Invalid array index");
+  }
+
+  updatePersonData(personType, personObject, childIndex) {
+    if (personType == "Parent A")
+      this.setState({ parentA: personObject });
+    else if (personType == "Parent B")
+      this.setState({ parentB: personObject });
   }
 
   render() {
@@ -351,54 +343,12 @@ class FamilyForm extends Component {
             />
           </div>
 
-          <div
-            className="form-group"
-            data-toggle="tooltip"
-            data-placement="right"
-            title="A sub family won't show up on the (currently unused) sidebar. Ignore this box unless the side bar gets reimplemented."
-          >
-            <label>Sub Family: &nbsp; </label>{" "}
-            <input
-              type="checkbox"
-              checked={this.state.subFamily}
-              onClick={this.onChangeSubFamily}
-            ></input>
-            <button
-              type="button"
-              class="btn btn-link btn-sm"
-              data-toggle="tooltip"
-              data-placement="top"
-              disabled
-            >
-              ?
-            </button>
-          </div>
 
-          <div className="form-group">
-            <label>Parent A: </label>
-            <input
-              type="text"
-              className="form-control"
-              value={this.state.parentA}
-              onChange={this.onChangeParentA}
-              list="parentA"
-              required
-            />
-            <datalist id="parentA">{this.personDropdown()}</datalist>
-          </div>
+          <PersonForm editing={false} personTitle={"Parent A"} onFormUpdated={this.updatePersonData} />
 
-          <div className="form-group">
-            <label>Parent B: </label>
-            <input
-              type="text"
-              className="form-control"
-              value={this.state.parentB}
-              onChange={this.onChangeParentB}
-              list="parentB"
-              required
-            />
-            <datalist id="parentB">{this.personDropdown()}</datalist>
-          </div>
+
+          <PersonForm editing={false} personTitle={"Parent B"} onFormUpdated={this.updatePersonData} />
+
 
           <div className="form-group">
             <label>Marriage Date: </label>
@@ -448,6 +398,7 @@ class FamilyForm extends Component {
               className="btn btn-primary"
             />
           </div>
+
         </form>
       </div>
     );

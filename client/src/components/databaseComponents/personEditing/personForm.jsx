@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import axios from "axios";
 import { getClientUrl, getServerUrl } from "../../../services/getUrl.js";
 
-class PersonEditor extends Component {
+class PersonForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -19,8 +19,10 @@ class PersonEditor extends Component {
       confirmedDelete: false,
       startedFamilies: [],
       families: [],
+      collapsed: true,
     };
 
+    this.toggleCollapse = this.toggleCollapse.bind(this);
     this.onChangeName = this.onChangeName.bind(this);
     this.onChangeDescription = this.onChangeDescription.bind(this);
     this.onChangeBirthdate = this.onChangeBirthdate.bind(this);
@@ -31,8 +33,6 @@ class PersonEditor extends Component {
     this.onChangeDeathLocation = this.onChangeDeathLocation.bind(this);
 
     this.onSubmitPerson = this.onSubmitPerson.bind(this);
-    this.addStartedFamilyInput = this.addStartedFamilyInput.bind(this);
-    this.removeStartedFamilyInput = this.removeStartedFamilyInput.bind(this);
     this.onChangeStartedFamilies = this.onChangeStartedFamilies.bind(this);
   }
 
@@ -54,7 +54,7 @@ class PersonEditor extends Component {
             name: response.data.name,
             initialName: response.data.name,
             description: response.data.description,
-            birthdate: response.data.birthdate.split("T")[0], //Must always be a birthdate
+            birthdate: response.data.birthdate.split("T")[0], //Must al  ys be a birthdate
             deathdate: response.data.deathdate
               ? response.data.deathdate.split("T")[0] //Death dates aren't required so check if they exist
               : "",
@@ -142,36 +142,46 @@ class PersonEditor extends Component {
   //onChange Events below (for adding a person)
   onChangeName(e) {
     this.setState({ name: e.target.value });
+    this.props.onFormUpdated(this.props.personTitle, this.state);
   }
 
   onChangeDescription(e) {
     this.setState({ description: e.target.value });
+    this.props.onFormUpdated(this.props.personTitle, this.state);
+
   }
 
   onChangeBirthdate(e) {
     this.setState({ birthdate: e.target.value });
+    this.props.onFormUpdated(this.props.personTitle, this.state);
+
   }
 
   onChangeDeathdate(e) {
     this.setState({ deathdate: e.target.value });
+    this.props.onFormUpdated(this.props.personTitle, this.state);
   }
 
   onChangeBirthdateYearOnly(e) {
     //console.log("Birthdate yearonly");
     this.setState({ birthdateYearOnly: e.target.checked });
+    this.props.onFormUpdated(this.props.personTitle, this.state);
   }
 
   onChangeDeathdateYearOnly(e) {
     //console.log("Deathdate yearonly");
     this.setState({ deathdateYearOnly: e.target.checked });
+    this.props.onFormUpdated(this.props.personTitle, this.state);
   }
 
   onChangeBirthLocation(e) {
     this.setState({ birthLocation: e.target.value });
+    this.props.onFormUpdated(this.props.personTitle, this.state);
   }
 
   onChangeDeathLocation(e) {
     this.setState({ deathLocation: e.target.value });
+    this.props.onFormUpdated(this.props.personTitle, this.state);
   }
 
   onChangeStartedFamilies(e) {
@@ -191,174 +201,116 @@ class PersonEditor extends Component {
     });
   }
 
-  //Dynamic "Add child" list
-  startedFamiliesInputList() {
-    var obj = this;
-    return this.state.startedFamilies.map(function (currentFamily, i) {
-      return (
-        <div className="form-group">
-          <label>Started Family: </label>
-          <input
-            type="text"
-            className="form-control"
-            value={currentFamily.name}
-            onChange={obj.onChangeStartedFamilies}
-            list={i}
-          />
-          <button
-            type="button"
-            className="btn btn-danger"
-            onClick={() => obj.removeStartedFamilyInput(i)}
-            value={i}
-          >
-            X
-          </button>
-          <datalist id={i}>{obj.familyDropDown()}</datalist>
-        </div>
-      );
-    });
-  }
 
-  addStartedFamilyInput() {
-    //console.log("Adding child", this);
-    this.setState((prevState) => ({
-      startedFamilies: [...prevState.startedFamilies, ""],
-    }));
-  }
-
-  //Remove a specific child
-  removeStartedFamilyInput(index) {
-    //console.log("Children before removal", this.state.startedFamilies);
-
-    let newFamilyArray = [];
-
-    if (index > -1 && index < this.state.startedFamilies.length) {
-      newFamilyArray = [...this.state.startedFamilies];
-      newFamilyArray.splice(index, 1);
-
-      this.setState({
-        startedFamilies: newFamilyArray,
-      });
-    } //else console.log("Invalid array index");
+  toggleCollapse() {
+    this.setState({ collapsed: !this.state.collapsed });
   }
 
   render() {
+
     return (
       <div>
-        {/*Edit person form*/}
-        <h1>{this.props.editing ? "Edit Person" : "Add a Person"}</h1>
-        <h2>
-          <i>{this.state.initialName}</i>
-        </h2>
-        <form onSubmit={this.onSubmitPerson}>
-          <div className="form-group">
-            <label>Name: </label>
-            <input
-              type="text"
-              className="form-control"
-              value={this.state.name}
-              onChange={this.onChangeName}
-              required
-            />
+        <React.Fragment>
+          <button className="btn btn-warning btn-block" onClick={this.toggleCollapse}>{this.props.personTitle}</button>
+        </React.Fragment>
+
+        {(!this.state.collapsed) ? (
+          <div className="borders">
+            {/*Edit person form*/}
+            <h1>{this.props.editing ? "Edit Person" : "Add a Person"}</h1>
+            <h2>
+              <i>{this.state.initialName}</i>
+            </h2>
+            <form onSubmit={this.onSubmitPerson}>
+              <div className="form-group">
+                <label>Name: </label>
+                <input
+                  type="text"
+                  className="form-control"
+                  value={this.state.name}
+                  onChange={this.onChangeName}
+                  required
+                />
+              </div>
+
+              <div className="form-group">
+                <label>Description: </label>
+                <input
+                  type="text"
+                  className="form-control"
+                  value={this.state.description}
+                  onChange={this.onChangeDescription}
+                />
+              </div>
+
+              <div className="form-group">
+                <label>Birthdate: </label> <br></br>
+                <input
+                  type="date"
+                  value={this.state.birthdate}
+                  onChange={this.onChangeBirthdate}
+                  name="trip-start"
+                  min="1750-01-01"
+                  max="2020-12-31"
+                  required
+                ></input>
+                <br></br>
+                <label>Show Year Only: &nbsp; </label>
+                <input
+                  type="checkbox"
+                  checked={this.state.birthdateYearOnly}
+                  onClick={this.onChangeBirthdateYearOnly}
+                ></input>
+              </div>
+
+              <div className="form-group">
+                <label>Birth Location: </label>
+                <input
+                  type="text"
+                  className="form-control"
+                  value={this.state.birthLocation}
+                  onChange={this.onChangeBirthLocation}
+                />
+              </div>
+
+              <div className="form-group">
+                <label>Deathdate: </label> <br></br>
+                <input
+                  type="date"
+                  value={this.state.deathdate}
+                  onChange={this.onChangeDeathdate}
+                  name="trip-start"
+                  min="1750-01-01"
+                  max="2020-12-31"
+                ></input>
+                <br></br>
+                <label>Show Year Only: &nbsp; </label>
+                <input
+                  type="checkbox"
+                  checked={this.state.deathdateYearOnly}
+                  onClick={this.onChangeDeathdateYearOnly}
+                ></input>
+              </div>
+
+              <div className="form-group">
+                <label>Death Location: </label>
+                <input
+                  type="text"
+                  className="form-control"
+                  value={this.state.deathLocation}
+                  onChange={this.onChangeDeathLocation}
+                />
+              </div>
+
+            </form>
           </div>
+        )
+          : ""}
 
-          <div className="form-group">
-            <label>Description: </label>
-            <input
-              type="text"
-              className="form-control"
-              value={this.state.description}
-              onChange={this.onChangeDescription}
-            />
-          </div>
 
-          <div className="form-group">
-            <label>Birthdate: </label> <br></br>
-            <input
-              type="date"
-              value={this.state.birthdate}
-              onChange={this.onChangeBirthdate}
-              name="trip-start"
-              min="1750-01-01"
-              max="2020-12-31"
-              required
-            ></input>
-            <br></br>
-            <label>Show Year Only: &nbsp; </label>
-            <input
-              type="checkbox"
-              checked={this.state.birthdateYearOnly}
-              onClick={this.onChangeBirthdateYearOnly}
-            ></input>
-          </div>
-
-          <div className="form-group">
-            <label>Birth Location: </label>
-            <input
-              type="text"
-              className="form-control"
-              value={this.state.birthLocation}
-              onChange={this.onChangeBirthLocation}
-            />
-          </div>
-
-          <div className="form-group">
-            <label>Deathdate: </label> <br></br>
-            <input
-              type="date"
-              value={this.state.deathdate}
-              onChange={this.onChangeDeathdate}
-              name="trip-start"
-              min="1750-01-01"
-              max="2020-12-31"
-            ></input>
-            <br></br>
-            <label>Show Year Only: &nbsp; </label>
-            <input
-              type="checkbox"
-              checked={this.state.deathdateYearOnly}
-              onClick={this.onChangeDeathdateYearOnly}
-            ></input>
-          </div>
-
-          <div className="form-group">
-            <label>Death Location: </label>
-            <input
-              type="text"
-              className="form-control"
-              value={this.state.deathLocation}
-              onChange={this.onChangeDeathLocation}
-            />
-          </div>
-
-          {this.startedFamiliesInputList()}
-
-          <button
-            type="button"
-            onClick={this.addStartedFamilyInput}
-            class="btn btn-secondary"
-            data-toggle="tooltip"
-            data-placement="top"
-            title="You can add already existing families this person created here."
-          >
-            + Started Families
-          </button>
-
-          <div className="form-group">
-            <input
-              type="submit"
-              value={
-                this.props.editing
-                  ? "Update Person: " + this.state.initialName
-                  : "Add Person"
-              }
-              className="btn btn-primary"
-            />
-          </div>
-        </form>
       </div>
     );
   }
 }
 
-export default PersonEditor;
+export default PersonForm;

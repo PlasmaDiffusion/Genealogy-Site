@@ -160,9 +160,7 @@ class FamilyAdmin extends Component {
                 The family won't be created if the people entered don't exist.
               </p>
               <div class="row">
-                <div class="col-sm-6">
-                  <PersonForm editing={false} />
-                </div>
+
                 <div class="col-sm-6">
                   <FamilyForm editing={false} />
                 </div>
