@@ -11,6 +11,7 @@ import axios from "axios";
 import Sorter from "../../services/sorter.js";
 import NullChecker from "../../services/nullChecker.js";
 import { formatDate } from "../../services/formatDate.js";
+import Profile from "../auth/profile.jsx";
 
 //The first admin database component shown. Show a form to add families, but also display them along with links to edit them.
 class FamilyAdmin extends Component {
@@ -26,7 +27,10 @@ class FamilyAdmin extends Component {
       description: "",
       birthdate: "",
       deathdate: "",
+      enabled: true,
     };
+
+    this.enableAdmin = this.enableAdmin.bind(this);
   }
 
   //Connect to the database and get data here! (Needed to list out the families in tables) ------------------------------
@@ -61,6 +65,10 @@ class FamilyAdmin extends Component {
       .catch(function (error) {
         console.log(error);
       });
+  }
+
+  enableAdmin() {
+    this.setState({ enabled: true });
   }
 
   revealFamily(i) {
@@ -133,78 +141,84 @@ class FamilyAdmin extends Component {
   }
 
   render() {
-    return (
+    return <React.Fragment>
+      <Profile onAuthenticated={this.enableAdmin} />
       <div>
-        <div class="container">
-          <p class="alert alert-warning">
-            Add people on the left. Every person must have a name and birthdate.
-            <br></br> Then on the right, create a family by entering peoples'
-            names under ParentA, ParentB or Child.
-            <br></br>
-            The family won't be created if the people entered don't exist.
-          </p>
-          <div class="row">
-            <div class="col-sm-6">
-              <PersonForm editing={false} />
-            </div>
-            <div class="col-sm-6">
-              <FamilyForm editing={false} />
-            </div>
+        {this.state.enabled ? (
+          <div>
+            <div class="container">
+              <p class="alert alert-warning">
+                Add people on the left. Every person must have a name and birthdate.
+                <br></br> Then on the right, create a family by entering peoples'
+                names under ParentA, ParentB or Child.
+                <br></br>
+                The family won't be created if the people entered don't exist.
+              </p>
+              <div class="row">
+                <div class="col-sm-6">
+                  <PersonForm editing={false} />
+                </div>
+                <div class="col-sm-6">
+                  <FamilyForm editing={false} />
+                </div>
 
-            <div class="col-sm"></div>
-          </div>
-          <div class="row">
-            <div class="col-lg-10">
-              {/*Edit Home tree page*/}
-              <FamilyGroupForm length={25} modifyingHomePage={true} />
+                <div class="col-sm"></div>
+              </div>
+              <div class="row">
+                <div class="col-lg-10">
+                  {/*Edit Home tree page*/}
+                  <FamilyGroupForm length={25} modifyingHomePage={true} />
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-10">
+                  {/*Edit Family tree page*/}
+                  <FamilyGroupForm length={25} modifyingHomePage={false} />
+                </div>
+              </div>
+              <br></br>
+              <br></br>
+              <br></br>
+              <br></br>
+              <div class="row">
+                <h3>Family Editor</h3>
+              </div>
+              <div class="row">
+                <p class="alert alert-warning">
+                  Click on a button to see a table of the family. Then click the
+                  edit links to edit that family or a specific person.
+                  <br></br>
+                  Alternatively, you can click edit next to families on the sidebar.
+                  <br></br>
+                  Outlined buttons are for families that don't show up on the
+                  sidebar.
+                </p>
+              </div>
+              <div class="row">
+                <table className="table table-striped" style={{ marginTop: 20 }}>
+                  <tbody>{this.familyList()}</tbody>
+                </table>
+              </div>
+              <div class="row">
+                <h3>Person Editor</h3>
+              </div>
+              <div class="row">
+                <p class="alert alert-warning">
+                  You can find individual people here, including those not currently
+                  in a family.
+                </p>
+              </div>
+              <div class="row">
+                <table className="table table-striped" style={{ marginTop: 20 }}>
+                  <tbody>{this.personList()}</tbody>
+                </table>
+              </div>
             </div>
           </div>
-          <div class="row">
-            <div class="col-lg-10">
-              {/*Edit Family tree page*/}
-              <FamilyGroupForm length={25} modifyingHomePage={false} />
-            </div>
-          </div>
-          <br></br>
-          <br></br>
-          <br></br>
-          <br></br>
-          <div class="row">
-            <h3>Family Editor</h3>
-          </div>
-          <div class="row">
-            <p class="alert alert-warning">
-              Click on a button to see a table of the family. Then click the
-              edit links to edit that family or a specific person.
-              <br></br>
-              Alternatively, you can click edit next to families on the sidebar.
-              <br></br>
-              Outlined buttons are for families that don't show up on the
-              sidebar.
-            </p>
-          </div>
-          <div class="row">
-            <table className="table table-striped" style={{ marginTop: 20 }}>
-              <tbody>{this.familyList()}</tbody>
-            </table>
-          </div>
-          <div class="row">
-            <h3>Person Editor</h3>
-          </div>
-          <div class="row">
-            <p class="alert alert-warning">
-              You can find individual people here, including those not currently
-              in a family.
-            </p>
-          </div>
-          <div class="row">
-            <table className="table table-striped" style={{ marginTop: 20 }}>
-              <tbody>{this.personList()}</tbody>
-            </table>
-          </div>
-        </div>
+        ) : ""};
+
       </div>
-    );
+    </React.Fragment>
   }
 }
 

@@ -1,3 +1,4 @@
+cd server
 start cmd /k npm start
-cd client
+cd ../client
 npm start
