@@ -23,7 +23,7 @@ function Profile(props) {
 
 
     return <div>
-      <p className="user">Logged in as {name}</p>
+      <p className="user">Logged in as {name} {process.env.REACT_APP_ADMIN1}</p>
     </div>
   }
 };
