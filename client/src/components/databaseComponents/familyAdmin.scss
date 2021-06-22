@@ -3,12 +3,12 @@ input[type="text"] {
   width: 40%;
 }
 
-.logOut{
+.logOut, .logIn{
   background-color: lightgreen;
+  margin: 20px;
   margin-left: 200px;
   border: solid black 1px;
   border-radius: 4px;
-  margin-bottom: 20px;
 }
 
 .user {

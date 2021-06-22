@@ -53,11 +53,13 @@ function Home() {
             <p>You have been logged out.</p>
           </Route>
 
+          <Route path="/login" component={LoginButton} />
+
+
           {/* Stuff the admins will see */}
 
           <PrivateRoute path="/admin" component={FamilyAdmin} />
           <PrivateRoute path="/logout" component={LogoutButton} />
-          <PrivateRoute path="/logout" component={LoginButton} />
           <PrivateRoute path="/edit/person/:id" component={PersonEditor} />
           <PrivateRoute path="/edit/family/:id" component={FamilyEditor} />
 
