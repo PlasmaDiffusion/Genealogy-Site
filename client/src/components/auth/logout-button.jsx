@@ -11,7 +11,7 @@ const LogoutButton = () => {
           returnTo: window.location.origin, //Make sure origins are set in the Auth0 settings
         })
       }
-      className="navButton"
+      className="logOut"
     >
       Log Out
     </button>

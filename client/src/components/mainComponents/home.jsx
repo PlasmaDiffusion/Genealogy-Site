@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, useState } from "react";
 import {
   BrowserRouter as Router,
   Switch,
@@ -21,11 +21,14 @@ import FamilyDetails from "./familyViewing/familyDetails";
 import LoginButton from "../auth/login-button";
 import LogoutButton from "../auth/logout-button";
 import PrivateRoute from "../auth/privateRoute";
+import Profile from "../auth/profile";
 
 function Home() {
 
 
   const { isAuthenticated } = useAuth0();
+
+  const [adminAuth, setAdminAuth] = useState(false);
 
 
   return (
@@ -33,7 +36,6 @@ function Home() {
       <div>
 
         <Navbar />
-
 
         <Switch>
           {/* Stuff the average user will see */}
@@ -54,20 +56,10 @@ function Home() {
           {/* Stuff the admins will see */}
 
           <PrivateRoute path="/admin" component={FamilyAdmin} />
-          <Route path="/logout">
-            {isAuthenticated ? <LogoutButton /> : ""}
-          </Route>
-          <Route path="/edit/person/:id">
-            {isAuthenticated ? <PersonEditor /> : ""}
-          </Route>
-          <Route path="/edit/family/:id">
-            {isAuthenticated ? <FamilyEditor /> : ""}
-          </Route>
-
-
-          <Route exact path="/login">
-            {isAuthenticated ? <LogoutButton /> : <LoginButton />}
-          </Route>
+          <PrivateRoute path="/logout" component={LogoutButton} />
+          <PrivateRoute path="/logout" component={LoginButton} />
+          <PrivateRoute path="/edit/person/:id" component={PersonEditor} />
+          <PrivateRoute path="/edit/family/:id" component={FamilyEditor} />
 
         </Switch>
       </div>

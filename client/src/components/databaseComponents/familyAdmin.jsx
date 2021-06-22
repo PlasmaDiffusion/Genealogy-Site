@@ -12,6 +12,8 @@ import Sorter from "../../services/sorter.js";
 import NullChecker from "../../services/nullChecker.js";
 import { formatDate } from "../../services/formatDate.js";
 import Profile from "../auth/profile.jsx";
+import LogoutButton from "../auth/logout-button.jsx";
+
 
 //The first admin database component shown. Show a form to add families, but also display them along with links to edit them.
 class FamilyAdmin extends Component {
@@ -27,11 +29,13 @@ class FamilyAdmin extends Component {
       description: "",
       birthdate: "",
       deathdate: "",
-      enabled: true,
+      enabled: false,
     };
 
     this.enableAdmin = this.enableAdmin.bind(this);
   }
+
+
 
   //Connect to the database and get data here! (Needed to list out the families in tables) ------------------------------
   componentDidMount() {
@@ -143,6 +147,7 @@ class FamilyAdmin extends Component {
   render() {
     return <React.Fragment>
       <Profile onAuthenticated={this.enableAdmin} />
+      {this.state.enabled ? <LogoutButton /> : ""}
       <div>
         {this.state.enabled ? (
           <div>
@@ -215,7 +220,7 @@ class FamilyAdmin extends Component {
               </div>
             </div>
           </div>
-        ) : ""};
+        ) : ""}
 
       </div>
     </React.Fragment>
